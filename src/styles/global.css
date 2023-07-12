@@ -1,0 +1,41 @@
+/* global */
+* {
+    font-family:arial;
+    font-weight: 500;
+}
+
+/* entire page padding */
+main {
+    margin-top: 5em;
+    margin-left: 10em;
+}
+
+/* text size */
+h1 {
+    margin-bottom: -0.1em;
+}
+
+h2 {
+    margin-bottom: -0.5em;
+}
+
+.subLinks {
+    font-size:1.3em;
+    display:inline-block;
+    padding-top: .3em;
+}
+
+/* links */
+a, a:focus, a:active {
+    text-decoration: none;
+    color: inherit;
+}
+a:hover {
+    color:orange
+}
+
+/* list */
+ul {
+    padding:0;
+    list-style-type: none;
+}
