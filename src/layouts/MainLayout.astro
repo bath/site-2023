@@ -1,20 +1,23 @@
 ---
 import '../styles/global.css';
 ---
-<head>
-	<link rel="icon" href="favicon.png" type="image/png" />
-	<title>mzb.dev | Software Engineer</title>
-	<!-- Google tag (gtag.js) -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-6HY8ZYWHXV"></script>
-	<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
 
-	gtag('config', 'G-6HY8ZYWHXV');
-	</script>
-</head>
-<main>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="icon" href="favicon.png" type="image/png" />
+		<title>mzb.dev | Software Engineer</title>
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-6HY8ZYWHXV"></script>
+		<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+	
+		gtag('config', 'G-6HY8ZYWHXV');
+		</script>
+	</head>
+
 	<div class="container">
 		<div class="sb-l"></div>
 
@@ -34,15 +37,10 @@ import '../styles/global.css';
 			<a href="/about">About</a><br />
 			<a href="Miller_Bath_Resume_Aug2023.pdf">Resume</a><br />
 			<a href="https://www.linkedin.com/in/~miller">LinkedIn</a><br />
-
 		</div>
 
 		<div class="sb-r" id="content">
 			<slot />
 		</div>
 	</div>
-</main>
-
-<style>
-
-</style>
+</html>
