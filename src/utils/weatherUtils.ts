@@ -9,6 +9,9 @@ export async function fetchWeatherData(
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=Kansas City,US&units=imperial&appid=${apiKey}`,
     );
+
+    if (!response.ok) return null;
+
     const data = await response.json();
 
     if (data.main && data.weather) {
