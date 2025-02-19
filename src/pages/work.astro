@@ -2,53 +2,33 @@
 import MainLayout from "../layouts/MainLayout.astro";
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<link rel="icon" href="favicon.png" type="image/png" />
-		<title>mzb.dev | Software Engineer | Work History</title>
-		<!-- Google tag (gtag.js) -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-6HY8ZYWHXV"></script>
-		<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
-	
-		gtag('config', 'G-6HY8ZYWHXV');
-		</script>
-	</head>
-</html>
-
 <MainLayout>
-    <body>
-        <div class="workbox">
-            <div class="job">
-                <span>PayIt, Software Engineer</span><br />
-                <span>Maintenance - Java, Javascript, Clojure</span>
-            </div>
-            <br />
-            <div class="job">
-                <span>PayIt, Associate Software Engineer</span><br />
-                <span>Maintenance - Java, Javascript, Clojure</span>
-            </div>
-            <br />
-            <div class="job">
-                <span>qTrade, Software Intern</span><br />
-                <span>Crypto data archive - Go</span>
-            </div>
-            <br />
-            <div class="job">
-                <span>Vizio, Software Intern</span><br />
-                <span>Voice search - Python</span>
-            </div>
-            <br />
-            <div class="job">
-                <span>Cerner, Software Intern</span><br />
-                <span>Population Health - Ruby, Javascript</span>
-            </div>
+    <div class="workbox">
+        <div class="job">
+            <span>PayIt, Software Engineer</span><br />
+            <span>Maintenance - Java, Javascript, Clojure</span>
         </div>
-        
-    </body>
+        <br />
+        <div class="job">
+            <span>PayIt, Associate Software Engineer</span><br />
+            <span>Maintenance - Java, Javascript, Clojure</span>
+        </div>
+        <br />
+        <div class="job">
+            <span>qTrade, Software Intern</span><br />
+            <span>Crypto data archive - Go</span>
+        </div>
+        <br />
+        <div class="job">
+            <span>Vizio, Software Intern</span><br />
+            <span>Voice search - Python</span>
+        </div>
+        <br />
+        <div class="job">
+            <span>Cerner, Software Intern</span><br />
+            <span>Population Health - Ruby, Javascript</span>
+        </div>
+    </div>
 </MainLayout>
 
 <style>

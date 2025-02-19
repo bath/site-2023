@@ -1,46 +1,36 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
+
+const pathname = Astro.url.pathname;
 ---
 
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<meta charset="utf-8" />
 		<link rel="icon" href="favicon.png" type="image/png" />
-		<title>mzb.dev | Software Engineer</title>
-		<!-- Google tag (gtag.js) -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-6HY8ZYWHXV"></script>
-		<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
-	
-		gtag('config', 'G-6HY8ZYWHXV');
-		</script>
+		<title>mzb.dev</title>
+		<ViewTransitions />
 	</head>
-
-	<div class="container">
-		<div class="sb-l"></div>
-
-		<div class="middle">
-			<a class="name" href="/">Miller Bath</a>
-			<div class="subheading">
-				<a id="subitem">Software Engineer</a><br />
-				<a id="subitem">Kansas City</a>
-			</div>
-
-			<br />
-			<br />
-			<br />
-			<br />
-
-			<a href="/work">Work</a><br />
-			<a href="/about">About</a><br />
-			<a href="Miller_Bath_Resume_Aug2023.pdf">Resume</a><br />
-			<a href="https://www.linkedin.com/in/~miller">LinkedIn</a><br />
+	<body>
+		<div class="layout-container">
+			<nav class="fixed-nav">
+				<a class="name" href="/">Miller Bath</a>
+				<div class="subheading">
+					<div>Software Engineer</div>
+					<div>Kansas City</div>
+				</div>
+				<div class="nav-links">
+					<a href="/work" class:list={['nav-link', { active: pathname === '/work' }]}>Work</a>
+					<a href="/about" class:list={['nav-link', { active: pathname === '/about' }]}>About</a>
+					<a href="Miller_Bath_Resume_Aug2023.pdf">Resume</a>
+					<a href="https://www.linkedin.com/in/~miller">LinkedIn</a>
+				</div>
+			</nav>
+			<main class="content">
+				<slot />
+			</main>
 		</div>
-
-		<div class="sb-r" id="content">
-			<slot />
-		</div>
-	</div>
+	</body>
 </html>
