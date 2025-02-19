@@ -3,9 +3,6 @@
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "logs": {
-    "verbose": true
-  },
   "functions": {
     "api/*": {
       "memory": 1024,
