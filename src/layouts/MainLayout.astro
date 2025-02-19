@@ -18,12 +18,14 @@ const pathname = Astro.url.pathname;
 			<nav class="fixed-nav">
 				<a class="name" href="/">Miller Bath</a>
 				<div class="subheading">
-					<div>Software Engineer</div>
-					<div>Kansas City</div>
+					<div>Software Engineer in Kansas City</div>
+					
 				</div>
 				<div class="nav-links">
-					<a href="/work" class:list={['nav-link', { active: pathname === '/work' }]}>Work</a>
 					<a href="/about" class:list={['nav-link', { active: pathname === '/about' }]}>About</a>
+					<a href="/writings" class:list={['nav-link', { active: pathname === '/writings' }]}>Writings</a>
+					<a href="/work" class:list={['nav-link', { active: pathname === '/work' }]}>Work History</a>
+					<a href="/photographs" class:list={['nav-link', { active: pathname === '/photographs' }]}>Photographs</a>
 					<a href="Miller_Bath_Resume_Aug2023.pdf">Resume</a>
 					<a href="https://www.linkedin.com/in/~miller">LinkedIn</a>
 				</div>
