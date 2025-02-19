@@ -10,6 +10,8 @@ import Navigation from "../components/Navigation.astro";
 import InfoContainer from "../components/InfoContainer.astro";
 import GradientBackground from "../components/GradientBackground.astro";
 
+import SpeedInsights from "@vercel/speed-insights/astro";
+
 // Page setup
 const pathname = Astro.url.pathname;
 const isDev = import.meta.env.DEV;
@@ -56,6 +58,7 @@ const weatherData: WeatherData | null = await fetchWeatherData(
     <link rel="icon" href="favicon.png" type="image/png" />
     <title>mzb.dev</title>
     <ClientRouter />
+    <SpeedInsights />
   </head>
   <body>
     <GradientBackground />
