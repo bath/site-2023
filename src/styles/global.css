@@ -54,7 +54,7 @@ html {
 }
 
 .name:hover {
-  color: rgb(95, 189, 154);
+  color: rgba(255, 149, 79, 0.846);
   transition: color 0.2s ease;
 }
 
