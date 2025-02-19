@@ -25,11 +25,14 @@ const currentDay = Math.floor(
 
 // Add time of day calculation
 const currentHour = now.getHours() + now.getMinutes() / 60;
-const progress = (currentHour - 6) / 12; // Normalize to 0-1 for 6am-6pm
-const angle = Math.PI * progress;
+const sunAngle = ((currentHour - 6) / 12) * 90 - 45; // -45 to +45 degrees
+
+// Convert sun angle to radians and calculate shadow
+const sunRadians = (sunAngle * Math.PI) / 180;
 const shadowDistance = 6;
-const shadowX = Math.cos(angle) * shadowDistance;
-const shadowY = Math.abs(Math.sin(angle)) * shadowDistance;
+// Invert the X and Y to create shadow opposite to sun position
+const shadowX = -Math.sin(sunRadians) * shadowDistance; // Use sin for X component
+const shadowY = Math.abs(Math.cos(sunRadians)) * shadowDistance; // Use cos for Y component
 
 // Fetch weather data with error handling
 let temperature = null;
@@ -70,6 +73,7 @@ try {
           ? ((19 - currentHour) * 0.2).toFixed(2) // Fade out from 6-7pm
           : "0.2" // Reduced from 0.25 to 0.2 during full daylight
   };
+  --sunAngle: ${sunAngle};
 `}
 >
   <head>
@@ -82,7 +86,10 @@ try {
     <GradientBackground />
     <div class="layout-container">
       <nav class="fixed-nav">
-        <a class="name" href="/">Miller Bath</a>
+        <div class="name-container">
+          <div class="sun"></div>
+          <a class="name" href="/">Miller Bath</a>
+        </div>
         <div class="subheading">
           <div>Software Engineer in Kansas City</div>
         </div>
@@ -236,6 +243,52 @@ try {
   .debug-control:last-child {
     margin-bottom: 0;
   }
+
+  .name-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .sun {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #ff7b4d; /* Softer orange-red core */
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(255, 90, 60, 0.5); /* More muted glow */
+    transform-origin: 50% 50%;
+    opacity: var(--shadowOpacity);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(calc(var(--sunAngle) * 1deg))
+      translateY(-40px);
+  }
+
+  @keyframes glow {
+    0%,
+    100% {
+      box-shadow: 0 0 12px rgba(255, 90, 60, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 18px rgba(255, 90, 60, 0.7); /* Softer pulsing glow */
+    }
+  }
+
+  .sun::after {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: radial-gradient(
+      circle,
+      rgba(255, 123, 77, 0.3),
+      /* Softer inner glow */ transparent 70%
+    );
+    border-radius: 50%;
+    animation: glow 3s infinite;
+  }
 </style>
 
 <script>
@@ -243,16 +296,12 @@ try {
     let shadowOpacity;
 
     if (hours < 5 || hours > 19) {
-      // Complete darkness before 5am and after 7pm
       shadowOpacity = 0;
     } else if (hours < 6) {
-      // Fade in between 5am and 6am
       shadowOpacity = (hours - 5) * 0.2;
     } else if (hours > 18) {
-      // Fade out between 6pm and 7pm
       shadowOpacity = (19 - hours) * 0.2;
     } else {
-      // Full daylight intensity (reduced from 0.25 to 0.2)
       shadowOpacity = 0.2;
     }
 
@@ -260,21 +309,26 @@ try {
       document.documentElement.style.setProperty("--shadowX", "0px");
       document.documentElement.style.setProperty("--shadowY", "0px");
       document.documentElement.style.setProperty("--shadowOpacity", "0");
+      document.documentElement.style.setProperty("--sunAngle", "-45");
     } else {
-      // Normalize hours to 6am-6pm range for angle calculation
-      const normalizedHours = Math.max(6, Math.min(18, hours)) - 6;
-      const progress = normalizedHours / 12;
-      const angle = Math.PI * progress;
+      // Calculate sun angle first
+      const sunAngle = ((hours - 6) / 12) * 90 - 45;
+      const sunRadians = (sunAngle * Math.PI) / 180;
 
+      // Calculate shadow based on sun position
       const shadowDistance = 6;
-      const shadowX = Math.cos(angle) * shadowDistance;
-      const shadowY = Math.abs(Math.sin(angle)) * shadowDistance;
+      const shadowX = -Math.sin(sunRadians) * shadowDistance;
+      const shadowY = Math.abs(Math.cos(sunRadians)) * shadowDistance;
 
       document.documentElement.style.setProperty("--shadowX", `${shadowX}px`);
       document.documentElement.style.setProperty("--shadowY", `${shadowY}px`);
       document.documentElement.style.setProperty(
         "--shadowOpacity",
         shadowOpacity.toString(),
+      );
+      document.documentElement.style.setProperty(
+        "--sunAngle",
+        sunAngle.toString(),
       );
     }
 
