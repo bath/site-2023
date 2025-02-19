@@ -5,13 +5,31 @@ import { getSeasonalColors } from "../utils/seasonalGradient";
 import SeasonDebugger from "../components/SeasonDebugger.astro";
 import GradientBackground from "../components/GradientBackground.astro";
 
+// Add time formatting function to the component script
+const formatTime = (date: Date) => {
+  return date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
+
 const pathname = Astro.url.pathname;
 const isDev = import.meta.env.DEV;
 const { startColor, endColor } = getSeasonalColors();
 const now = new Date();
 const currentDay = Math.floor(
-  (now - new Date(now.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24,
+  (now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) /
+    (1000 * 60 * 60 * 24),
 );
+
+// Add time of day calculation
+const currentHour = now.getHours() + now.getMinutes() / 60;
+const progress = (currentHour - 6) / 12; // Normalize to 0-1 for 6am-6pm
+const angle = Math.PI * progress;
+const shadowDistance = 6;
+const shadowX = Math.cos(angle) * shadowDistance;
+const shadowY = Math.abs(Math.sin(angle)) * shadowDistance;
 
 // Fetch weather data with error handling
 let temperature = null;
@@ -41,6 +59,17 @@ try {
   style={`
   --startColor: ${startColor};
   --endColor: ${endColor};
+  --shadowX: ${shadowX}px;
+  --shadowY: ${shadowY}px;
+  --shadowOpacity: ${
+    currentHour < 5 || currentHour > 19
+      ? "0"
+      : currentHour < 6
+        ? ((currentHour - 5) * 0.2).toFixed(2) // Fade in from 5-6am
+        : currentHour > 18
+          ? ((19 - currentHour) * 0.2).toFixed(2) // Fade out from 6-7pm
+          : "0.2" // Reduced from 0.25 to 0.2 during full daylight
+  };
 `}
 >
   <head>
@@ -90,7 +119,10 @@ try {
       </main>
     </div>
     <div class="info-container">
-      <div class="day-counter">Day {currentDay}</div>
+      <div class="day-counter">
+        Day {currentDay}
+        <div class="time-display">{formatTime(now)}</div>
+      </div>
       {
         temperature !== null && description !== null && (
           <div class="weather-info">
@@ -102,10 +134,25 @@ try {
     {
       isDev && (
         <div class="season-debugger">
-          <input type="range" id="season-debug" min="0" max="365" value="0" />
-          <span class="debug-label">
-            Day: <span id="debug-day">0</span>
-          </span>
+          <div class="debug-control">
+            <input type="range" id="season-debug" min="0" max="365" value="0" />
+            <span class="debug-label">
+              Day: <span id="debug-day">0</span>
+            </span>
+          </div>
+          <div class="debug-control">
+            <input
+              type="range"
+              id="time-debug"
+              min="0"
+              max="24"
+              step="0.25"
+              value={currentHour}
+            />
+            <span class="debug-label">
+              Time: <span id="debug-time">{currentHour.toFixed(2)}</span>
+            </span>
+          </div>
         </div>
       )
     }
@@ -166,4 +213,83 @@ try {
     padding: 5px 10px;
     border-radius: 4px;
   }
+
+  .time-display {
+    font-size: 12px;
+    margin-top: 2px;
+    opacity: 0.8;
+  }
+
+  .name {
+    text-shadow: var(--shadowX) var(--shadowY) 4px
+      rgba(0, 0, 0, var(--shadowOpacity, 0.25));
+    transition: text-shadow 0.3s ease;
+  }
+
+  .debug-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+  }
+
+  .debug-control:last-child {
+    margin-bottom: 0;
+  }
 </style>
+
+<script>
+  function updateTimeShadow(hours: number) {
+    let shadowOpacity;
+
+    if (hours < 5 || hours > 19) {
+      // Complete darkness before 5am and after 7pm
+      shadowOpacity = 0;
+    } else if (hours < 6) {
+      // Fade in between 5am and 6am
+      shadowOpacity = (hours - 5) * 0.2;
+    } else if (hours > 18) {
+      // Fade out between 6pm and 7pm
+      shadowOpacity = (19 - hours) * 0.2;
+    } else {
+      // Full daylight intensity (reduced from 0.25 to 0.2)
+      shadowOpacity = 0.2;
+    }
+
+    if (shadowOpacity === 0) {
+      document.documentElement.style.setProperty("--shadowX", "0px");
+      document.documentElement.style.setProperty("--shadowY", "0px");
+      document.documentElement.style.setProperty("--shadowOpacity", "0");
+    } else {
+      // Normalize hours to 6am-6pm range for angle calculation
+      const normalizedHours = Math.max(6, Math.min(18, hours)) - 6;
+      const progress = normalizedHours / 12;
+      const angle = Math.PI * progress;
+
+      const shadowDistance = 6;
+      const shadowX = Math.cos(angle) * shadowDistance;
+      const shadowY = Math.abs(Math.sin(angle)) * shadowDistance;
+
+      document.documentElement.style.setProperty("--shadowX", `${shadowX}px`);
+      document.documentElement.style.setProperty("--shadowY", `${shadowY}px`);
+      document.documentElement.style.setProperty(
+        "--shadowOpacity",
+        shadowOpacity.toString(),
+      );
+    }
+
+    const timeDebugLabel = document.getElementById("debug-time");
+    if (timeDebugLabel) {
+      timeDebugLabel.textContent = hours.toFixed(2);
+    }
+  }
+
+  // Time debug slider
+  const timeDebug = document.getElementById("time-debug") as HTMLInputElement;
+  if (timeDebug) {
+    timeDebug.addEventListener("input", (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      updateTimeShadow(parseFloat(target.value));
+    });
+  }
+</script>
