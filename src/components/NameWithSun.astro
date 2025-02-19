@@ -1,5 +1,5 @@
 ---
-const { sunAngle } = Astro.props;
+const { sunAngle, shadowX, shadowY, shadowOpacity } = Astro.props;
 ---
 
 <div class="name-container">
@@ -24,13 +24,12 @@ const { sunAngle } = Astro.props;
     opacity: var(--shadowOpacity);
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%) rotate(calc(var(--sunAngle) * 1deg))
-      translateY(-40px);
+    transform: translate(-50%, -50%) rotate(var(--sunAngle)) translateY(-40px);
   }
 
   .name {
     text-shadow: var(--shadowX) var(--shadowY) 4px
-      rgba(0, 0, 0, var(--shadowOpacity, 0.25));
+      rgba(0, 0, 0, var(--shadowOpacity));
     transition: text-shadow 0.3s ease;
   }
 
@@ -60,4 +59,3 @@ const { sunAngle } = Astro.props;
     animation: glow 3s infinite;
   }
 </style>
-

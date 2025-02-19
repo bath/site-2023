@@ -48,7 +48,7 @@ const weatherData: WeatherData | null = await fetchWeatherData(
     --shadowX: ${shadowX}px;
     --shadowY: ${shadowY}px;
     --shadowOpacity: ${shadowOpacity};
-    --sunAngle: ${sunAngle};
+    --sunAngle: ${sunAngle}deg;
   `}
 >
   <head>
@@ -60,7 +60,13 @@ const weatherData: WeatherData | null = await fetchWeatherData(
   <body>
     <GradientBackground />
     <div class="layout-container">
-      <Navigation pathname={pathname} />
+      <Navigation
+        pathname={pathname}
+        sunAngle={sunAngle}
+        shadowX={shadowX}
+        shadowY={shadowY}
+        shadowOpacity={shadowOpacity}
+      />
       <main class="content">
         <slot />
       </main>

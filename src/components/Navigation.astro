@@ -1,11 +1,11 @@
 ---
 import NameWithSun from "./NameWithSun.astro";
 
-const { pathname } = Astro.props;
+const { pathname, sunAngle, shadowX, shadowY, shadowOpacity } = Astro.props;
 ---
 
 <nav class="fixed-nav">
-  <NameWithSun />
+  <NameWithSun {sunAngle} {shadowX} {shadowY} {shadowOpacity} />
   <div class="subheading">
     <div>Software Engineer in Kansas City</div>
   </div>
@@ -54,4 +54,3 @@ const { pathname } = Astro.props;
     font-size: 1.2em;
   }
 </style>
-
