@@ -21,10 +21,7 @@ const pathname = Astro.url.pathname;
           <div>Software Engineer in Kansas City</div>
         </div>
         <div class="nav-links">
-          <a
-            href="/about"
-            class:list={["nav-link", { active: pathname === "/about" }]}
-          >
+          <a href="/" class:list={["nav-link", { active: pathname === "/" }]}>
             About
           </a>
           <a
@@ -45,8 +42,10 @@ const pathname = Astro.url.pathname;
           >
             Photographs
           </a>
-          <a href="Miller_Bath_Resume_Aug2023.pdf">Resume</a>
-          <a href="https://www.linkedin.com/in/~miller">LinkedIn</a>
+          <a class="nav-link" href="Miller_Bath_Resume_Aug2023.pdf">Resume</a>
+          <a class="nav-link" href="https://www.linkedin.com/in/~miller"
+            >LinkedIn</a
+          >
         </div>
       </nav>
       <main class="content">
