@@ -1,0 +1,57 @@
+---
+import NameWithSun from "./NameWithSun.astro";
+
+const { pathname } = Astro.props;
+---
+
+<nav class="fixed-nav">
+  <NameWithSun />
+  <div class="subheading">
+    <div>Software Engineer in Kansas City</div>
+  </div>
+  <div class="nav-links">
+    <a href="/" class:list={["nav-link", { active: pathname === "/" }]}>
+      About
+    </a>
+    <a
+      href="/writings"
+      class:list={["nav-link", { active: pathname === "/writings" }]}
+    >
+      Writings
+    </a>
+    <a href="/work" class:list={["nav-link", { active: pathname === "/work" }]}>
+      Work History
+    </a>
+    <a
+      href="/photographs"
+      class:list={["nav-link", { active: pathname === "/photographs" }]}
+    >
+      Photographs
+    </a>
+    <a class="nav-link" href="Miller_Bath_Resume_Aug2023.pdf">Resume</a>
+    <a class="nav-link" href="https://www.linkedin.com/in/~miller">LinkedIn</a>
+  </div>
+</nav>
+
+<style>
+  .fixed-nav {
+    position: fixed;
+    width: 300px;
+    height: 100vh;
+    padding: 2rem;
+    background: transparent;
+    font-size: 1.5em;
+  }
+
+  .nav-links {
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .subheading {
+    margin-top: 0.5em;
+    font-size: 1.2em;
+  }
+</style>
+

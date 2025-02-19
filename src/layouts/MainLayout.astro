@@ -3,15 +3,22 @@ import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 import { getSeasonalColors } from "../utils/seasonalGradient";
 import { calculateSunPosition, formatTime } from "../utils/timeUtils";
+import { fetchWeatherData } from "../utils/weatherUtils";
+import type { WeatherData, TimeInfo } from "../types";
+
+import Navigation from "../components/Navigation.astro";
+import InfoContainer from "../components/InfoContainer.astro";
 import SeasonDebugger from "../components/SeasonDebugger.astro";
 import SeasonSlider from "../components/SeasonSlider.astro";
 import GradientBackground from "../components/GradientBackground.astro";
-import NameWithSun from "../components/NameWithSun.astro";
 import TimeDebugger from "../components/TimeDebugger.astro";
 
+// Page setup
 const pathname = Astro.url.pathname;
 const isDev = import.meta.env.DEV;
 const { startColor, endColor } = getSeasonalColors();
+
+// Time calculations
 const now = new Date();
 const currentHour = now.getHours() + now.getMinutes() / 60;
 const currentDay = Math.floor(
@@ -19,29 +26,20 @@ const currentDay = Math.floor(
     (1000 * 60 * 60 * 24),
 );
 
+const timeInfo: TimeInfo = {
+  currentHour,
+  currentDay,
+  formattedTime: formatTime(now),
+};
+
+// Sun position calculations
 const { sunAngle, shadowX, shadowY, shadowOpacity } =
   calculateSunPosition(currentHour);
 
-// Fetch weather data with error handling
-let temperature = null;
-let description = null;
-
-try {
-  const WEATHER_API_KEY = import.meta.env.PUBLIC_WEATHER_API_KEY;
-  if (WEATHER_API_KEY) {
-    const weatherResponse = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=Kansas City,US&units=imperial&appid=${WEATHER_API_KEY}`,
-    );
-    const weatherData = await weatherResponse.json();
-
-    if (weatherData.main && weatherData.weather) {
-      temperature = Math.round(weatherData.main.temp);
-      description = weatherData.weather[0].description;
-    }
-  }
-} catch (error) {
-  console.error("Failed to fetch weather:", error);
-}
+// Weather data
+const weatherData: WeatherData | null = await fetchWeatherData(
+  import.meta.env.PUBLIC_WEATHER_API_KEY,
+);
 ---
 
 <!doctype html>
@@ -65,56 +63,12 @@ try {
   <body>
     <GradientBackground />
     <div class="layout-container">
-      <nav class="fixed-nav">
-        <NameWithSun />
-        <div class="subheading">
-          <div>Software Engineer in Kansas City</div>
-        </div>
-        <div class="nav-links">
-          <a href="/" class:list={["nav-link", { active: pathname === "/" }]}>
-            About
-          </a>
-          <a
-            href="/writings"
-            class:list={["nav-link", { active: pathname === "/writings" }]}
-          >
-            Writings
-          </a>
-          <a
-            href="/work"
-            class:list={["nav-link", { active: pathname === "/work" }]}
-          >
-            Work History
-          </a>
-          <a
-            href="/photographs"
-            class:list={["nav-link", { active: pathname === "/photographs" }]}
-          >
-            Photographs
-          </a>
-          <a class="nav-link" href="Miller_Bath_Resume_Aug2023.pdf">Resume</a>
-          <a class="nav-link" href="https://www.linkedin.com/in/~miller"
-            >LinkedIn</a
-          >
-        </div>
-      </nav>
+      <Navigation pathname={pathname} />
       <main class="content">
         <slot />
       </main>
     </div>
-    <div class="info-container">
-      <div class="day-counter">
-        Day {currentDay}
-        <div class="time-display">{formatTime(now)}</div>
-      </div>
-      {
-        temperature !== null && description !== null && (
-          <div class="weather-info">
-            {temperature}°F • {description}
-          </div>
-        )
-      }
-    </div>
+    <InfoContainer timeInfo={timeInfo} weatherData={weatherData} />
     {
       isDev && (
         <div class="season-debugger">

@@ -1,0 +1,51 @@
+---
+import type { WeatherData, TimeInfo } from "../types";
+
+interface Props {
+  timeInfo: TimeInfo;
+  weatherData: WeatherData | null;
+}
+
+const { timeInfo, weatherData } = Astro.props;
+---
+
+<div class="info-container">
+  <div class="day-counter">
+    Day {timeInfo.currentDay}
+    <div class="time-display">{timeInfo.formattedTime}</div>
+  </div>
+  {
+    weatherData && (
+      <div class="weather-info">
+        {weatherData.temperature}°F • {weatherData.description}
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .info-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 1000;
+  }
+
+  .day-counter,
+  .weather-info {
+    font-size: 14px;
+    color: rgba(35, 31, 32, 0.6);
+    padding: 5px 10px;
+    border-radius: 4px;
+  }
+
+  .time-display {
+    font-size: 12px;
+    margin-top: 2px;
+    opacity: 0.8;
+  }
+</style>
+
