@@ -13,33 +13,73 @@ import GradientBackground from "../components/GradientBackground.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Analytics from "@vercel/analytics/astro";
 
-// Page setup
-const pathname = Astro.url.pathname;
-const isDev = import.meta.env.DEV;
-const { startColor, endColor } = getSeasonalColors();
+try {
+  // Page setup
+  const pathname = Astro.url.pathname;
+  const isDev = import.meta.env.DEV;
+  
+  console.log("Starting MainLayout initialization");
+  
+  // Wrap seasonal colors in try-catch
+  let startColor, endColor;
+  try {
+    const colors = getSeasonalColors();
+    startColor = colors.startColor;
+    endColor = colors.endColor;
+    console.log("Seasonal colors calculated successfully");
+  } catch (error) {
+    console.error("Error calculating seasonal colors:", error);
+    startColor = "rgb(242, 245, 250)"; // Fallback color
+    endColor = "rgb(235, 240, 248)";   // Fallback color
+  }
 
-// Time calculations
-const now = new Date();
-const currentHour = now.getHours() + now.getMinutes() / 60;
-const currentDay = Math.floor(
-  (now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) /
-    (1000 * 60 * 60 * 24),
-);
+  // Time calculations with error handling
+  let timeInfo: TimeInfo;
+  try {
+    const now = new Date();
+    const currentHour = now.getHours() + now.getMinutes() / 60;
+    const currentDay = Math.floor(
+      (now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) /
+        (1000 * 60 * 60 * 24)
+    );
+    
+    timeInfo = {
+      currentHour,
+      currentDay,
+      formattedTime: formatTime(now),
+    };
+    console.log("Time calculations completed successfully");
+  } catch (error) {
+    console.error("Error in time calculations:", error);
+    throw error;
+  }
 
-const timeInfo: TimeInfo = {
-  currentHour,
-  currentDay,
-  formattedTime: formatTime(now),
-};
+  // Sun position calculations with error handling
+  let sunPosition;
+  try {
+    sunPosition = calculateSunPosition(timeInfo.currentHour);
+    console.log("Sun position calculated successfully");
+  } catch (error) {
+    console.error("Error calculating sun position:", error);
+    sunPosition = {
+      sunAngle: 0,
+      shadowX: 0,
+      shadowY: 0,
+      shadowOpacity: "0.2"
+    };
+  }
 
-// Sun position calculations
-const { sunAngle, shadowX, shadowY, shadowOpacity } =
-  calculateSunPosition(currentHour);
+  // Weather data fetch with error handling
+  let weatherData: WeatherData | null = null;
+  try {
+    weatherData = await fetchWeatherData(import.meta.env.WEATHER_API_KEY);
+    console.log("Weather data fetched successfully:", !!weatherData);
+  } catch (error) {
+    console.error("Error fetching weather data:", error);
+    weatherData = null;
+  }
 
-// Weather data
-const weatherData: WeatherData | null = await fetchWeatherData(
-  import.meta.env.WEATHER_API_KEY,
-);
+  const { sunAngle, shadowX, shadowY, shadowOpacity } = sunPosition;
 ---
 
 <!doctype html>
@@ -79,6 +119,15 @@ const weatherData: WeatherData | null = await fetchWeatherData(
     <InfoContainer timeInfo={timeInfo} weatherData={weatherData} />
   </body>
 </html>
+} catch (error) {
+  console.error("Critical error in MainLayout:", {
+    message: error.message,
+    stack: error.stack,
+    name: error.name,
+    code: error.code
+  });
+  throw error;
+}
 
 <style is:global>
   html {
