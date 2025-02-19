@@ -1,0 +1,34 @@
+<script>
+  let updateGradient: (day: number) => void;
+
+  // Create a custom event for updating the gradient
+  const gradientUpdateEvent = new CustomEvent("updateGradient");
+
+  function initDebugger() {
+    const slider = document.getElementById("season-debug") as HTMLInputElement;
+    if (!slider) return;
+
+    updateGradient = (day: number) => {
+      document.documentElement.style.setProperty("--debug-day", day.toString());
+      window.dispatchEvent(gradientUpdateEvent);
+    };
+
+    slider.addEventListener("input", (e) => {
+      const input = e.target as HTMLInputElement;
+      const day = parseInt(input.value, 10);
+      updateGradient(day);
+
+      // Update the day display
+      const dayDisplay = document.getElementById("debug-day");
+      if (dayDisplay) {
+        dayDisplay.textContent = day.toString();
+      }
+    });
+
+    // Initialize with current value
+    updateGradient(parseInt(slider.value, 10));
+  }
+
+  // Initialize immediately since Astro loads scripts after DOM is ready
+  initDebugger();
+</script>

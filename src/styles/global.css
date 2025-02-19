@@ -17,8 +17,8 @@
 }
 
 html {
-  background-color: rgb(234, 234, 236);
   color: rgb(35, 31, 32);
+  scroll-behavior: smooth;
 }
 
 .layout-container {
@@ -32,7 +32,7 @@ html {
   width: 300px;
   height: 100vh;
   padding: 2rem;
-  background-color: rgb(234, 234, 236);
+  background: transparent;
   font-size: 1.5em;
 }
 
@@ -41,6 +41,7 @@ html {
   padding: 4rem;
   width: calc(100vw - 300px);
   max-width: 1200px;
+  line-height: 1.6;
 }
 
 .nav-links {
@@ -55,7 +56,8 @@ html {
 
 .name:hover {
   color: rgba(255, 149, 79, 0.846);
-  transition: color 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(4px);
 }
 
 .subheading {
@@ -70,7 +72,8 @@ a {
 
 .nav-links .nav-link:hover {
   color: rgba(255, 149, 79, 0.846);
-  transition: color 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(4px);
 }
 
 .nav-links .nav-link.active {
@@ -80,14 +83,37 @@ a {
 
 .page-content {
   margin-top: 2.4em;
+  animation: fadeIn 0.5s ease-out;
 }
 
 .page-content a[href^="http"] {
+  position: relative;
   color: rgb(18, 81, 126);
   font-weight: 500;
 }
 
-.page-content a[href^="http"]:hover {
-  color: rgba(255, 149, 79, 0.846);
-  transition: color 0.2s ease;
+.page-content a[href^="http"]::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color: currentColor;
+  transition: width 0.3s ease;
+}
+
+.page-content a[href^="http"]:hover::after {
+  width: 100%;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

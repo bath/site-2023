@@ -1,8 +1,12 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
+import { getSeasonalColors } from "../utils/seasonalGradient";
+import SeasonDebugger from "../components/SeasonDebugger.astro";
 
 const pathname = Astro.url.pathname;
+const isDev = import.meta.env.DEV;
+const { startColor, endColor } = getSeasonalColors();
 ---
 
 <!doctype html>
@@ -12,6 +16,16 @@ const pathname = Astro.url.pathname;
     <link rel="icon" href="favicon.png" type="image/png" />
     <title>mzb.dev</title>
     <ClientRouter />
+    <style define:vars={{ startColor, endColor }}>
+      html {
+        background: linear-gradient(
+          135deg,
+          var(--startColor, rgb(234, 234, 236)) 0%,
+          var(--endColor, rgb(234, 234, 236)) 100%
+        );
+        transition: background 0.3s ease;
+      }
+    </style>
   </head>
   <body>
     <div class="layout-container">
@@ -52,5 +66,41 @@ const pathname = Astro.url.pathname;
         <slot />
       </main>
     </div>
+    {
+      isDev && (
+        <div class="season-debugger">
+          <input type="range" id="season-debug" min="0" max="365" value="0" />
+          <span class="debug-label">
+            Day: <span id="debug-day">0</span>
+          </span>
+        </div>
+      )
+    }
+    {isDev && <SeasonDebugger />}
   </body>
 </html>
+
+<style>
+  .season-debugger {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+  }
+
+  .debug-label {
+    font-size: 14px;
+    color: #666;
+  }
+
+  #season-debug {
+    width: 200px;
+  }
+</style>
