@@ -1,0 +1,30 @@
+---
+const { error } = Astro.props;
+---
+
+<html>
+  <head>
+    <title>Server Error</title>
+  </head>
+  <body>
+    <h1>Server Error</h1>
+    <p>Something went wrong on our server.</p>
+    {
+      import.meta.env.DEV && error && (
+        <pre>
+          {JSON.stringify(
+            {
+              message: error.message,
+              stack: error.stack,
+              name: error.name,
+              code: error.code,
+            },
+            null,
+            2,
+          )}
+        </pre>
+      )
+    }
+  </body>
+</html>
+
