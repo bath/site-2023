@@ -1,67 +1,78 @@
 * {
-	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html {
-	background-color: rgb(234,234,236);
-	color: rgb(35,31,32);
+  background-color: rgb(234, 234, 236);
+  color: rgb(35, 31, 32);
 }
 
 .layout-container {
-	display: grid;
-	grid-template-columns: 300px minmax(0, 1fr);
-	min-height: 100vh;
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  min-height: 100vh;
 }
 
 .fixed-nav {
-	position: fixed;
-	width: 300px;
-	height: 100vh;
-	padding: 2rem;
-	background-color: rgb(234,234,236);
-	font-size: 1.5em;
+  position: fixed;
+  width: 300px;
+  height: 100vh;
+  padding: 2rem;
+  background-color: rgb(234, 234, 236);
+  font-size: 1.5em;
 }
 
 .content {
-	margin-left: 300px;
-	padding: 4rem;
-	width: calc(100vw - 300px);
-	max-width: 1200px;
+  margin-left: 300px;
+  padding: 4rem;
+  width: calc(100vw - 300px);
+  max-width: 1200px;
 }
 
 .nav-links {
-	margin-top: 4rem;
-	display: flex;
-	flex-direction: column;
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .name {
-	font-size: 2em;
+  font-size: 2em;
 }
 
 .subheading {
-	margin-top: .5em;
-	font-size: 1.2em;
+  margin-top: 0.5em;
+  font-size: 1.2em;
 }
 
 a {
-	text-decoration: none;
-	color: inherit;
+  text-decoration: none;
+  color: inherit;
 }
 
 .nav-links .nav-link:hover {
-	color: rgb(95,189,154);
-	transition: color 0.2s ease;
+  color: rgb(95, 189, 154);
+  transition: color 0.2s ease;
 }
 
 .nav-links .nav-link.active {
-	color: rgb(36,110,83);
-	text-decoration: underline;
+  color: rgb(36, 110, 83);
+  text-decoration: underline;
 }
 
 .page-content {
-	margin-top: 2.2em;
+  margin-top: 2.2em;
 }
