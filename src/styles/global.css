@@ -117,3 +117,21 @@ a {
     transform: translateY(0);
   }
 }
+
+:root {
+  /* Spring - More vibrant greens and soft browns */
+  --spring-start: #7da87b; /* Sage green */
+  --spring-end: #d4c5a9; /* Warm beige */
+
+  /* Summer - Rich greens and warm golden tones */
+  --summer-start: #2d5a27; /* Deep forest green */
+  --summer-end: #d4b95e; /* Golden wheat */
+
+  /* Fall - Deep reds and amber tones */
+  --fall-start: #8b4513; /* Saddle brown */
+  --fall-end: #d68c45; /* Burnt orange */
+
+  /* Winter - Cool grays and deep blues */
+  --winter-start: #2c3e50; /* Dark slate */
+  --winter-end: #95a5a6; /* Cool gray */
+}

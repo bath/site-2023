@@ -1,0 +1,63 @@
+---
+const { sunAngle } = Astro.props;
+---
+
+<div class="name-container">
+  <div class="sun"></div>
+  <a class="name" href="/">Miller Bath</a>
+</div>
+
+<style>
+  .name-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .sun {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #ff7b4d;
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(255, 90, 60, 0.5);
+    transform-origin: 50% 50%;
+    opacity: var(--shadowOpacity);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(calc(var(--sunAngle) * 1deg))
+      translateY(-40px);
+  }
+
+  .name {
+    text-shadow: var(--shadowX) var(--shadowY) 4px
+      rgba(0, 0, 0, var(--shadowOpacity, 0.25));
+    transition: text-shadow 0.3s ease;
+  }
+
+  @keyframes glow {
+    0%,
+    100% {
+      box-shadow: 0 0 12px rgba(255, 90, 60, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 18px rgba(255, 90, 60, 0.7);
+    }
+  }
+
+  .sun::after {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: radial-gradient(
+      circle,
+      rgba(255, 123, 77, 0.3),
+      transparent 70%
+    );
+    border-radius: 50%;
+    animation: glow 3s infinite;
+  }
+</style>
+

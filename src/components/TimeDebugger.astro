@@ -1,0 +1,72 @@
+---
+const { currentHour } = Astro.props;
+---
+
+<div class="debug-control">
+  <input
+    type="range"
+    id="time-debug"
+    min="0"
+    max="24"
+    step="0.25"
+    value={currentHour}
+  />
+  <span class="debug-label">
+    Time: <span id="debug-time">{currentHour.toFixed(2)}</span>
+  </span>
+</div>
+
+<style>
+  .debug-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+  }
+
+  .debug-label {
+    font-size: 14px;
+    color: #666;
+  }
+</style>
+
+<script>
+  import { calculateSunPosition } from "../utils/timeUtils";
+
+  function updateTimeShadow(hours: number) {
+    const { sunAngle, shadowX, shadowY, shadowOpacity } =
+      calculateSunPosition(hours);
+
+    if (shadowOpacity === "0") {
+      document.documentElement.style.setProperty("--shadowX", "0px");
+      document.documentElement.style.setProperty("--shadowY", "0px");
+      document.documentElement.style.setProperty("--shadowOpacity", "0");
+      document.documentElement.style.setProperty("--sunAngle", "-45");
+    } else {
+      document.documentElement.style.setProperty("--shadowX", `${shadowX}px`);
+      document.documentElement.style.setProperty("--shadowY", `${shadowY}px`);
+      document.documentElement.style.setProperty(
+        "--shadowOpacity",
+        shadowOpacity,
+      );
+      document.documentElement.style.setProperty(
+        "--sunAngle",
+        sunAngle.toString(),
+      );
+    }
+
+    const timeDebugLabel = document.getElementById("debug-time");
+    if (timeDebugLabel) {
+      timeDebugLabel.textContent = hours.toFixed(2);
+    }
+  }
+
+  const timeDebug = document.getElementById("time-debug") as HTMLInputElement;
+  if (timeDebug) {
+    timeDebug.addEventListener("input", (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      updateTimeShadow(parseFloat(target.value));
+    });
+  }
+</script>
+

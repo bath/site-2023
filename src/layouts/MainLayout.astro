@@ -2,37 +2,25 @@
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 import { getSeasonalColors } from "../utils/seasonalGradient";
+import { calculateSunPosition, formatTime } from "../utils/timeUtils";
 import SeasonDebugger from "../components/SeasonDebugger.astro";
+import SeasonSlider from "../components/SeasonSlider.astro";
 import GradientBackground from "../components/GradientBackground.astro";
-
-// Add time formatting function to the component script
-const formatTime = (date: Date) => {
-  return date.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
-};
+import NameWithSun from "../components/NameWithSun.astro";
+import TimeDebugger from "../components/TimeDebugger.astro";
 
 const pathname = Astro.url.pathname;
 const isDev = import.meta.env.DEV;
 const { startColor, endColor } = getSeasonalColors();
 const now = new Date();
+const currentHour = now.getHours() + now.getMinutes() / 60;
 const currentDay = Math.floor(
   (now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) /
     (1000 * 60 * 60 * 24),
 );
 
-// Add time of day calculation
-const currentHour = now.getHours() + now.getMinutes() / 60;
-const sunAngle = ((currentHour - 6) / 12) * 90 - 45; // -45 to +45 degrees
-
-// Convert sun angle to radians and calculate shadow
-const sunRadians = (sunAngle * Math.PI) / 180;
-const shadowDistance = 6;
-// Invert the X and Y to create shadow opposite to sun position
-const shadowX = -Math.sin(sunRadians) * shadowDistance; // Use sin for X component
-const shadowY = Math.abs(Math.cos(sunRadians)) * shadowDistance; // Use cos for Y component
+const { sunAngle, shadowX, shadowY, shadowOpacity } =
+  calculateSunPosition(currentHour);
 
 // Fetch weather data with error handling
 let temperature = null;
@@ -60,21 +48,13 @@ try {
 <html
   lang="en"
   style={`
-  --startColor: ${startColor};
-  --endColor: ${endColor};
-  --shadowX: ${shadowX}px;
-  --shadowY: ${shadowY}px;
-  --shadowOpacity: ${
-    currentHour < 5 || currentHour > 19
-      ? "0"
-      : currentHour < 6
-        ? ((currentHour - 5) * 0.2).toFixed(2) // Fade in from 5-6am
-        : currentHour > 18
-          ? ((19 - currentHour) * 0.2).toFixed(2) // Fade out from 6-7pm
-          : "0.2" // Reduced from 0.25 to 0.2 during full daylight
-  };
-  --sunAngle: ${sunAngle};
-`}
+    --startColor: ${startColor};
+    --endColor: ${endColor};
+    --shadowX: ${shadowX}px;
+    --shadowY: ${shadowY}px;
+    --shadowOpacity: ${shadowOpacity};
+    --sunAngle: ${sunAngle};
+  `}
 >
   <head>
     <meta charset="utf-8" />
@@ -86,10 +66,7 @@ try {
     <GradientBackground />
     <div class="layout-container">
       <nav class="fixed-nav">
-        <div class="name-container">
-          <div class="sun"></div>
-          <a class="name" href="/">Miller Bath</a>
-        </div>
+        <NameWithSun />
         <div class="subheading">
           <div>Software Engineer in Kansas City</div>
         </div>
@@ -141,25 +118,8 @@ try {
     {
       isDev && (
         <div class="season-debugger">
-          <div class="debug-control">
-            <input type="range" id="season-debug" min="0" max="365" value="0" />
-            <span class="debug-label">
-              Day: <span id="debug-day">0</span>
-            </span>
-          </div>
-          <div class="debug-control">
-            <input
-              type="range"
-              id="time-debug"
-              min="0"
-              max="24"
-              step="0.25"
-              value={currentHour}
-            />
-            <span class="debug-label">
-              Time: <span id="debug-time">{currentHour.toFixed(2)}</span>
-            </span>
-          </div>
+          <SeasonSlider currentDay={currentDay} />
+          <TimeDebugger currentHour={currentHour} />
         </div>
       )
     }
@@ -290,60 +250,3 @@ try {
     animation: glow 3s infinite;
   }
 </style>
-
-<script>
-  function updateTimeShadow(hours: number) {
-    let shadowOpacity;
-
-    if (hours < 5 || hours > 19) {
-      shadowOpacity = 0;
-    } else if (hours < 6) {
-      shadowOpacity = (hours - 5) * 0.2;
-    } else if (hours > 18) {
-      shadowOpacity = (19 - hours) * 0.2;
-    } else {
-      shadowOpacity = 0.2;
-    }
-
-    if (shadowOpacity === 0) {
-      document.documentElement.style.setProperty("--shadowX", "0px");
-      document.documentElement.style.setProperty("--shadowY", "0px");
-      document.documentElement.style.setProperty("--shadowOpacity", "0");
-      document.documentElement.style.setProperty("--sunAngle", "-45");
-    } else {
-      // Calculate sun angle first
-      const sunAngle = ((hours - 6) / 12) * 90 - 45;
-      const sunRadians = (sunAngle * Math.PI) / 180;
-
-      // Calculate shadow based on sun position
-      const shadowDistance = 6;
-      const shadowX = -Math.sin(sunRadians) * shadowDistance;
-      const shadowY = Math.abs(Math.cos(sunRadians)) * shadowDistance;
-
-      document.documentElement.style.setProperty("--shadowX", `${shadowX}px`);
-      document.documentElement.style.setProperty("--shadowY", `${shadowY}px`);
-      document.documentElement.style.setProperty(
-        "--shadowOpacity",
-        shadowOpacity.toString(),
-      );
-      document.documentElement.style.setProperty(
-        "--sunAngle",
-        sunAngle.toString(),
-      );
-    }
-
-    const timeDebugLabel = document.getElementById("debug-time");
-    if (timeDebugLabel) {
-      timeDebugLabel.textContent = hours.toFixed(2);
-    }
-  }
-
-  // Time debug slider
-  const timeDebug = document.getElementById("time-debug") as HTMLInputElement;
-  if (timeDebug) {
-    timeDebug.addEventListener("input", (e: Event) => {
-      const target = e.target as HTMLInputElement;
-      updateTimeShadow(parseFloat(target.value));
-    });
-  }
-</script>

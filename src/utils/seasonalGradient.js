@@ -10,14 +10,17 @@ function getSeasonalColors(debugDay) {
 
   // Kansas City seasonal colors
   const seasons = [
-    // Winter (subtle cool tones)
-    { start: [240, 245, 255], end: [245, 245, 250] },
-    // Spring (gentle greens and warm tones)
-    { start: [245, 250, 245], end: [250, 245, 245] },
-    // Summer (warm light tones)
-    { start: [250, 250, 245], end: [245, 250, 245] },
-    // Fall (soft warm tones)
-    { start: [250, 245, 240], end: [245, 242, 240] },
+    // Winter (subtle cool grays with a hint of blue)
+    { start: [220, 225, 235], end: [200, 205, 215] },
+
+    // Spring (soft sage and warm limestone)
+    { start: [210, 220, 205], end: [225, 220, 210] },
+
+    // Summer (deeper greens with golden undertones)
+    { start: [195, 210, 190], end: [220, 215, 195] },
+
+    // Fall (warm earth tones)
+    { start: [220, 210, 200], end: [215, 205, 195] },
   ];
 
   // Calculate which season we're in (0-3)
