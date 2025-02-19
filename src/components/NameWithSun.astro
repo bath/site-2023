@@ -1,10 +1,35 @@
 ---
 const { sunAngle, shadowX, shadowY, shadowOpacity } = Astro.props;
+
+// Add console logging for debugging
+console.log("NameWithSun Props:", {
+  sunAngle,
+  shadowX,
+  shadowY,
+  shadowOpacity,
+});
 ---
 
 <div class="name-container">
-  <div class="sun"></div>
-  <a class="name" href="/">Miller Bath</a>
+  <div
+    class="sun"
+    style={`
+      --local-sunAngle: ${sunAngle}deg;
+      --local-shadowOpacity: ${shadowOpacity};
+    `}
+  >
+  </div>
+  <a
+    class="name"
+    href="/"
+    style={`
+      --local-shadowX: ${shadowX}px;
+      --local-shadowY: ${shadowY}px;
+      --local-shadowOpacity: ${shadowOpacity};
+    `}
+  >
+    Miller Bath
+  </a>
 </div>
 
 <style>
@@ -21,15 +46,16 @@ const { sunAngle, shadowX, shadowY, shadowOpacity } = Astro.props;
     border-radius: 50%;
     box-shadow: 0 0 12px rgba(255, 90, 60, 0.5);
     transform-origin: 50% 50%;
-    opacity: var(--shadowOpacity);
+    opacity: var(--local-shadowOpacity);
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%) rotate(var(--sunAngle)) translateY(-40px);
+    transform: translate(-50%, -50%) rotate(var(--local-sunAngle))
+      translateY(-40px);
   }
 
   .name {
-    text-shadow: var(--shadowX) var(--shadowY) 4px
-      rgba(0, 0, 0, var(--shadowOpacity));
+    text-shadow: var(--local-shadowX) var(--local-shadowY) 4px
+      rgba(0, 0, 0, var(--local-shadowOpacity));
     transition: text-shadow 0.3s ease;
   }
 

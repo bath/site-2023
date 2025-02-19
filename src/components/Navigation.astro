@@ -2,6 +2,13 @@
 import NameWithSun from "./NameWithSun.astro";
 
 const { pathname, sunAngle, shadowX, shadowY, shadowOpacity } = Astro.props;
+
+const isActive = (path: string) => {
+  if (path === "/") {
+    return pathname === "/";
+  }
+  return pathname.startsWith(path);
+};
 ---
 
 <nav class="fixed-nav">
@@ -10,21 +17,19 @@ const { pathname, sunAngle, shadowX, shadowY, shadowOpacity } = Astro.props;
     <div>Software Engineer in Kansas City</div>
   </div>
   <div class="nav-links">
-    <a href="/" class:list={["nav-link", { active: pathname === "/" }]}>
-      About
-    </a>
+    <a href="/" class:list={["nav-link", { active: isActive("/") }]}> About </a>
     <a
       href="/writings"
-      class:list={["nav-link", { active: pathname === "/writings" }]}
+      class:list={["nav-link", { active: isActive("/writings") }]}
     >
       Writings
     </a>
-    <a href="/work" class:list={["nav-link", { active: pathname === "/work" }]}>
+    <a href="/work" class:list={["nav-link", { active: isActive("/work") }]}>
       Work History
     </a>
     <a
       href="/photographs"
-      class:list={["nav-link", { active: pathname === "/photographs" }]}
+      class:list={["nav-link", { active: isActive("/photographs") }]}
     >
       Photographs
     </a>
