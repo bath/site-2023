@@ -53,6 +53,11 @@ html {
   font-size: 2em;
 }
 
+.name:hover {
+  color: rgb(95, 189, 154);
+  transition: color 0.2s ease;
+}
+
 .subheading {
   margin-top: 0.5em;
   font-size: 1.2em;
@@ -74,5 +79,20 @@ a {
 }
 
 .page-content {
-  margin-top: 2.2em;
+  margin-top: 2.4em;
+}
+
+.page-content a:hover {
+  color: rgb(95, 189, 154);
+  transition: color 0.2s ease;
+}
+
+.page-content a[href^="http"] {
+  color: rgb(0, 82, 155);
+  font-weight: 500;
+}
+
+.page-content a[href^="http"]:hover {
+  color: rgb(0, 149, 255);
+  transition: color 0.2s ease;
 }
