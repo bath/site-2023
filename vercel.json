@@ -1,7 +1,7 @@
 {
   "framework": "astro",
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
+  "buildCommand": "astro build",
+  "devCommand": "astro dev",
   "installCommand": "npm install",
   "functions": {
     "api/*": {
