@@ -1,9 +1,9 @@
-import { c as createComponent, b as createAstro, e as addAttribute, f as renderScript, a as renderTemplate, m as maybeRenderHead, r as renderComponent, g as renderHead, h as renderSlot } from './astro/server_DyiIYggP.mjs';
+import { b as createAstro, c as createComponent, e as addAttribute, f as renderScript, a as renderTemplate, m as maybeRenderHead, r as renderComponent, g as renderHead, h as renderSlot } from './astro/server_CzyE8B3s.mjs';
 import 'kleur/colors';
 import 'clsx';
 /* empty css                         */
 
-const $$Astro$6 = createAstro();
+const $$Astro$6 = createAstro("https://mzb.dev");
 const $$ClientRouter = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$6, $$props, $$slots);
   Astro2.self = $$ClientRouter;
@@ -97,7 +97,7 @@ async function fetchWeatherData(apiKey) {
   }
 }
 
-const $$Astro$5 = createAstro();
+const $$Astro$5 = createAstro("https://mzb.dev");
 const $$NameWithSun = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$5, $$props, $$slots);
   Astro2.self = $$NameWithSun;
@@ -120,7 +120,7 @@ Miller Bath
 </a> </div> `;
 }, "/Users/bath/Dropbox (PayIt)/Mac/Documents/site-2023/src/components/NameWithSun.astro", void 0);
 
-const $$Astro$4 = createAstro();
+const $$Astro$4 = createAstro("https://mzb.dev");
 const $$Navigation = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$4, $$props, $$slots);
   Astro2.self = $$Navigation;
@@ -140,7 +140,7 @@ Photographs
 </a> <a class="nav-link" href="Miller_Bath_Resume_Aug2023.pdf" data-astro-cid-pux6a34n>Resume</a> <a class="nav-link" href="https://www.linkedin.com/in/~miller" data-astro-cid-pux6a34n>LinkedIn</a> </div> </nav> `;
 }, "/Users/bath/Dropbox (PayIt)/Mac/Documents/site-2023/src/components/Navigation.astro", void 0);
 
-const $$Astro$3 = createAstro();
+const $$Astro$3 = createAstro("https://mzb.dev");
 const $$InfoContainer = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$3, $$props, $$slots);
   Astro2.self = $$InfoContainer;
@@ -153,7 +153,7 @@ const $$GradientBackground = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<div id="gradient-background" data-astro-cid-qumqhawe></div>  ${renderScript($$result, "/Users/bath/Dropbox (PayIt)/Mac/Documents/site-2023/src/components/GradientBackground.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/Users/bath/Dropbox (PayIt)/Mac/Documents/site-2023/src/components/GradientBackground.astro", void 0);
 
-const $$Astro$2 = createAstro();
+const $$Astro$2 = createAstro("https://mzb.dev");
 const $$Index$1 = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$2, $$props, $$slots);
   Astro2.self = $$Index$1;
@@ -162,7 +162,7 @@ const $$Index$1 = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${renderComponent($$result, "vercel-speed-insights", "vercel-speed-insights", { "data-props": propsStr, "data-params": paramsStr, "data-pathname": Astro2.url.pathname })} ${renderScript($$result, "/Users/bath/Dropbox (PayIt)/Mac/Documents/site-2023/node_modules/@vercel/speed-insights/dist/astro/index.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/Users/bath/Dropbox (PayIt)/Mac/Documents/site-2023/node_modules/@vercel/speed-insights/dist/astro/index.astro", void 0);
 
-const $$Astro$1 = createAstro();
+const $$Astro$1 = createAstro("https://mzb.dev");
 const $$Index = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);
   Astro2.self = $$Index;
@@ -171,7 +171,7 @@ const $$Index = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${renderComponent($$result, "vercel-analytics", "vercel-analytics", { "data-props": propsStr, "data-params": paramsStr, "data-pathname": Astro2.url.pathname })} ${renderScript($$result, "/Users/bath/Dropbox (PayIt)/Mac/Documents/site-2023/node_modules/@vercel/analytics/dist/astro/index.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/Users/bath/Dropbox (PayIt)/Mac/Documents/site-2023/node_modules/@vercel/analytics/dist/astro/index.astro", void 0);
 
-const $$Astro = createAstro();
+const $$Astro = createAstro("https://mzb.dev");
 const $$MainLayout = createComponent(async ($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$MainLayout;
