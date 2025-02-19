@@ -3,31 +3,54 @@ import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 import { getSeasonalColors } from "../utils/seasonalGradient";
 import SeasonDebugger from "../components/SeasonDebugger.astro";
+import GradientBackground from "../components/GradientBackground.astro";
 
 const pathname = Astro.url.pathname;
 const isDev = import.meta.env.DEV;
 const { startColor, endColor } = getSeasonalColors();
+const now = new Date();
+const currentDay = Math.floor(
+  (now - new Date(now.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24,
+);
+
+// Fetch weather data with error handling
+let temperature = null;
+let description = null;
+
+try {
+  const WEATHER_API_KEY = import.meta.env.PUBLIC_WEATHER_API_KEY;
+  if (WEATHER_API_KEY) {
+    const weatherResponse = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=Kansas City,US&units=imperial&appid=${WEATHER_API_KEY}`,
+    );
+    const weatherData = await weatherResponse.json();
+
+    if (weatherData.main && weatherData.weather) {
+      temperature = Math.round(weatherData.main.temp);
+      description = weatherData.weather[0].description;
+    }
+  }
+} catch (error) {
+  console.error("Failed to fetch weather:", error);
+}
 ---
 
 <!doctype html>
-<html lang="en">
+<html
+  lang="en"
+  style={`
+  --startColor: ${startColor};
+  --endColor: ${endColor};
+`}
+>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="favicon.png" type="image/png" />
     <title>mzb.dev</title>
     <ClientRouter />
-    <style define:vars={{ startColor, endColor }}>
-      html {
-        background: linear-gradient(
-          135deg,
-          var(--startColor, rgb(234, 234, 236)) 0%,
-          var(--endColor, rgb(234, 234, 236)) 100%
-        );
-        transition: background 0.3s ease;
-      }
-    </style>
   </head>
   <body>
+    <GradientBackground />
     <div class="layout-container">
       <nav class="fixed-nav">
         <a class="name" href="/">Miller Bath</a>
@@ -66,6 +89,16 @@ const { startColor, endColor } = getSeasonalColors();
         <slot />
       </main>
     </div>
+    <div class="info-container">
+      <div class="day-counter">Day {currentDay}</div>
+      {
+        temperature !== null && description !== null && (
+          <div class="weather-info">
+            {temperature}°F • {description}
+          </div>
+        )
+      }
+    </div>
     {
       isDev && (
         <div class="season-debugger">
@@ -80,10 +113,22 @@ const { startColor, endColor } = getSeasonalColors();
   </body>
 </html>
 
+<style is:global>
+  html {
+    background: linear-gradient(
+        135deg,
+        var(--startColor) 0%,
+        var(--endColor) 100%
+      )
+      fixed;
+    transition: background 0.3s ease;
+  }
+</style>
+
 <style>
   .season-debugger {
     position: fixed;
-    bottom: 20px;
+    bottom: 50px;
     right: 20px;
     background: rgba(255, 255, 255, 0.9);
     padding: 10px;
@@ -102,5 +147,23 @@ const { startColor, endColor } = getSeasonalColors();
 
   #season-debug {
     width: 200px;
+  }
+
+  .info-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 1000;
+  }
+
+  .day-counter,
+  .weather-info {
+    font-size: 14px;
+    color: rgba(35, 31, 32, 0.6);
+    padding: 5px 10px;
+    border-radius: 4px;
   }
 </style>

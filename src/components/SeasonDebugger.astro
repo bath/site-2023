@@ -18,14 +18,12 @@
       const day = parseInt(input.value, 10);
       updateGradient(day);
 
-      // Update the day display
       const dayDisplay = document.getElementById("debug-day");
       if (dayDisplay) {
         dayDisplay.textContent = day.toString();
       }
     });
 
-    // Initialize with current value
     updateGradient(parseInt(slider.value, 10));
   }
 

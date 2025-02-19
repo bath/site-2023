@@ -1,0 +1,35 @@
+<div id="gradient-background"></div>
+
+<style>
+  #gradient-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    transition: background-color 0.3s ease;
+  }
+</style>
+
+<script>
+  const gradientEl = document.getElementById("gradient-background");
+
+  function updateBackground(startColor: string, endColor: string) {
+    if (gradientEl) {
+      gradientEl.style.background = `linear-gradient(135deg, ${startColor}, ${endColor})`;
+    }
+  }
+
+  window.addEventListener("updateGradient", () => {
+    const debugDay = Number(
+      document.documentElement.style.getPropertyValue("--debug-day"),
+    );
+    const { startColor, endColor } = getSeasonalColors(debugDay);
+    updateBackground(startColor, endColor);
+  });
+
+  import { getSeasonalColors } from "../utils/seasonalGradient";
+  const { startColor, endColor } = getSeasonalColors();
+  updateBackground(startColor, endColor);
+</script>
