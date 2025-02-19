@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
-import viewTransitions from '@astrojs/view-transitions';
+import transitions from '@astrojs/transitions';
 
 export default defineConfig({
-  integrations: [viewTransitions()],
+  integrations: [transitions()],
   output: 'hybrid'
 });

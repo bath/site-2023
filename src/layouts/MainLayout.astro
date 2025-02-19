@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 
 const pathname = Astro.url.pathname;
@@ -11,7 +11,7 @@ const pathname = Astro.url.pathname;
 		<meta charset="utf-8" />
 		<link rel="icon" href="favicon.png" type="image/png" />
 		<title>mzb.dev</title>
-		<ViewTransitions />
+		<ClientRouter />
 	</head>
 	<body>
 		<div class="layout-container">
