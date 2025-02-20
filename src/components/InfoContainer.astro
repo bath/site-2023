@@ -10,6 +10,7 @@ const { timeInfo, weatherData } = Astro.props;
 ---
 
 <div class="info-container">
+  <div class="location">KC, MO</div>
   <div class="day-counter">
     Day {timeInfo.currentDay}
     <div class="time-display">{timeInfo.formattedTime}</div>
@@ -32,12 +33,18 @@ const { timeInfo, weatherData } = Astro.props;
     flex-direction: column;
     gap: 5px;
     z-index: 1000;
+    font-size: 14px;
+    color: rgba(35, 31, 32, 0.6);
+  }
+
+  .location {
+    font-size: 14px;
+    color: rgba(35, 31, 32, 0.6);
+    padding: 5px 10px;
   }
 
   .day-counter,
   .weather-info {
-    font-size: 14px;
-    color: rgba(35, 31, 32, 0.6);
     padding: 5px 10px;
     border-radius: 4px;
   }
@@ -48,4 +55,3 @@ const { timeInfo, weatherData } = Astro.props;
     opacity: 0.8;
   }
 </style>
-

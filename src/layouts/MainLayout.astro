@@ -21,21 +21,21 @@ const pathname = Astro.url.pathname;
 
 // Get colors and calculate time
 const { startColor, endColor } = getSeasonalColors();
-const now = new Date();
+const now = new Date(
+  new Date().toLocaleString("en-US", { timeZone: "America/Chicago" }),
+);
 const currentHour = getCurrentCentralHour();
 
 // Get the start of the year in Central time
-const startOfYear = new Date(now.getFullYear(), 0, 0);
-const centralNow = new Date(
-  now.toLocaleString("en-US", { timeZone: "America/Chicago" }),
-);
+const startOfYear = new Date(now.getFullYear(), 0, 1);
 const centralStartOfYear = new Date(
   startOfYear.toLocaleString("en-US", { timeZone: "America/Chicago" }),
 );
 
-const currentDay = Math.floor(
-  (centralNow.getTime() - centralStartOfYear.getTime()) / (1000 * 60 * 60 * 24),
-);
+const currentDay =
+  Math.floor(
+    (now.getTime() - centralStartOfYear.getTime()) / (1000 * 60 * 60 * 24),
+  ) + 1;
 
 const timeInfo = {
   currentHour,
