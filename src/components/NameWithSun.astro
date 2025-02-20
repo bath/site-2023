@@ -1,5 +1,11 @@
 ---
-const { sunAngle, shadowX, shadowY, shadowOpacity } = Astro.props;
+// Add default values to prevent undefined
+const {
+  sunAngle = 0,
+  shadowX = 0,
+  shadowY = 0,
+  shadowOpacity = "0.2",
+} = Astro.props;
 
 // Add console logging for debugging
 console.log("NameWithSun Props:", {
@@ -13,20 +19,13 @@ console.log("NameWithSun Props:", {
 <div class="name-container">
   <div
     class="sun"
-    style={`
-      --local-sunAngle: ${sunAngle}deg;
-      --local-shadowOpacity: ${shadowOpacity};
-    `}
+    style={`transform: translate(-50%, -50%) rotate(${sunAngle}deg) translateY(-40px) !important; opacity: ${shadowOpacity} !important;`}
   >
   </div>
   <a
     class="name"
     href="/"
-    style={`
-      --local-shadowX: ${shadowX}px;
-      --local-shadowY: ${shadowY}px;
-      --local-shadowOpacity: ${shadowOpacity};
-    `}
+    style={`text-shadow: ${shadowX}px ${shadowY}px 4px rgba(0, 0, 0, ${shadowOpacity}) !important;`}
   >
     Miller Bath
   </a>
@@ -46,16 +45,14 @@ console.log("NameWithSun Props:", {
     border-radius: 50%;
     box-shadow: 0 0 12px rgba(255, 90, 60, 0.5);
     transform-origin: 50% 50%;
-    opacity: var(--local-shadowOpacity);
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%) rotate(var(--local-sunAngle))
-      translateY(-40px);
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
   }
 
   .name {
-    text-shadow: var(--local-shadowX) var(--local-shadowY) 4px
-      rgba(0, 0, 0, var(--local-shadowOpacity));
     transition: text-shadow 0.3s ease;
   }
 

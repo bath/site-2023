@@ -32,9 +32,14 @@ const timeInfo = {
 
 // Calculate sun position and fetch weather
 const sunPosition = calculateSunPosition(timeInfo.currentHour);
-const weatherData = await fetchWeatherData(import.meta.env.WEATHER_API_KEY);
+const weatherData = import.meta.env.WEATHER_API_KEY
+  ? await fetchWeatherData(import.meta.env.WEATHER_API_KEY)
+  : null;
 
 const { sunAngle, shadowX, shadowY, shadowOpacity } = sunPosition;
+
+// Add console logging for debugging
+console.log("Sun Position:", sunPosition);
 ---
 
 <!doctype html>
@@ -110,57 +115,5 @@ const { sunAngle, shadowX, shadowY, shadowOpacity } = sunPosition;
     font-size: 12px;
     margin-top: 2px;
     opacity: 0.8;
-  }
-
-  .name {
-    text-shadow: var(--shadowX) var(--shadowY) 4px
-      rgba(0, 0, 0, calc(var(--shadowOpacity) * 0.2));
-    transition: text-shadow 0.3s ease;
-  }
-
-  .name-container {
-    position: relative;
-    display: inline-block;
-  }
-
-  .sun {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: rgba(255, 123, 77, 0.6);
-    border-radius: 50%;
-    box-shadow: 0 0 6px rgba(255, 90, 60, 0.2);
-    transform-origin: 50% 50%;
-    opacity: calc(var(--shadowOpacity) * 0.5);
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) rotate(calc(var(--sunAngle) * 1deg))
-      translateY(-40px);
-  }
-
-  .sun::after {
-    content: "";
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: radial-gradient(
-      circle,
-      rgba(255, 123, 77, 0.1),
-      transparent 70%
-    );
-    border-radius: 50%;
-    animation: glow 5s infinite;
-  }
-
-  @keyframes glow {
-    0%,
-    100% {
-      box-shadow: 0 0 6px rgba(255, 90, 60, 0.2);
-    }
-    50% {
-      box-shadow: 0 0 8px rgba(255, 90, 60, 0.3);
-    }
   }
 </style>
