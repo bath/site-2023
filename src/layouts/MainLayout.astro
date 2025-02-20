@@ -10,8 +10,8 @@ import Navigation from "../components/Navigation.astro";
 import InfoContainer from "../components/InfoContainer.astro";
 import GradientBackground from "../components/GradientBackground.astro";
 
-import SpeedInsights from "@vercel/speed-insights/astro";
-import Analytics from "@vercel/analytics/astro";
+// import SpeedInsights from "@vercel/speed-insights/astro";
+// import Analytics from "@vercel/analytics/astro";
 
 let startColor, endColor, timeInfo, sunPosition, weatherData, pathname;
 
@@ -106,8 +106,8 @@ const { sunAngle, shadowX, shadowY, shadowOpacity } = sunPosition;
     <link rel="icon" href="favicon.png" type="image/png" />
     <title>mzb.dev</title>
     <ClientRouter />
-    <SpeedInsights />
-    <Analytics />
+    <!-- <SpeedInsights />
+    <Analytics /> -->
   </head>
   <body>
     <GradientBackground />
