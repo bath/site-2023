@@ -16,7 +16,9 @@ const { timeInfo, weatherData } = Astro.props;
     <div class="time-display">{timeInfo.formattedTime}</div>
   </div>
   {
-    weatherData && (
+    weatherData === null ? (
+      <div class="weather-info">Weather data unavailable</div>
+    ) : (
       <div class="weather-info">
         {weatherData.temperature}°F • {weatherData.description}
       </div>

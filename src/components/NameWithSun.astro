@@ -7,17 +7,11 @@ const {
   shadowOpacity = "0.2",
 } = Astro.props;
 
-// Add console logging for debugging
-console.log("NameWithSun Props:", {
-  sunAngle,
-  shadowX,
-  shadowY,
-  shadowOpacity,
-});
+// Remove debug console log
 ---
 
 <div class="name-container">
-  <div class="sun-wrapper">
+  <div class="sun-wrapper" aria-hidden="true">
     <div
       class="sun"
       style={{
@@ -30,6 +24,7 @@ console.log("NameWithSun Props:", {
   <a
     class="name"
     href="/"
+    aria-label="Home"
     style={{
       textShadow: `${shadowX}px ${shadowY}px 4px rgba(0, 0, 0, ${shadowOpacity})`,
     }}

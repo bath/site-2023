@@ -17,7 +17,13 @@ const isActive = (path: string) => {
     <div>Software Engineer in Kansas City</div>
   </div>
   <div class="nav-links">
-    <a href="/" class:list={["nav-link", { active: isActive("/") }]}> About </a>
+    <a
+      href="/"
+      class:list={["nav-link", { active: isActive("/") }]}
+      aria-current={isActive("/") ? "page" : undefined}
+    >
+      About
+    </a>
     <a
       href="/writings"
       class:list={["nav-link", { active: isActive("/writings") }]}

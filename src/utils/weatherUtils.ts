@@ -22,7 +22,6 @@ export async function fetchWeatherData(
     }
     return null;
   } catch (error) {
-    console.error("Failed to fetch weather:", error);
     return null;
   }
 }

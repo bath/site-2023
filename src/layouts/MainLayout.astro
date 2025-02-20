@@ -31,7 +31,7 @@ const centralTime = new Date(
 // Calculate day of year
 const startOfYear = new Date(centralTime.getFullYear(), 0, 0); // Start at Dec 31 previous year
 const currentDay = Math.floor(
-  (centralTime - startOfYear) / (1000 * 60 * 60 * 24),
+  (centralTime.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24),
 );
 
 const timeInfo = {
@@ -51,23 +51,17 @@ const weatherData = import.meta.env.WEATHER_API_KEY
   : null;
 
 const { sunAngle, shadowX, shadowY, shadowOpacity } = sunPosition;
-
-// Add console logging for debugging
-console.log("Sun Position:", sunPosition);
-console.log("Calculated values:", {
-  currentHour: timeInfo.currentHour,
-  sunPosition,
-  sunAngle,
-  shadowX,
-  shadowY,
-  shadowOpacity,
-});
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Miller Bath - Software Engineer in Kansas City"
+    />
     <link rel="icon" href="favicon.png" type="image/png" />
     <title>mzb.dev</title>
     <ClientRouter />
