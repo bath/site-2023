@@ -22,29 +22,26 @@ const pathname = Astro.url.pathname;
 // Get colors and calculate time
 const { startColor, endColor } = getSeasonalColors();
 
-// Create a new Date object in Central Time
+// Get current time in Central timezone
 const now = new Date();
 const centralTime = new Date(
   now.toLocaleString("en-US", { timeZone: "America/Chicago" }),
 );
-const currentHour = getCurrentCentralHour();
 
-// Calculate day of year in Central Time
-const startOfYear = new Date(centralTime.getFullYear(), 0, 1);
-const startOfYearCentral = new Date(
-  startOfYear.toLocaleString("en-US", { timeZone: "America/Chicago" }),
+// Calculate day of year
+const startOfYear = new Date(centralTime.getFullYear(), 0, 0); // Start at Dec 31 previous year
+const currentDay = Math.floor(
+  (centralTime - startOfYear) / (1000 * 60 * 60 * 24),
 );
 
-const currentDay =
-  Math.floor(
-    (centralTime.getTime() - startOfYearCentral.getTime()) /
-      (1000 * 60 * 60 * 24),
-  ) + 1;
-
 const timeInfo = {
-  currentHour,
+  currentHour: centralTime.getHours(),
   currentDay,
-  formattedTime: formatTime(centralTime),
+  formattedTime: centralTime.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  }),
 };
 
 // Calculate sun position and fetch weather

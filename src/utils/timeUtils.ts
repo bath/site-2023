@@ -33,8 +33,10 @@ export function calculateShadowOpacity(hours: number) {
 }
 
 export function formatTime(date: Date): string {
-  return date.toLocaleTimeString("en-US", {
-    timeZone: "America/Chicago",
+  const centralTime = new Date(
+    date.toLocaleString("en-US", { timeZone: "America/Chicago" }),
+  );
+  return centralTime.toLocaleTimeString("en-US", {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
@@ -42,9 +44,8 @@ export function formatTime(date: Date): string {
 }
 
 export function getCurrentCentralHour(): number {
-  const date = new Date();
-  const centralTime = new Date(
-    date.toLocaleString("en-US", { timeZone: "America/Chicago" }),
-  );
-  return centralTime.getHours() + centralTime.getMinutes() / 60;
+  const now = new Date();
+  return new Date(
+    now.toLocaleString("en-US", { timeZone: "America/Chicago" }),
+  ).getHours();
 }
