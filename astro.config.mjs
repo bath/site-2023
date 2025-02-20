@@ -15,13 +15,13 @@ export default defineConfig({
       enabled: true,
     },
     devMode: process.env.NODE_ENV === "development",
-    functionPerRoute: false,
-    maxDuration: 10, // Increase function timeout for debugging
-    debug: true, // Enable verbose logging
+    functionPerRoute: true,
+    maxDuration: 10,
+    debug: true,
   }),
   vite: {
     build: {
-      minify: false, // Disable minification for better error messages
+      minify: false,
     },
     logLevel: "info",
   },
