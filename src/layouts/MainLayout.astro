@@ -40,20 +40,18 @@ const { sunAngle, shadowX, shadowY, shadowOpacity } = sunPosition;
 
 // Add console logging for debugging
 console.log("Sun Position:", sunPosition);
+console.log("Calculated values:", {
+  currentHour: timeInfo.currentHour,
+  sunPosition,
+  sunAngle,
+  shadowX,
+  shadowY,
+  shadowOpacity,
+});
 ---
 
 <!doctype html>
-<html
-  lang="en"
-  style={`
-    --startColor: ${startColor};
-    --endColor: ${endColor};
-    --shadowX: ${shadowX}px;
-    --shadowY: ${shadowY}px;
-    --shadowOpacity: ${shadowOpacity};
-    --sunAngle: ${sunAngle}deg;
-  `}
->
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="favicon.png" type="image/png" />
