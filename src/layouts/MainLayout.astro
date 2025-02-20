@@ -10,6 +10,7 @@ import Navigation from "../components/Navigation.astro";
 import InfoContainer from "../components/InfoContainer.astro";
 import GradientBackground from "../components/GradientBackground.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
+import Analytics from "@vercel/analytics/astro";
 
 // Page setup
 const pathname = Astro.url.pathname;
@@ -54,6 +55,7 @@ const { sunAngle, shadowX, shadowY, shadowOpacity } = sunPosition;
     <title>mzb.dev</title>
     <ClientRouter />
     <SpeedInsights />
+    <Analytics />
   </head>
   <body>
     <GradientBackground />
