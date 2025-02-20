@@ -13,9 +13,23 @@ export function calculateSunPosition(currentHour: number) {
 
 export function calculateShadowOpacity(hours: number) {
   if (hours < 5 || hours > 19) return "0";
-  if (hours < 6) return ((hours - 5) * 0.2).toFixed(2);
-  if (hours > 18) return ((19 - hours) * 0.2).toFixed(2);
-  return "0.2";
+
+  // Dawn: 5-8am, gradually increase from 0.3 to 0.6
+  if (hours >= 5 && hours < 8) {
+    return (0.3 + (hours - 5) * 0.1).toFixed(2);
+  }
+
+  // Day: 8am-4pm, constant 0.6
+  if (hours >= 8 && hours <= 16) {
+    return "0.6";
+  }
+
+  // Dusk: 4-7pm, gradually decrease from 0.6 to 0.3
+  if (hours > 16 && hours <= 19) {
+    return (0.6 - (hours - 16) * 0.1).toFixed(2);
+  }
+
+  return "0";
 }
 
 export function formatTime(date: Date): string {

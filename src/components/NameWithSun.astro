@@ -53,11 +53,11 @@ console.log("NameWithSun Props:", {
 
   .sun {
     position: absolute;
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
     background: #ff7b4d;
     border-radius: 50%;
-    box-shadow: 0 0 12px rgba(255, 90, 60, 0.5);
+    box-shadow: 0 0 20px rgba(255, 90, 60, 0.7);
     left: 50%;
     top: 50%;
     will-change: transform, opacity;
@@ -73,10 +73,10 @@ console.log("NameWithSun Props:", {
   .sun::after {
     content: "";
     position: absolute;
-    inset: -2px;
+    inset: -4px;
     background: radial-gradient(
       circle,
-      rgba(255, 123, 77, 0.3),
+      rgba(255, 123, 77, 0.4),
       transparent 70%
     );
     border-radius: 50%;
@@ -86,10 +86,10 @@ console.log("NameWithSun Props:", {
   @keyframes glow {
     0%,
     100% {
-      box-shadow: 0 0 12px rgba(255, 90, 60, 0.5);
+      box-shadow: 0 0 20px rgba(255, 90, 60, 0.7);
     }
     50% {
-      box-shadow: 0 0 18px rgba(255, 90, 60, 0.7);
+      box-shadow: 0 0 30px rgba(255, 90, 60, 0.9);
     }
   }
 </style>
