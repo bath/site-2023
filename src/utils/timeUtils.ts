@@ -18,10 +18,19 @@ export function calculateShadowOpacity(hours: number) {
   return "0.2";
 }
 
-export function formatTime(date: Date) {
+export function formatTime(date: Date): string {
   return date.toLocaleTimeString("en-US", {
+    timeZone: "America/Chicago",
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
   });
+}
+
+export function getCurrentCentralHour(): number {
+  const date = new Date();
+  const centralTime = new Date(
+    date.toLocaleString("en-US", { timeZone: "America/Chicago" }),
+  );
+  return centralTime.getHours() + centralTime.getMinutes() / 60;
 }

@@ -2,7 +2,11 @@
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 import { getSeasonalColors } from "../utils/seasonalGradient";
-import { calculateSunPosition, formatTime } from "../utils/timeUtils";
+import {
+  calculateSunPosition,
+  formatTime,
+  getCurrentCentralHour,
+} from "../utils/timeUtils";
 import { fetchWeatherData } from "../utils/weatherUtils";
 import type { WeatherData, TimeInfo } from "../types";
 
@@ -18,7 +22,7 @@ const pathname = Astro.url.pathname;
 // Get colors and calculate time
 const { startColor, endColor } = getSeasonalColors();
 const now = new Date();
-const currentHour = now.getHours() + now.getMinutes() / 60;
+const currentHour = getCurrentCentralHour();
 const currentDay = Math.floor(
   (now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) /
     (1000 * 60 * 60 * 24),
