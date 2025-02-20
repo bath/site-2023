@@ -5,6 +5,5 @@ export default defineConfig({
     build: {
       minify: false,
     },
-    logLevel: "info",
   },
 });
