@@ -1,35 +1,152 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
+import { experience, leadership, education } from "../data/experience";
 ---
 
 <MainLayout>
-  <div class="page-content">
-    <h1>Under Construction 🚧</h1>
-    <!-- <div class="workbox">
-      <div class="job">
-        <span>PayIt, Software Engineer</span><br />
-        <span>Maintenance - Java, Javascript, Clojure</span>
-      </div>
-      <br />
-      <div class="job">
-        <span>PayIt, Associate Software Engineer</span><br />
-        <span>Maintenance - Java, Javascript, Clojure</span>
-      </div>
-      <br />
-      <div class="job">
-        <span>qTrade, Software Intern</span><br />
-        <span>Crypto data archive - Go</span>
-      </div>
-      <br />
-      <div class="job">
-        <span>Vizio, Software Intern</span><br />
-        <span>Voice search - Python</span>
-      </div>
-      <br />
-      <div class="job">
-        <span>Cerner, Software Intern</span><br />
-        <span>Population Health - Ruby, Javascript</span>
-      </div>
-    </div> -->
+  <div class="page-content work">
+    <h1>Work</h1>
+
+    <ol class="timeline">
+      {
+        experience.map((role) => (
+          <li class="role">
+            <header class="role-header">
+              <div class="role-title">
+                <span class="company">{role.company}</span>
+                <span class="title"> · {role.title}</span>
+              </div>
+              <span class="dates">{role.dates}</span>
+            </header>
+            {role.context && <p class="context">{role.context}</p>}
+            <ul class="bullets">
+              {role.bullets.map((b) => (
+                <li>{b}</li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ol>
+
+    <section class="extra">
+      <h2>Leadership</h2>
+      <ul class="bullets">
+        {leadership.map((b) => <li>{b}</li>)}
+      </ul>
+    </section>
+
+    <section class="extra">
+      <h2>Education</h2>
+      <ul class="education">
+        {
+          education.map((e) => (
+            <li>
+              <span class="company">{e.school}</span>
+              <span> · {e.degree}</span>
+              <span class="dates"> · {e.dates}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
   </div>
 </MainLayout>
+
+<style>
+  .work {
+    max-width: 72ch;
+  }
+
+  h1 {
+    font-size: 2em;
+    margin-bottom: 1.4em;
+    font-weight: 500;
+  }
+
+  h2 {
+    font-size: 1.3em;
+    margin-bottom: 0.8em;
+    margin-top: 2em;
+    font-weight: 500;
+  }
+
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-left: 2px solid rgba(35, 31, 32, 0.15);
+    padding-left: 1.5rem;
+  }
+
+  .role {
+    position: relative;
+    margin-bottom: 2.5em;
+  }
+
+  .role::before {
+    content: "";
+    position: absolute;
+    left: -1.9rem;
+    top: 0.45em;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgb(255, 123, 77);
+    box-shadow: 0 0 10px rgba(255, 90, 60, 0.5);
+  }
+
+  .role-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5em;
+  }
+
+  .company {
+    font-weight: 600;
+    font-size: 1.1em;
+  }
+
+  .title {
+    color: rgba(35, 31, 32, 0.85);
+  }
+
+  .dates {
+    font-size: 0.9em;
+    color: rgba(35, 31, 32, 0.6);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .context {
+    margin-top: 0.4em;
+    margin-bottom: 0.8em;
+    font-style: italic;
+    color: rgba(35, 31, 32, 0.75);
+    font-size: 0.95em;
+  }
+
+  .bullets {
+    margin-top: 0.5em;
+    padding-left: 1.2em;
+  }
+
+  .bullets li {
+    margin-bottom: 0.4em;
+    line-height: 1.55;
+  }
+
+  .extra {
+    margin-top: 2em;
+  }
+
+  .education {
+    list-style: none;
+    padding: 0;
+  }
+
+  .education li {
+    margin-bottom: 0.4em;
+  }
+</style>

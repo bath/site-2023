@@ -1,0 +1,86 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import { skillGroups, topSkills } from "../data/skills";
+---
+
+<MainLayout>
+  <div class="page-content skills">
+    <h1>Skills</h1>
+
+    <section class="top">
+      <h2>Top</h2>
+      <div class="pill-row">
+        {topSkills.map((s) => <span class="pill pill-top">{s}</span>)}
+      </div>
+    </section>
+
+    {
+      skillGroups.map((group) => (
+        <section class="group">
+          <h2>{group.label}</h2>
+          <div class="pill-row">
+            {group.items.map((item) => (
+              <span class="pill">{item}</span>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+</MainLayout>
+
+<style>
+  .skills {
+    max-width: 72ch;
+  }
+
+  h1 {
+    font-size: 2em;
+    margin-bottom: 1.4em;
+    font-weight: 500;
+  }
+
+  h2 {
+    font-size: 1.1em;
+    margin-bottom: 0.7em;
+    font-weight: 500;
+    color: rgba(35, 31, 32, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.85em;
+  }
+
+  .group,
+  .top {
+    margin-bottom: 1.8em;
+  }
+
+  .pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 0.35em 0.85em;
+    border-radius: 999px;
+    background: rgba(35, 31, 32, 0.06);
+    border: 1px solid rgba(35, 31, 32, 0.12);
+    font-size: 0.95em;
+    color: rgba(35, 31, 32, 0.85);
+    transition: all 0.2s ease;
+  }
+
+  .pill:hover {
+    background: rgba(255, 123, 77, 0.12);
+    border-color: rgba(255, 123, 77, 0.35);
+    color: rgb(35, 31, 32);
+  }
+
+  .pill-top {
+    background: rgba(255, 123, 77, 0.1);
+    border-color: rgba(255, 123, 77, 0.3);
+    font-weight: 500;
+  }
+</style>

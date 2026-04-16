@@ -13,6 +13,7 @@ import type { WeatherData, TimeInfo } from "../types";
 import Navigation from "../components/Navigation.astro";
 import InfoContainer from "../components/InfoContainer.astro";
 import GradientBackground from "../components/GradientBackground.astro";
+import EasterEggs from "../components/EasterEggs.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Analytics from "@vercel/analytics/astro";
 
@@ -83,6 +84,7 @@ const { sunAngle, shadowX, shadowY, shadowOpacity } = sunPosition;
       </main>
     </div>
     <InfoContainer timeInfo={timeInfo} weatherData={weatherData} />
+    <EasterEggs />
   </body>
 </html>
 

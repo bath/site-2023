@@ -1,5 +1,6 @@
 ---
 import NameWithSun from "./NameWithSun.astro";
+import { profile } from "../data/profile";
 
 const { pathname, sunAngle, shadowX, shadowY, shadowOpacity } = Astro.props;
 
@@ -14,7 +15,7 @@ const isActive = (path: string) => {
 <nav class="fixed-nav">
   <NameWithSun {sunAngle} {shadowX} {shadowY} {shadowOpacity} />
   <div class="subheading">
-    <div>Software Engineer in Kansas City</div>
+    <div>{profile.tagline}</div>
   </div>
   <div class="nav-links">
     <a
@@ -24,23 +25,18 @@ const isActive = (path: string) => {
     >
       About
     </a>
-    <a
-      href="/writings"
-      class:list={["nav-link", { active: isActive("/writings") }]}
-    >
-      Writings
-    </a>
     <a href="/work" class:list={["nav-link", { active: isActive("/work") }]}>
-      Work History
+      Work
     </a>
     <a
-      href="/photographs"
-      class:list={["nav-link", { active: isActive("/photographs") }]}
+      href="/skills"
+      class:list={["nav-link", { active: isActive("/skills") }]}
     >
-      Photographs
+      Skills
     </a>
-    <a class="nav-link" href="Miller_Bath_Resume_Aug2023.pdf">Resume</a>
-    <a class="nav-link" href="https://www.linkedin.com/in/~miller">LinkedIn</a>
+    <a class="nav-link external" href={profile.linkedin}>LinkedIn ↗</a>
+    <a class="nav-link external" href={profile.github}>GitHub ↗</a>
+    <a class="nav-link external" href={`mailto:${profile.email}`}>Email ↗</a>
   </div>
 </nav>
 
@@ -58,10 +54,20 @@ const isActive = (path: string) => {
     margin-top: 4rem;
     display: flex;
     flex-direction: column;
+    gap: 0.2em;
   }
 
   .subheading {
     margin-top: 0.5em;
     font-size: 1.2em;
+  }
+
+  .external {
+    font-size: 0.85em;
+    color: rgba(35, 31, 32, 0.7);
+  }
+
+  .external:first-of-type {
+    margin-top: 1em;
   }
 </style>

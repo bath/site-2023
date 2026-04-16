@@ -1,0 +1,139 @@
+---
+// Small whimsical touches:
+// 1. Konami code (↑↑↓↓←→←→BA) reveals the dogcow with a "Moof!"
+// 2. Console greeting for curious devtools-openers
+// 3. Document title flips to "come back :)" when the tab is hidden
+---
+
+<div id="moof" class="moof" aria-hidden="true" hidden>
+  <img src="/dogcow.png" alt="Moof!" />
+  <div class="moof-caption">Moof! &mdash; press Esc to dismiss</div>
+</div>
+
+<style>
+  .moof {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .moof[hidden] {
+    display: none;
+  }
+
+  .moof img {
+    max-width: 360px;
+    width: 60vw;
+    image-rendering: pixelated;
+    animation: moof-bob 2s ease-in-out infinite;
+  }
+
+  .moof-caption {
+    margin-top: 1.2rem;
+    font-size: 1.1em;
+    font-weight: 500;
+    color: rgba(35, 31, 32, 0.85);
+  }
+
+  @keyframes moof-bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  // Konami code → dogcow
+  const sequence = [
+    "ArrowUp",
+    "ArrowUp",
+    "ArrowDown",
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+    "ArrowLeft",
+    "ArrowRight",
+    "b",
+    "a",
+  ];
+  let progress: number = 0;
+
+  const showMoof = () => {
+    const el = document.getElementById("moof");
+    if (el) el.hidden = false;
+  };
+
+  const hideMoof = () => {
+    const el = document.getElementById("moof");
+    if (el) el.hidden = true;
+  };
+
+  document.addEventListener("keydown", (event) => {
+    const expected = sequence[progress];
+    const key =
+      expected && expected.length === 1
+        ? event.key.toLowerCase()
+        : event.key;
+    if (key === expected) {
+      progress += 1;
+      if (progress === sequence.length) {
+        showMoof();
+        progress = 0;
+      }
+    } else {
+      progress = key === sequence[0] ? 1 : 0;
+    }
+
+    if (event.key === "Escape") hideMoof();
+  });
+
+  document.addEventListener("click", (event) => {
+    const moof = document.getElementById("moof");
+    if (moof && !moof.hidden && event.target === moof) {
+      hideMoof();
+    }
+  });
+
+  // Console greeting for the curious
+  const styles = "color:#ff7b4d;font-weight:bold;font-size:14px";
+  /* eslint-disable no-console */
+  console.log(
+    "%c    \\   |   /\n     .-''-.\n  -- (    ) --\n     '-..-'\n    /   |   \\",
+    styles,
+  );
+  console.log(
+    "%chi there! curious? millerzbath@gmail.com",
+    "color:#246e53;font-size:13px",
+  );
+  /* eslint-enable no-console */
+
+  // Tab-hidden title flip
+  const originalTitle = document.title;
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      document.title = "come back :)";
+    } else {
+      document.title = originalTitle;
+    }
+  });
+</script>
