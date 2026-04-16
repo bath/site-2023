@@ -1,35 +1,21 @@
 ---
-// Add default values to prevent undefined
-const {
-  sunAngle = 0,
-  shadowX = 0,
-  shadowY = 0,
-  shadowOpacity = "0.2",
-} = Astro.props;
-
-// Remove debug console log
+import { profile } from "../data/profile";
+// Sun position and name shadow are populated live by LiveClock on the
+// client. SSR renders neutral defaults (sun hidden, no shadow) so the
+// initial paint never leaks a stale build-time value.
 ---
 
 <div class="name-container">
   <div class="sun-wrapper" aria-hidden="true">
-    <div
-      class="sun"
-      style={{
-        transform: `translate(-50%, -50%) rotate(${sunAngle}deg) translateY(-40px)`,
-        opacity: shadowOpacity,
-      }}
-    >
-    </div>
+    <div class="sun" data-live="sun" style="opacity: 0"></div>
   </div>
   <a
     class="name"
     href="/"
     aria-label="Home"
-    style={{
-      textShadow: `${shadowX}px ${shadowY}px 4px rgba(0, 0, 0, ${shadowOpacity})`,
-    }}
+    data-live="name-shadow"
   >
-    Miller Bath
+    {profile.name}
   </a>
 </div>
 
@@ -56,6 +42,9 @@ const {
     left: 50%;
     top: 50%;
     will-change: transform, opacity;
+    transition:
+      transform 1.2s ease-out,
+      opacity 1.2s ease-out;
   }
 
   .name {
@@ -63,6 +52,7 @@ const {
     position: relative;
     z-index: 1;
     will-change: text-shadow;
+    transition: text-shadow 1.2s ease-out;
   }
 
   .sun::after {

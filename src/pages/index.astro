@@ -1,17 +1,15 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import { profile } from "../data/profile";
-import { getGreeting } from "../utils/greeting";
-import { getCurrentCentralHour } from "../utils/timeUtils";
-
-const greeting = getGreeting(getCurrentCentralHour());
 ---
 
 <MainLayout>
   <div class="page-content about">
     <p class="greeting">
-      <span class="greeting-text">{greeting.text}</span>
-      <span class="greeting-emoji" aria-hidden="true">{greeting.emoji}</span>
+      <span class="greeting-text" data-live="greeting-text">Hello</span>
+      <span class="greeting-emoji" aria-hidden="true" data-live="greeting-emoji"
+        >👋🏻</span
+      >
       <span class="greeting-sep">— I'm Miller.</span>
     </p>
 

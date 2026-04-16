@@ -2,7 +2,7 @@
 import NameWithSun from "./NameWithSun.astro";
 import { profile } from "../data/profile";
 
-const { pathname, sunAngle, shadowX, shadowY, shadowOpacity } = Astro.props;
+const { pathname } = Astro.props;
 
 const isActive = (path: string) => {
   if (path === "/") {
@@ -13,7 +13,7 @@ const isActive = (path: string) => {
 ---
 
 <nav class="fixed-nav">
-  <NameWithSun {sunAngle} {shadowX} {shadowY} {shadowOpacity} />
+  <NameWithSun />
   <div class="subheading">
     <div>{profile.tagline}</div>
   </div>

@@ -1,57 +1,26 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
-import { getSeasonalColors } from "../utils/seasonalGradient";
-import {
-  calculateSunPosition,
-  formatTime,
-  getCurrentCentralHour,
-} from "../utils/timeUtils";
 import { fetchWeatherData } from "../utils/weatherUtils";
-import type { WeatherData, TimeInfo } from "../types";
+import { profile } from "../data/profile";
+import type { WeatherData } from "../types";
 
 import Navigation from "../components/Navigation.astro";
 import InfoContainer from "../components/InfoContainer.astro";
 import GradientBackground from "../components/GradientBackground.astro";
 import EasterEggs from "../components/EasterEggs.astro";
+import LiveClock from "../components/LiveClock.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Analytics from "@vercel/analytics/astro";
 
-// Page setup
 const pathname = Astro.url.pathname;
 
-// Get colors and calculate time
-const { startColor, endColor } = getSeasonalColors();
-
-// Get current time in Central timezone
-const now = new Date();
-const centralTime = new Date(
-  now.toLocaleString("en-US", { timeZone: "America/Chicago" }),
-);
-
-// Calculate day of year
-const startOfYear = new Date(centralTime.getFullYear(), 0, 0); // Start at Dec 31 previous year
-const currentDay = Math.floor(
-  (centralTime.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24),
-);
-
-const timeInfo = {
-  currentHour: centralTime.getHours(),
-  currentDay,
-  formattedTime: centralTime.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  }),
-};
-
-// Calculate sun position and fetch weather
-const sunPosition = calculateSunPosition(timeInfo.currentHour);
-const weatherData = import.meta.env.WEATHER_API_KEY
+// Only the weather fetch stays on the server — it needs the API key.
+// Time, day-of-year, sun angle, and greeting all update client-side in
+// the visitor's own timezone (see src/components/LiveClock.astro).
+const weatherData: WeatherData | null = import.meta.env.WEATHER_API_KEY
   ? await fetchWeatherData(import.meta.env.WEATHER_API_KEY)
   : null;
-
-const { sunAngle, shadowX, shadowY, shadowOpacity } = sunPosition;
 ---
 
 <!doctype html>
@@ -61,9 +30,9 @@ const { sunAngle, shadowX, shadowY, shadowOpacity } = sunPosition;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Miller Bath - Software Engineer in Kansas City"
+      content={`${profile.name} — ${profile.title} in ${profile.location}`}
     />
-    <link rel="icon" href="favicon.png" type="image/png" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
     <title>mzb.dev</title>
     <ClientRouter />
     <SpeedInsights />
@@ -72,19 +41,14 @@ const { sunAngle, shadowX, shadowY, shadowOpacity } = sunPosition;
   <body>
     <GradientBackground />
     <div class="layout-container">
-      <Navigation
-        pathname={pathname}
-        sunAngle={sunAngle}
-        shadowX={shadowX}
-        shadowY={shadowY}
-        shadowOpacity={shadowOpacity}
-      />
+      <Navigation pathname={pathname} />
       <main class="content">
         <slot />
       </main>
     </div>
-    <InfoContainer timeInfo={timeInfo} weatherData={weatherData} />
+    <InfoContainer weatherData={weatherData} />
     <EasterEggs />
+    <LiveClock />
   </body>
 </html>
 
@@ -97,31 +61,5 @@ const { sunAngle, shadowX, shadowY, shadowOpacity } = sunPosition;
       )
       fixed;
     transition: background 0.3s ease;
-  }
-</style>
-
-<style>
-  .info-container {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    z-index: 1000;
-  }
-
-  .day-counter,
-  .weather-info {
-    font-size: 14px;
-    color: rgba(35, 31, 32, 0.6);
-    padding: 5px 10px;
-    border-radius: 4px;
-  }
-
-  .time-display {
-    font-size: 12px;
-    margin-top: 2px;
-    opacity: 0.8;
   }
 </style>

@@ -1,0 +1,70 @@
+---
+// Wires up every [data-live] element on the page to update from the
+// visitor's local clock. Re-runs on astro:page-load for view transitions.
+---
+
+<script>
+  import {
+    getTimeInfo,
+    getSunShadow,
+    getGreeting,
+    type TimeInfo,
+  } from "../utils/liveClock";
+
+  const TICK_MS = 30_000;
+  let timer: number | null = null;
+
+  function updateText(selector: string, value: string) {
+    document
+      .querySelectorAll<HTMLElement>(selector)
+      .forEach((el) => (el.textContent = value));
+  }
+
+  function updateSun(info: TimeInfo) {
+    const { sunAngle, shadowX, shadowY, shadowOpacity } = getSunShadow(
+      info.hour,
+    );
+    document
+      .querySelectorAll<HTMLElement>("[data-live='sun']")
+      .forEach((el) => {
+        el.style.transform = `translate(-50%, -50%) rotate(${sunAngle}deg) translateY(-40px)`;
+        el.style.opacity = String(shadowOpacity);
+      });
+    document
+      .querySelectorAll<HTMLElement>("[data-live='name-shadow']")
+      .forEach((el) => {
+        el.style.textShadow = `${shadowX}px ${shadowY}px 4px rgba(0, 0, 0, ${shadowOpacity})`;
+      });
+  }
+
+  function updateGreeting(hour: number) {
+    const { text, emoji } = getGreeting(hour);
+    updateText("[data-live='greeting-text']", text);
+    updateText("[data-live='greeting-emoji']", emoji);
+  }
+
+  function tick() {
+    const info = getTimeInfo();
+    updateText("[data-live='time']", info.formattedTime);
+    updateText("[data-live='day']", String(info.dayOfYear));
+    updateText("[data-live='date']", info.formattedDate);
+    updateText("[data-live='tz']", info.timeZone);
+    updateSun(info);
+    updateGreeting(info.hour);
+  }
+
+  function start() {
+    tick();
+    if (timer !== null) clearInterval(timer);
+    timer = window.setInterval(tick, TICK_MS);
+  }
+
+  start();
+  document.addEventListener("astro:page-load", start);
+  document.addEventListener("astro:before-swap", () => {
+    if (timer !== null) {
+      clearInterval(timer);
+      timer = null;
+    }
+  });
+</script>

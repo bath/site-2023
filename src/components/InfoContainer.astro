@@ -1,26 +1,29 @@
 ---
-import type { WeatherData, TimeInfo } from "../types";
+import type { WeatherData } from "../types";
+import { profile } from "../data/profile";
 
 interface Props {
-  timeInfo: TimeInfo;
   weatherData: WeatherData | null;
 }
 
-const { timeInfo, weatherData } = Astro.props;
+const { weatherData } = Astro.props;
 ---
 
 <div class="info-container">
-  <div class="location">KC, MO</div>
+  <div class="location">{profile.locationShort}</div>
   <div class="day-counter">
-    Day {timeInfo.currentDay}
-    <div class="time-display">{timeInfo.formattedTime}</div>
+    Day <span data-live="day">—</span>
+    <div class="time-display">
+      <span data-live="time">—:—</span>
+      <span class="tz-label" data-live="tz"></span>
+    </div>
   </div>
   {
     weatherData === null ? (
-      <div class="weather-info">Weather data unavailable</div>
+      <div class="weather-info weather-author">Kansas City weather unavailable</div>
     ) : (
-      <div class="weather-info">
-        {weatherData.temperature}°F • {weatherData.description}
+      <div class="weather-info weather-author">
+        Kansas City · {weatherData.temperature}°F · {weatherData.description}
       </div>
     )
   }
@@ -55,5 +58,16 @@ const { timeInfo, weatherData } = Astro.props;
     font-size: 12px;
     margin-top: 2px;
     opacity: 0.8;
+  }
+
+  .tz-label {
+    margin-left: 0.4em;
+    font-size: 11px;
+    opacity: 0.7;
+  }
+
+  .weather-author {
+    font-size: 12px;
+    opacity: 0.85;
   }
 </style>
