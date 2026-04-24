@@ -1,24 +1,71 @@
-<div id="gradient-background"></div>
+<div id="gradient-background" aria-hidden="true"></div>
 
 <style>
   #gradient-background {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     z-index: -1;
-    transition: background-color 0.3s ease;
+    background:
+      radial-gradient(
+        at 25% 25%,
+        var(--startColor, rgb(232, 240, 250)) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        at 75% 75%,
+        var(--endColor, rgb(210, 222, 242)) 0%,
+        transparent 60%
+      ),
+      linear-gradient(
+        135deg,
+        var(--startColor, rgb(232, 240, 250)) 0%,
+        var(--endColor, rgb(210, 222, 242)) 100%
+      );
+    background-size:
+      140% 140%,
+      140% 140%,
+      100% 100%;
+    background-position:
+      0% 0%,
+      100% 100%,
+      0% 0%;
+    animation: ambient-drift 22s ease-in-out infinite alternate;
+    will-change: background-position;
+  }
+
+  @keyframes ambient-drift {
+    0% {
+      background-position:
+        0% 0%,
+        100% 100%,
+        0% 0%;
+    }
+    100% {
+      background-position:
+        20% 10%,
+        80% 90%,
+        0% 0%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #gradient-background {
+      animation: none;
+    }
   }
 </style>
 
 <script>
-  const gradientEl = document.getElementById("gradient-background");
-
   import { getSeasonalColors } from "../utils/seasonalGradient";
-  const { startColor, endColor } = getSeasonalColors();
 
-  if (gradientEl) {
-    gradientEl.style.background = `linear-gradient(135deg, ${startColor}, ${endColor})`;
+  function applySeasonalColors() {
+    const { startColor, endColor } = getSeasonalColors();
+    document.documentElement.style.setProperty("--startColor", startColor);
+    document.documentElement.style.setProperty("--endColor", endColor);
   }
+
+  // Apply immediately on initial load, then re-apply on every client-side
+  // navigation so the gradient persists when ClientRouter swaps the body.
+  applySeasonalColors();
+  document.addEventListener("astro:page-load", applySeasonalColors);
 </script>

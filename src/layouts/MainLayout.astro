@@ -53,13 +53,10 @@ const weatherData: WeatherData | null = import.meta.env.WEATHER_API_KEY
 </html>
 
 <style is:global>
+  /* Fallback color shown for the split second before GradientBackground
+     mounts. Matches the lightest seasonal start so the transition is
+     imperceptible. */
   html {
-    background: linear-gradient(
-        135deg,
-        var(--startColor) 0%,
-        var(--endColor) 100%
-      )
-      fixed;
-    transition: background 0.3s ease;
+    background-color: rgb(232, 240, 250);
   }
 </style>
