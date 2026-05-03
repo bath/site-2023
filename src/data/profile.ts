@@ -6,7 +6,7 @@ export const profile = {
   email: "millerzbath@gmail.com",
   linkedin: "https://www.linkedin.com/in/millerbath",
   github: "https://github.com/bath",
-  resumeHref: "/resume.pdf",
+  resumeHref: "/Miller_Bath_Resume.pdf",
   tagline: "Software Engineer in Kansas City",
   summary: [
     "I build scalable software that makes complex processes more reliable, less manual, and easier for people to navigate.",
