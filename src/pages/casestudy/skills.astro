@@ -1,0 +1,183 @@
+---
+import VariantBase from "../../layouts/VariantBase.astro";
+import CaseStudyNav from "../../components/CaseStudyNav.astro";
+import { skillGroups, topSkills } from "../../data/skills";
+import { profile } from "../../data/profile";
+---
+
+<VariantBase
+  title={`Skills — ${profile.name}`}
+  description={`What ${profile.name} works with — backend, applied-AI tooling, and distributed systems.`}
+  variant="casestudy"
+  page="skills"
+>
+  <main class="cs">
+    <CaseStudyNav page="skills" />
+
+    <div class="cs-content">
+      <header class="cs-page-head">
+        <h1 class="cs-page-title">Skills</h1>
+        <p class="cs-page-sub">
+          Where I spend my time, and the tools the case studies were built with.
+        </p>
+      </header>
+
+      <!-- The three things I lead with. -->
+      <section class="cs-top" aria-label="Core strengths">
+        {
+          topSkills.map((s, i) => (
+            <div class="cs-top-item">
+              <span class="cs-top-num">{String(i + 1).padStart(2, "0")}</span>
+              <span class="cs-top-label">{s}</span>
+            </div>
+          ))
+        }
+      </section>
+
+      <!-- Full toolkit by area. -->
+      <section class="cs-groups" aria-label="Toolkit">
+        {
+          skillGroups.map((g) => (
+            <div class="cs-group">
+              <h2 class="cs-group-label">{g.label}</h2>
+              <ul class="cs-group-items">
+                {g.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </section>
+    </div>
+  </main>
+</VariantBase>
+
+<style>
+  .cs {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .cs-content {
+    padding-top: 2.6rem;
+  }
+
+  /* --- Page head -------------------------------------------------------- */
+  .cs-page-head {
+    margin-bottom: 2.8rem;
+  }
+
+  .cs-page-title {
+    margin: 0 0 0.6rem;
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    font-weight: 680;
+    letter-spacing: -0.025em;
+    color: var(--text);
+  }
+
+  .cs-page-sub {
+    margin: 0;
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 60ch;
+  }
+
+  /* --- Top skills ------------------------------------------------------- */
+  .cs-top {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-bottom: 3.4rem;
+  }
+
+  .cs-top-item {
+    padding: 1.3rem 1.4rem;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .cs-top-num {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--accent-strong);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cs-top-label {
+    font-size: 1.04rem;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+
+  /* --- Skill groups ----------------------------------------------------- */
+  .cs-groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem 2.5rem;
+  }
+
+  .cs-group-label {
+    margin: 0 0 1rem;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cs-group-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .cs-group-items li {
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    padding: 0.35rem 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    transition:
+      border-color 0.18s ease,
+      color 0.18s ease;
+  }
+
+  .cs-group-items li:hover {
+    border-color: var(--accent-tint-border);
+    color: var(--text);
+  }
+
+  /* --- Mobile ----------------------------------------------------------- */
+  @media (max-width: 700px) {
+    .cs-top {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+    .cs-groups {
+      grid-template-columns: 1fr;
+      gap: 1.6rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .cs {
+      padding: 0 1.15rem;
+    }
+  }
+</style>

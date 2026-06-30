@@ -1,0 +1,118 @@
+---
+// Floating switcher shown on every variant page so the reviewer can hop
+// between the four design directions (and back to the index). Theme-aware via
+// global tokens. `current` is the variant key; `page` keeps you on the same
+// sub-page ("", "work", "skills") when switching directions.
+interface Props {
+  current: "editorial" | "sidebar" | "hero" | "casestudy";
+  page?: "" | "work" | "skills";
+}
+
+const { current, page = "" } = Astro.props;
+
+const variants = [
+  { key: "editorial", label: "Editorial" },
+  { key: "sidebar", label: "Sidebar" },
+  { key: "hero", label: "Hero" },
+  { key: "casestudy", label: "Case-Study" },
+] as const;
+
+const suffix = page ? `/${page}` : "";
+---
+
+<nav class="variant-switcher" aria-label="Preview design directions">
+  <a class="vs-home" href="/" title="All previews">◳</a>
+  <span class="vs-sep" aria-hidden="true"></span>
+  {
+    variants.map((v) => (
+      <a
+        class:list={["vs-link", { active: v.key === current }]}
+        href={`/${v.key}${suffix}`}
+        aria-current={v.key === current ? "page" : undefined}
+      >
+        {v.label}
+      </a>
+    ))
+  }
+</nav>
+
+<style>
+  .variant-switcher {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 0.3rem 0.45rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+    font-size: 0.82rem;
+    max-width: calc(100vw - 1.5rem);
+  }
+
+  .vs-home {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.7em;
+    height: 1.7em;
+    border-radius: 999px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.95em;
+  }
+
+  .vs-home:hover {
+    background: var(--accent-tint);
+    color: var(--text);
+  }
+
+  .vs-sep {
+    width: 1px;
+    align-self: stretch;
+    margin: 0.25em 0.15em;
+    background: var(--border);
+  }
+
+  .vs-link {
+    padding: 0.32em 0.7em;
+    border-radius: 999px;
+    color: var(--text-muted);
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      background 0.18s ease,
+      color 0.18s ease;
+  }
+
+  .vs-link:hover {
+    color: var(--text);
+    background: var(--surface);
+  }
+
+  .vs-link.active {
+    color: var(--text);
+    background: var(--accent-tint);
+    border: 1px solid var(--accent-tint-border);
+    font-weight: 600;
+  }
+
+  @media (max-width: 560px) {
+    .variant-switcher {
+      font-size: 0.74rem;
+      gap: 0.05rem;
+      padding: 0.25rem 0.35rem;
+    }
+
+    .vs-link {
+      padding: 0.3em 0.5em;
+    }
+  }
+</style>

@@ -1,0 +1,175 @@
+---
+import VariantBase from "../../layouts/VariantBase.astro";
+import SidebarNav from "../../components/SidebarNav.astro";
+import { profile } from "../../data/profile";
+import { skillGroups, topSkills } from "../../data/skills";
+---
+
+<VariantBase
+  title={`Skills — ${profile.name}`}
+  description={`Skills and tools — ${profile.name}, ${profile.title}.`}
+  variant="sidebar"
+  page="skills"
+>
+  <SidebarNav page="skills" />
+
+  <main class="sb-content">
+    <div class="sb-page">
+      <h1 class="sb-h1">Skills</h1>
+
+      <section class="sb-top" aria-label="Core strengths">
+        <ul class="sb-top-list">
+          {topSkills.map((s) => <li>{s}</li>)}
+        </ul>
+      </section>
+
+      <section class="sb-groups">
+        {
+          skillGroups.map((group) => (
+            <div class="sb-group">
+              <h2 class="sb-group-label">{group.label}</h2>
+              <ul class="sb-tags">
+                {group.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </section>
+    </div>
+  </main>
+</VariantBase>
+
+<style>
+  .sb-content {
+    margin-left: 300px;
+    padding: 4.5rem 4rem 4rem;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  .sb-page {
+    max-width: 70ch;
+    animation: sbFadeIn 0.45s ease-out;
+  }
+
+  .sb-h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 0 0 2rem;
+  }
+
+  /* ---- top skills — emphasized lead-ins ---- */
+  .sb-top {
+    margin-bottom: 2.8rem;
+  }
+
+  .sb-top-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .sb-top-list li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+
+  .sb-top-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 2px;
+    background: var(--accent);
+  }
+
+  /* ---- grouped tags ---- */
+  .sb-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.75rem 2rem;
+  }
+
+  .sb-group-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+    margin: 0 0 0.85rem;
+  }
+
+  .sb-tags {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .sb-tags li {
+    font-size: 0.88rem;
+    padding: 0.32em 0.75em;
+    border-radius: 8px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: var(--text-muted);
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .sb-tags li:hover {
+    border-color: var(--accent-tint-border);
+    color: var(--text);
+  }
+
+  @keyframes sbFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sb-page {
+      animation: none;
+    }
+    .sb-tags li {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 820px) {
+    .sb-content {
+      margin-left: 0;
+      padding: 1.75rem 1.25rem 2.5rem;
+      min-height: 0;
+    }
+
+    .sb-h1 {
+      font-size: 1.7rem;
+    }
+
+    .sb-top-list li {
+      font-size: 1.05rem;
+    }
+  }
+</style>

@@ -1,0 +1,97 @@
+---
+// In-variant nav for the Hero direction. Sits inside the hero band, so it
+// stays legible over the seasonal gradient. `page` drives the active state.
+import { profile } from "../data/profile";
+
+interface Props {
+  page?: "" | "work" | "skills";
+}
+
+const { page = "" } = Astro.props;
+
+const links = [
+  { href: "/hero", label: "Home", key: "" },
+  { href: "/hero/work", label: "Work", key: "work" },
+  { href: "/hero/skills", label: "Skills", key: "skills" },
+] as const;
+---
+
+<nav class="hero-nav" aria-label="Primary">
+  <a class="hero-wordmark" href="/hero">{profile.name}</a>
+  <div class="hero-links">
+    {
+      links.map((l) => (
+        <a
+          href={l.href}
+          class:list={["hero-link", { active: l.key === page }]}
+          aria-current={l.key === page ? "page" : undefined}
+        >
+          {l.label}
+        </a>
+      ))
+    }
+  </div>
+</nav>
+
+<style>
+  .hero-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-wordmark {
+    /* Universal `*` rule blocks inheritance, so set the display stack here. */
+    font-family: "Iowan Old Style", Georgia, "Times New Roman", ui-serif, serif;
+    font-size: 1rem;
+    font-style: italic;
+    letter-spacing: 0.01em;
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+  }
+
+  .hero-wordmark:hover {
+    color: var(--text);
+  }
+
+  .hero-links {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .hero-link {
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    transition:
+      color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .hero-link:hover {
+    color: var(--text);
+    background: var(--surface);
+  }
+
+  .hero-link.active {
+    color: var(--text);
+    background: var(--accent-tint);
+    border: 1px solid var(--accent-tint-border);
+    padding: calc(0.35rem - 1px) calc(0.75rem - 1px);
+  }
+
+  @media (max-width: 480px) {
+    .hero-links {
+      gap: 0.25rem;
+    }
+    .hero-link {
+      padding: 0.3rem 0.6rem;
+      font-size: 0.72rem;
+    }
+  }
+</style>

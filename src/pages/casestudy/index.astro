@@ -1,0 +1,357 @@
+---
+import VariantBase from "../../layouts/VariantBase.astro";
+import CaseStudyNav from "../../components/CaseStudyNav.astro";
+import CaseStudyCard from "../../components/CaseStudyCard.astro";
+import { profile } from "../../data/profile";
+
+// Featured case studies — copy derived from experience.ts bullets + summary,
+// facts kept verbatim. Each maps to one of the two pillars and leads with the
+// metric that proves it.
+const caseStudies = [
+  {
+    pillar: "backend" as const,
+    pillarLabel: "Backend engineering",
+    title: "Payment Plans, zero to production",
+    metrics: [
+      { value: "$15M+", label: "Processed to date" },
+      { value: "4 wks", label: "Shipped early" },
+      { value: "4", label: "Backend services" },
+    ],
+    stack: "Java · Kafka · MongoDB · idempotent consumers",
+    body:
+      "Led PayIt's recurring-payments platform as primary engineer — four backend services with idempotent consumers and full refund / cancellation policy logic. Live with $15M+ processed and ~$400K projected ARR.",
+  },
+  {
+    pillar: "ai-tooling" as const,
+    pillarLabel: "AI tooling",
+    title: "A prompt platform that moved a 100-service fleet",
+    metrics: [
+      { value: "100+", label: "Services migrated" },
+      { value: "~4 wks", label: "To Java 25" },
+      { value: "1", label: "Active version invariant" },
+    ],
+    stack: "FastAPI · LangChain · agent orchestration · canary rollout",
+    body:
+      "Built an internal LLM prompt-management service — immutable versioning, weighted A/B routing, and a single-active-version invariant for safe canary rollout. Paired with an agent orchestrator, it moved 100+ Java microservices onto Java 25 in about a month.",
+  },
+  {
+    pillar: "backend" as const,
+    pillarLabel: "Backend engineering",
+    title: "Killing an OOM under a 6× traffic spike",
+    metrics: [
+      { value: "2N → 2", label: "Mongo round-trips / req" },
+      { value: "6×", label: "Traffic spike absorbed" },
+    ],
+    stack: "GraphQL DataLoaders · MongoDB · ~350 → 2,195 req/min",
+    body:
+      "Diagnosed and killed a production out-of-memory failure during a 6× traffic spike by batching GraphQL DataLoaders — collapsing MongoDB round-trips from 2N to 2 per request.",
+  },
+];
+---
+
+<VariantBase
+  title={`${profile.name} — ${profile.title} · SF`}
+  description={profile.hook}
+  variant="casestudy"
+  page=""
+>
+  <main class="cs">
+    <CaseStudyNav page="" />
+
+    <div class="cs-content">
+      <!-- Hero: the hook is the thesis. -->
+      <section class="cs-hero">
+        <p class="cs-kicker">{profile.tagline}</p>
+        <h1 class="cs-hook">{profile.hook}</h1>
+        <ul class="cs-highlights" aria-label="Highlights">
+          {profile.highlights.map((h) => <li>{h}</li>)}
+        </ul>
+      </section>
+
+      <!-- The two surface areas everything ladders up to. -->
+      <section class="cs-pillars" aria-label="What I work on">
+        {
+          profile.pillars.map((p) => (
+            <div class="cs-pillar">
+              <h2 class="cs-pillar-label">{p.label}</h2>
+              <p class="cs-pillar-blurb">{p.blurb}</p>
+            </div>
+          ))
+        }
+      </section>
+
+      <!-- Featured case studies — the evidence. -->
+      <section class="cs-cases" aria-labelledby="cs-cases-heading">
+        <div class="cs-section-head">
+          <h2 id="cs-cases-heading" class="cs-section-title">
+            Selected work
+          </h2>
+          <a class="cs-section-link" href="/casestudy/work">
+            Full experience →
+          </a>
+        </div>
+        <div class="cs-case-list">
+          {caseStudies.map((c) => <CaseStudyCard {...c} />)}
+        </div>
+      </section>
+
+      <!-- Narrative summary. -->
+      <section class="cs-summary" aria-label="Summary">
+        {profile.summary.map((para) => <p class="cs-summary-para">{para}</p>)}
+      </section>
+
+      <!-- Looking for. -->
+      <section class="cs-looking">
+        <span class="cs-looking-label">Looking for</span>
+        <p class="cs-looking-text">{profile.lookingFor}</p>
+      </section>
+
+      <!-- Contact + colophon. -->
+      <footer class="cs-foot">
+        <nav class="cs-contact" aria-label="Contact">
+          <a href={`mailto:${profile.email}`}>Email</a>
+          <a href={profile.resumeHref}>Résumé</a>
+          <a href={profile.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+          <a href={profile.github} target="_blank" rel="noopener">GitHub</a>
+        </nav>
+        <p class="cs-source">
+          Built in Astro. <a
+            href={profile.sourceUrl}
+            target="_blank"
+            rel="noopener">Source</a
+          >.
+        </p>
+      </footer>
+    </div>
+  </main>
+</VariantBase>
+
+<style>
+  .cs {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .cs-content {
+    padding-top: 2.6rem;
+  }
+
+  /* --- Hero ------------------------------------------------------------- */
+  .cs-kicker {
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+    margin-bottom: 1.1rem;
+  }
+
+  .cs-hook {
+    margin: 0;
+    font-size: clamp(1.85rem, 4.5vw, 2.75rem);
+    font-weight: 680;
+    line-height: 1.14;
+    letter-spacing: -0.025em;
+    color: var(--text);
+    text-wrap: balance;
+    max-width: 22ch;
+  }
+
+  .cs-highlights {
+    list-style: none;
+    margin: 1.8rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .cs-highlights li {
+    font-size: 0.8rem;
+    font-weight: 550;
+    letter-spacing: 0.01em;
+    color: var(--text-muted);
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--surface-border);
+    border-radius: 999px;
+    background: var(--surface);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* --- Pillars ---------------------------------------------------------- */
+  .cs-pillars {
+    margin-top: 3.2rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .cs-pillar {
+    padding: 1.4rem 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    border-top: 2px solid var(--accent-tint-border);
+  }
+
+  .cs-pillar-label {
+    margin: 0 0 0.5rem;
+    font-size: 1.08rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+
+  .cs-pillar-blurb {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.58;
+    color: var(--text-muted);
+  }
+
+  /* --- Section heads ---------------------------------------------------- */
+  .cs-section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+    flex-wrap: wrap;
+  }
+
+  .cs-section-title {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+  }
+
+  .cs-section-link {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--link);
+    transition: color 0.18s ease;
+  }
+
+  .cs-section-link:hover {
+    color: var(--accent);
+  }
+
+  /* --- Case list -------------------------------------------------------- */
+  .cs-cases {
+    margin-top: 3.2rem;
+  }
+
+  .cs-case-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  /* --- Summary ---------------------------------------------------------- */
+  .cs-summary {
+    margin-top: 3.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+    max-width: 68ch;
+  }
+
+  .cs-summary-para {
+    margin: 0;
+    font-size: 1.02rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+
+  .cs-summary-para:first-child {
+    color: var(--text);
+    font-size: 1.08rem;
+  }
+
+  /* --- Looking for ------------------------------------------------------ */
+  .cs-looking {
+    margin-top: 2.8rem;
+    padding: 1.35rem 1.5rem;
+    border-radius: 12px;
+    background: var(--accent-tint);
+    border: 1px solid var(--accent-tint-border);
+  }
+
+  .cs-looking-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-strong);
+    margin-bottom: 0.5rem;
+  }
+
+  .cs-looking-text {
+    margin: 0;
+    font-size: 1.04rem;
+    line-height: 1.6;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* --- Footer ----------------------------------------------------------- */
+  .cs-foot {
+    margin-top: 3rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .cs-contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+  }
+
+  .cs-contact a {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--link);
+    transition: color 0.18s ease;
+  }
+
+  .cs-contact a:hover {
+    color: var(--accent);
+  }
+
+  .cs-source {
+    margin: 0;
+    font-size: 0.84rem;
+    color: var(--text-subtle);
+  }
+
+  .cs-source a {
+    color: var(--link);
+  }
+
+  .cs-source a:hover {
+    color: var(--accent);
+  }
+
+  /* --- Mobile ----------------------------------------------------------- */
+  @media (max-width: 600px) {
+    .cs {
+      padding: 0 1.15rem;
+    }
+    .cs-pillars {
+      grid-template-columns: 1fr;
+    }
+    .cs-foot {
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+  }
+</style>

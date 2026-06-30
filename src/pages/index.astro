@@ -1,153 +1,152 @@
 ---
-import MainLayout from "../layouts/MainLayout.astro";
-import CompanyText from "../components/CompanyText.astro";
+import VariantBase from "../layouts/VariantBase.astro";
 import { profile } from "../data/profile";
+
+const directions = [
+  {
+    key: "editorial",
+    name: "Editorial Prose",
+    desc: "Single centered column, large serif display, generous whitespace. Reads like a beautifully typeset essay.",
+  },
+  {
+    key: "sidebar",
+    name: "Refined Sidebar",
+    desc: "A polished evolution of the current fixed-sidebar layout — sharper type scale, spacing, and motion.",
+  },
+  {
+    key: "hero",
+    name: "Warm Gradient Hero",
+    desc: "The day-of-year gradient and live time/day become a hero band, with a clean single-column body below.",
+  },
+  {
+    key: "casestudy",
+    name: "Case-Study Portfolio",
+    desc: "Work and projects are the spine — an evidence-led timeline leading with Payment Plans and the AI-tooling fleet work.",
+  },
+];
 ---
 
-<MainLayout>
-  <div class="page-content about">
-    <p class="greeting">
-      <span class="greeting-text" data-live="greeting-text">Hello</span>
-      <span class="greeting-emoji" aria-hidden="true" data-live="greeting-emoji"
-        >👋🏻</span
-      >
-      <span class="greeting-sep">— I'm Miller.</span>
-    </p>
-
-    <p class="hook">{profile.hook}</p>
-
-    <ul class="highlights" aria-label="Highlights">
-      {profile.highlights.map((h) => <li>{h}</li>)}
-    </ul>
-
-    {profile.summary.map((paragraph) => (
-      <p>
-        <CompanyText text={paragraph} />
+<VariantBase
+  title={`${profile.name} — choose a design`}
+  description="Preview the four candidate designs for the site revamp."
+  showSwitcher={false}
+>
+  <main class="hub">
+    <header class="hub-head">
+      <p class="hub-eyebrow">Site revamp · preview</p>
+      <h1>Four directions</h1>
+      <p class="hub-sub">
+        Same content — backend engineering + AI tooling — in four layouts and
+        looks. Open each, toggle light/dark (top-right), and pick the one you
+        like. Use the bar at the bottom of any preview to hop between them.
       </p>
-    ))}
+    </header>
 
-    <p class="looking">{profile.lookingFor}</p>
-
-    <p class="cta">
-      Reach me at <a href={`mailto:${profile.email}`}>{profile.email}</a> · <a
-        href={profile.resumeHref}>Résumé</a
-      > · <a href={profile.linkedin}>LinkedIn</a> · <a href={profile.github}
-        >GitHub</a
-      >
-    </p>
-
-    <p class="colophon">
-      Built with <a
-        class="company-link"
-        href="https://astro.build"
-        target="_blank"
-        rel="noopener noreferrer">Astro</a
-      > — <a href={profile.sourceUrl}>this site is open source</a>.
-    </p>
-  </div>
-</MainLayout>
+    <ul class="hub-grid">
+      {
+        directions.map((d, i) => (
+          <li>
+            <a class="card" href={`/${d.key}`}>
+              <span class="card-index">{String(i + 1).padStart(2, "0")}</span>
+              <span class="card-name">{d.name}</span>
+              <span class="card-desc">{d.desc}</span>
+              <span class="card-go">View →</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</VariantBase>
 
 <style>
-  .about {
-    max-width: 60ch;
+  .hub {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: clamp(3rem, 8vh, 6rem) 1.5rem 3rem;
   }
 
-  .about p {
-    margin-bottom: 1.2em;
-    font-size: 1.1em;
+  .hub-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.78rem;
+    color: var(--accent-strong);
+    margin-bottom: 0.6rem;
   }
 
-  .greeting {
-    font-size: 1.3em;
-    margin-bottom: 1.1em;
+  .hub h1 {
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    line-height: 1.05;
+    margin-bottom: 0.7rem;
   }
 
-  .greeting-text {
-    font-weight: 500;
-  }
-
-  .greeting-emoji {
-    display: inline-block;
-    margin: 0 0.25em;
-  }
-
-  .greeting-sep {
+  .hub-sub {
     color: var(--text-muted);
+    max-width: 56ch;
+    line-height: 1.55;
+    font-size: 1.05rem;
   }
 
-  .about .hook {
-    font-size: 1.5em;
-    font-weight: 500;
-    line-height: 1.35;
-    margin-bottom: 0.7em;
-    color: var(--text);
-  }
-
-  .highlights {
+  .hub-grid {
     list-style: none;
+    margin: 2.6rem 0 0;
     padding: 0;
-    margin: 0 0 2.1em;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .card {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5em;
-  }
-
-  .highlights li {
-    font-size: 0.9em;
-    font-weight: 500;
-    padding: 0.35em 0.85em;
-    border-radius: 999px;
-    background: var(--accent-tint);
-    border: 1px solid var(--accent-tint-border);
-    color: var(--text);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .about .looking {
-    margin-top: 2em;
-    padding: 0.85em 1.1em;
-    border-left: 3px solid var(--accent);
+    flex-direction: column;
+    gap: 0.4rem;
+    height: 100%;
+    padding: 1.4rem 1.5rem;
+    border-radius: 14px;
+    border: 1px solid var(--surface-border);
     background: var(--surface);
-    border-radius: 0 8px 8px 0;
-    font-size: 1.02em;
-    color: var(--text-muted);
+    color: var(--text);
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      background 0.2s ease;
   }
 
-  .about .cta {
-    margin-top: 2em;
-    padding-top: 1.2em;
-    border-top: 1px solid var(--border);
-    font-size: 1em;
-    color: var(--text-muted);
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent-tint-border);
+    background: var(--accent-tint);
   }
 
-  .about .cta a {
-    color: var(--link);
-    font-weight: 500;
-  }
-
-  /* internal links (résumé pdf) don't match the global http/mailto underline */
-  .about .cta a:not([href^="http"]):not([href^="mailto"]) {
-    border-bottom: 1px solid transparent;
-  }
-
-  .about .cta a:not([href^="http"]):not([href^="mailto"]):hover {
-    border-bottom-color: currentColor;
-  }
-
-  .about .colophon {
-    margin-top: 0.7em;
-    font-size: 0.88em;
+  .card-index {
+    font-variant-numeric: tabular-nums;
+    font-size: 0.8rem;
     color: var(--text-faint);
+    letter-spacing: 0.1em;
   }
 
-  .about .colophon a {
-    color: var(--text-subtle);
+  .card-name {
+    font-size: 1.25rem;
+    font-weight: 600;
   }
 
-  @media (max-width: 820px) {
-    .about .hook {
-      font-size: 1.3em;
+  .card-desc {
+    color: var(--text-muted);
+    line-height: 1.5;
+    font-size: 0.95rem;
+    flex: 1;
+  }
+
+  .card-go {
+    margin-top: 0.4rem;
+    font-weight: 600;
+    color: var(--link);
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 640px) {
+    .hub-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>

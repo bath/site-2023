@@ -45,6 +45,6 @@ export const skillGroups: SkillGroup[] = [
 
 export const topSkills = [
   "Backend & API design",
-  "Distributed systems & reliability",
-  "Applied-AI tooling",
+  "Applied-AI tooling & agent orchestration",
+  "Distributed systems",
 ];

@@ -1,0 +1,214 @@
+---
+import VariantBase from "../../layouts/VariantBase.astro";
+import LiveClock from "../../components/LiveClock.astro";
+import HeroBand from "../../components/HeroBand.astro";
+import { profile } from "../../data/profile";
+---
+
+<VariantBase
+  title={`${profile.name} — ${profile.title} · SF`}
+  description={profile.hook}
+  variant="hero"
+  page=""
+>
+  <main class="hero-page">
+    <HeroBand size="full" page="" />
+
+    <div class="body">
+      <!-- Two pillars: backend + AI tooling -->
+      <section class="pillars" aria-label="What I build">
+        {
+          profile.pillars.map((p) => (
+            <article class="pillar">
+              <h2 class="pillar-label">{p.label}</h2>
+              <p class="pillar-blurb">{p.blurb}</p>
+            </article>
+          ))
+        }
+      </section>
+
+      <!-- Scannable proof chips -->
+      <ul class="chips" aria-label="Highlights">
+        {profile.highlights.map((h) => <li class="chip">{h}</li>)}
+      </ul>
+
+      <!-- Narrative summary -->
+      <section class="summary" aria-label="Summary">
+        {profile.summary.map((para) => <p>{para}</p>)}
+      </section>
+
+      <!-- What I'm looking for -->
+      <section class="looking" aria-label="What I'm looking for">
+        <span class="looking-eyebrow">Looking for</span>
+        <p>{profile.lookingFor}</p>
+      </section>
+
+      <!-- Contact + open-source colophon -->
+      <footer class="contact">
+        <div class="contact-links">
+          <a href={`mailto:${profile.email}`}>Email</a>
+          <a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href={profile.github} target="_blank" rel="noreferrer">GitHub</a>
+          <a href={profile.resumeHref} target="_blank" rel="noreferrer">Résumé</a>
+        </div>
+        <p class="colophon">
+          Built with Astro. The backdrop is today's day-of-year gradient; the
+          readout above is your local clock.
+          <a href={profile.sourceUrl} target="_blank" rel="noreferrer">Source</a>.
+        </p>
+      </footer>
+    </div>
+  </main>
+</VariantBase>
+<LiveClock />
+
+<style>
+  .hero-page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 1.25rem 1.25rem 2rem;
+  }
+
+  .body {
+    margin-top: 2.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.6rem;
+    line-height: 1.6;
+  }
+
+  /* ---- pillars ---- */
+  .pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .pillar {
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: 14px;
+    padding: 1.25rem 1.35rem;
+  }
+
+  .pillar-label {
+    margin: 0 0 0.5rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .pillar-blurb {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+  }
+
+  /* ---- chips ---- */
+  .chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .chip {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--accent-tint);
+    border: 1px solid var(--accent-tint-border);
+    border-radius: 999px;
+    padding: 0.35rem 0.8rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- summary ---- */
+  .summary {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .summary p {
+    margin: 0;
+    font-size: 1.02rem;
+    color: var(--text-muted);
+  }
+
+  /* ---- looking-for ---- */
+  .looking {
+    border-left: 3px solid var(--accent);
+    padding: 0.2rem 0 0.2rem 1.1rem;
+  }
+
+  .looking-eyebrow {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 0.35rem;
+  }
+
+  .looking p {
+    margin: 0;
+    font-size: 1.05rem;
+    color: var(--text);
+  }
+
+  /* ---- contact + colophon ---- */
+  .contact {
+    border-top: 1px solid var(--border);
+    padding-top: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.4rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .contact-links a {
+    color: var(--link);
+    position: relative;
+  }
+
+  .contact-links a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .colophon {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--text-faint);
+    line-height: 1.5;
+  }
+
+  .colophon a {
+    color: var(--text-subtle);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .colophon a:hover {
+    color: var(--text);
+  }
+
+  @media (max-width: 560px) {
+    .pillars {
+      grid-template-columns: 1fr;
+    }
+    .body {
+      gap: 2.2rem;
+    }
+  }
+</style>
