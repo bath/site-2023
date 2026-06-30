@@ -1,5 +1,6 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
+import CompanyText from "../components/CompanyText.astro";
 import { profile } from "../data/profile";
 ---
 
@@ -19,7 +20,11 @@ import { profile } from "../data/profile";
       {profile.highlights.map((h) => <li>{h}</li>)}
     </ul>
 
-    {profile.summary.map((paragraph) => <p>{paragraph}</p>)}
+    {profile.summary.map((paragraph) => (
+      <p>
+        <CompanyText text={paragraph} />
+      </p>
+    ))}
 
     <p class="looking">{profile.lookingFor}</p>
 
@@ -32,8 +37,12 @@ import { profile } from "../data/profile";
     </p>
 
     <p class="colophon">
-      Built with Astro — <a href={profile.sourceUrl}>this site is open source</a
-      >.
+      Built with <a
+        class="company-link"
+        href="https://astro.build"
+        target="_blank"
+        rel="noopener noreferrer">Astro</a
+      > — <a href={profile.sourceUrl}>this site is open source</a>.
     </p>
   </div>
 </MainLayout>

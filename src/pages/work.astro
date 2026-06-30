@@ -1,5 +1,7 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
+import CompanyName from "../components/CompanyName.astro";
+import CompanyText from "../components/CompanyText.astro";
 import {
   experience,
   earlier,
@@ -18,7 +20,7 @@ import {
           <li class="role">
             <header class="role-header">
               <div class="role-title">
-                <span class="company">{role.company}</span>
+                <CompanyName name={role.company} class="company" />
                 <span class="title"> · {role.title}</span>
               </div>
               <span class="dates">{role.dates}</span>
@@ -40,7 +42,7 @@ import {
         {
           earlier.map((e) => (
             <li>
-              <span class="company">{e.company}</span>
+              <CompanyName name={e.company} class="company" />
               <span class="title"> · {e.title}</span>
               <span class="dates"> · {e.dates}</span>
               <div class="earlier-note">{e.note}</div>
@@ -53,7 +55,13 @@ import {
     <section class="extra">
       <h2>Leadership</h2>
       <ul class="bullets">
-        {leadership.map((b) => <li>{b}</li>)}
+        {
+          leadership.map((b) => (
+            <li>
+              <CompanyText text={b} />
+            </li>
+          ))
+        }
       </ul>
     </section>
 
@@ -63,7 +71,7 @@ import {
         {
           education.map((e) => (
             <li>
-              <span class="company">{e.school}</span>
+              <CompanyName name={e.school} class="company" />
               <span> · {e.degree}</span>
               <span class="dates"> · {e.dates}</span>
             </li>
