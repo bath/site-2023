@@ -16,11 +16,95 @@
   box-sizing: border-box;
 }
 
-html {
-  color: rgb(35, 31, 32);
-  scroll-behavior: smooth;
+/* ---------------------------------------------------------------------------
+   Theme tokens. Light is the default; `:root[data-theme="dark"]` overrides.
+   The resolved theme is set on <html> by an inline script in the <head>
+   before first paint, so there is no flash. Every component references these
+   variables instead of hard-coded colors so light/dark/auto all just work.
+--------------------------------------------------------------------------- */
+:root {
+  color-scheme: light;
+
+  --text: rgb(35, 31, 32);
+  --text-muted: rgba(35, 31, 32, 0.82);
+  --text-subtle: rgba(35, 31, 32, 0.6);
+  --text-faint: rgba(35, 31, 32, 0.42);
+
+  --border: rgba(35, 31, 32, 0.15);
+  --border-strong: rgba(35, 31, 32, 0.25);
+  --surface: rgba(35, 31, 32, 0.06);
+  --surface-border: rgba(35, 31, 32, 0.12);
+
+  --accent: rgb(255, 123, 77);
+  --accent-strong: rgb(255, 90, 60);
+  --accent-tint: rgba(255, 123, 77, 0.12);
+  --accent-tint-border: rgba(255, 123, 77, 0.35);
+
+  --link: rgb(18, 81, 126);
+  --active: rgb(36, 110, 83);
+
+  --glass: rgba(255, 255, 255, 0.5);
+  --glass-border: rgba(35, 31, 32, 0.2);
+  --overlay: rgba(255, 255, 255, 0.78);
+
+  --bg-fallback: rgb(232, 240, 250);
+
+  /* Seasonal gradient stops. JS overrides these with the precise day-of-year
+     color; these defaults keep the first paint on-theme before JS runs. */
+  --startColor: rgb(232, 240, 250);
+  --endColor: rgb(210, 222, 242);
 }
 
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --text: rgb(233, 230, 226);
+  --text-muted: rgba(233, 230, 226, 0.8);
+  --text-subtle: rgba(233, 230, 226, 0.58);
+  --text-faint: rgba(233, 230, 226, 0.4);
+
+  --border: rgba(233, 230, 226, 0.16);
+  --border-strong: rgba(233, 230, 226, 0.3);
+  --surface: rgba(233, 230, 226, 0.08);
+  --surface-border: rgba(233, 230, 226, 0.16);
+
+  --accent: rgb(255, 142, 98);
+  --accent-strong: rgb(255, 122, 82);
+  --accent-tint: rgba(255, 142, 98, 0.16);
+  --accent-tint-border: rgba(255, 142, 98, 0.42);
+
+  --link: rgb(127, 187, 230);
+  --active: rgb(110, 200, 160);
+
+  --glass: rgba(40, 44, 52, 0.55);
+  --glass-border: rgba(233, 230, 226, 0.22);
+  --overlay: rgba(14, 16, 22, 0.82);
+
+  --bg-fallback: rgb(15, 18, 24);
+
+  --startColor: rgb(39, 40, 42);
+  --endColor: rgb(36, 38, 40);
+}
+
+html {
+  color: var(--text);
+  background-color: var(--bg-fallback);
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--text);
+  transition: color 0.3s ease;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* ---------------------------------------------------------------------------
+   Layout — desktop: fixed sidebar + content. Mobile rules are at the bottom.
+--------------------------------------------------------------------------- */
 .layout-container {
   display: grid;
   grid-template-columns: 300px minmax(0, 1fr);
@@ -40,7 +124,7 @@ html {
   margin-left: 300px;
   padding: 4rem;
   width: calc(100vw - 300px);
-  max-width: 1200px;
+  max-width: 1180px;
   line-height: 1.6;
 }
 
@@ -48,21 +132,14 @@ html {
   margin-top: 4rem;
   display: flex;
   flex-direction: column;
-}
-
-.name {
-  font-size: 2em;
-}
-
-.name:hover {
-  color: rgba(255, 149, 79, 0.846);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  transform: translateX(4px);
+  gap: 0.2em;
 }
 
 .subheading {
   margin-top: 0.5em;
-  font-size: 1.2em;
+  font-size: 1.05em;
+  color: var(--text-muted);
+  text-wrap: balance;
 }
 
 a {
@@ -70,14 +147,19 @@ a {
   color: inherit;
 }
 
+.nav-links .nav-link {
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
 .nav-links .nav-link:hover {
-  color: rgba(255, 149, 79, 0.846);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--accent);
   transform: translateX(4px);
 }
 
 .nav-links .nav-link.active {
-  color: rgb(36, 110, 83) !important;
+  color: var(--active) !important;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -87,13 +169,15 @@ a {
   animation: fadeIn 0.5s ease-out;
 }
 
-.page-content a[href^="http"] {
+.page-content a[href^="http"],
+.page-content a[href^="mailto"] {
   position: relative;
-  color: rgb(18, 81, 126);
+  color: var(--link);
   font-weight: 500;
 }
 
-.page-content a[href^="http"]::after {
+.page-content a[href^="http"]::after,
+.page-content a[href^="mailto"]::after {
   content: "";
   position: absolute;
   width: 0;
@@ -104,8 +188,15 @@ a {
   transition: width 0.3s ease;
 }
 
-.page-content a[href^="http"]:hover::after {
+.page-content a[href^="http"]:hover::after,
+.page-content a[href^="mailto"]:hover::after {
   width: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 @keyframes fadeIn {
@@ -119,20 +210,111 @@ a {
   }
 }
 
-:root {
-  /* Spring - More vibrant greens and soft browns */
-  --spring-start: #7da87b; /* Sage green */
-  --spring-end: #d4c5a9; /* Warm beige */
+@media (prefers-reduced-motion: reduce) {
+  .page-content {
+    animation: none;
+  }
+}
 
-  /* Summer - Rich greens and warm golden tones */
-  --summer-start: #2d5a27; /* Deep forest green */
-  --summer-end: #d4b95e; /* Golden wheat */
+/* ---------------------------------------------------------------------------
+   Theme toggle — fixed top-right, reachable on every viewport. The glyph is
+   chosen purely by [data-theme-choice] (set before paint) so it never flickers.
+--------------------------------------------------------------------------- */
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1100;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--glass);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 1.05rem;
+  line-height: 1;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
 
-  /* Fall - Deep reds and amber tones */
-  --fall-start: #8b4513; /* Saddle brown */
-  --fall-end: #d68c45; /* Burnt orange */
+.theme-toggle:hover {
+  border-color: var(--accent-tint-border);
+  background: var(--accent-tint);
+  transform: translateY(-1px);
+}
 
-  /* Winter - Cool grays and deep blues */
-  --winter-start: #2c3e50; /* Dark slate */
-  --winter-end: #95a5a6; /* Cool gray */
+.theme-toggle .glyph {
+  display: none;
+}
+
+:root[data-theme-choice="auto"] .theme-toggle .glyph-auto {
+  display: inline;
+}
+
+:root[data-theme-choice="light"] .theme-toggle .glyph-light {
+  display: inline;
+}
+
+:root[data-theme-choice="dark"] .theme-toggle .glyph-dark {
+  display: inline;
+}
+
+/* ---------------------------------------------------------------------------
+   Mobile — collapse the fixed sidebar into a normal-flow top bar, give the
+   content the full width, and let the time/weather strip become a footer.
+--------------------------------------------------------------------------- */
+@media (max-width: 820px) {
+  .layout-container {
+    display: block;
+    min-height: 0;
+  }
+
+  .fixed-nav {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 1.5rem 1.25rem 0;
+    font-size: 1.2em;
+  }
+
+  .nav-links {
+    margin-top: 1.25rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4em 1.1em;
+  }
+
+  .nav-links .nav-link:hover {
+    transform: none;
+  }
+
+  .content {
+    margin-left: 0;
+    width: 100%;
+    max-width: none;
+    padding: 1.75rem 1.25rem 2.5rem;
+  }
+
+  .page-content {
+    margin-top: 1.6em;
+  }
+
+  .subheading {
+    font-size: 1em;
+  }
+
+  /* keep the toggle clear of the name on small screens */
+  .theme-toggle {
+    top: 0.85rem;
+    right: 0.85rem;
+  }
 }

@@ -15,7 +15,18 @@ function getDayOfYear(date = new Date()) {
   );
 }
 
-function getSeasonalColorsForDay(dayOfYear) {
+// Map a light seasonal channel onto a deep tone for dark mode. Keeps the
+// season's hue (winter stays cool, fall stays warm) on a near-black base so
+// the signature seasonal gradient survives instead of becoming flat black.
+function shadeForDark(channel) {
+  return Math.round(channel * 0.13 + 9);
+}
+
+function lerpChannels(a, b, t) {
+  return a.map((channel, i) => Math.round(channel * (1 - t) + b[i] * t));
+}
+
+function getSeasonalColorsForDay(dayOfYear, isDark = false) {
   const clamped = ((dayOfYear % 365) + 365) % 365;
   const seasonIndex = Math.floor((clamped / 365) * 4);
   const seasonProgress = (clamped % (365 / 4)) / (365 / 4);
@@ -23,16 +34,17 @@ function getSeasonalColorsForDay(dayOfYear) {
   const currentSeason = SEASONS[seasonIndex];
   const nextSeason = SEASONS[(seasonIndex + 1) % 4];
 
-  const startColor = currentSeason.start.map((channel, i) =>
-    Math.round(
-      channel * (1 - seasonProgress) + nextSeason.start[i] * seasonProgress,
-    ),
+  let startColor = lerpChannels(
+    currentSeason.start,
+    nextSeason.start,
+    seasonProgress,
   );
-  const endColor = currentSeason.end.map((channel, i) =>
-    Math.round(
-      channel * (1 - seasonProgress) + nextSeason.end[i] * seasonProgress,
-    ),
-  );
+  let endColor = lerpChannels(currentSeason.end, nextSeason.end, seasonProgress);
+
+  if (isDark) {
+    startColor = startColor.map(shadeForDark);
+    endColor = endColor.map(shadeForDark);
+  }
 
   return {
     startColor: `rgb(${startColor.join(", ")})`,
@@ -43,8 +55,8 @@ function getSeasonalColorsForDay(dayOfYear) {
   };
 }
 
-function getSeasonalColors() {
-  return getSeasonalColorsForDay(getDayOfYear());
+function getSeasonalColors(isDark = false) {
+  return getSeasonalColorsForDay(getDayOfYear(), isDark);
 }
 
 export { getSeasonalColors, getSeasonalColorsForDay, getDayOfYear, SEASONS };

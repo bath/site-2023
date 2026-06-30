@@ -2,7 +2,7 @@
 // Small whimsical touches:
 // 1. Konami code (↑↑↓↓←→←→BA) reveals the dogcow with a "Moof!"
 // 2. Console greeting for curious devtools-openers
-// 3. Document title flips to "come back :)" when the tab is hidden
+// 3. Document title gives a friendly nudge when the tab is hidden
 ---
 
 <div id="moof" class="moof" aria-hidden="true" hidden>
@@ -18,7 +18,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.75);
+    background: var(--overlay);
+    -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     z-index: 9999;
     animation: fadeIn 0.3s ease-out;
@@ -39,7 +40,7 @@
     margin-top: 1.2rem;
     font-size: 1.1em;
     font-weight: 500;
-    color: rgba(35, 31, 32, 0.85);
+    color: var(--text-muted);
   }
 
   @keyframes moof-bob {
@@ -127,11 +128,11 @@
   );
   /* eslint-enable no-console */
 
-  // Tab-hidden title flip
+  // Tab-hidden title flip — a friendly nudge, not a needy one
   const originalTitle = document.title;
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
-      document.title = "come back :)";
+      document.title = "see you soon ☀️";
     } else {
       document.title = originalTitle;
     }

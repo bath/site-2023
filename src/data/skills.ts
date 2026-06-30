@@ -6,45 +6,45 @@ export interface SkillGroup {
 export const skillGroups: SkillGroup[] = [
   {
     label: "Languages",
-    items: ["Java", "JavaScript", "TypeScript", "Python", "Go", "C#"],
+    items: ["Python", "Go", "JavaScript", "TypeScript", "Java"],
   },
   {
-    label: "Back End",
+    label: "AI / LLM",
     items: [
-      "Dropwizard",
-      "REST APIs",
+      "AI agent orchestration",
+      "LangChain",
+      "RAG",
+      "FastAPI",
+      "Pydantic",
+    ],
+  },
+  {
+    label: "Backend",
+    items: [
+      "REST & GraphQL APIs",
       "Kafka",
       "MongoDB",
+      "DocumentDB",
       "PostgreSQL",
       "Microservices",
-      ".NET",
-      "Node.js",
     ],
   },
   {
-    label: "Front End",
-    items: ["React", "Astro", "HTML/CSS"],
+    label: "Frontend",
+    items: ["React", "Astro", "webpack"],
   },
   {
-    label: "Infrastructure",
-    items: [
-      "Kubernetes",
-      "AWS",
-      "ArgoCD",
-      "Docker",
-      "Jenkins",
-      "GitHub Actions",
-      "External Secrets Operator",
-    ],
+    label: "Infra & Delivery",
+    items: ["Kubernetes", "AWS", "ArgoCD", "GitHub Actions", "Gradle", "Snyk"],
   },
   {
     label: "Observability",
-    items: ["OpenTelemetry", "Honeycomb", "PagerDuty", "Snyk"],
-  },
-  {
-    label: "AI tooling",
-    items: ["Claude Code", "Cursor", "LangChain", "ElasticSearch", "RAG"],
+    items: ["OpenTelemetry", "Honeycomb"],
   },
 ];
 
-export const topSkills = ["Distributed Systems", "Java Development", "Software Design"];
+export const topSkills = [
+  "Backend & API design",
+  "Distributed systems & reliability",
+  "Applied-AI tooling",
+];

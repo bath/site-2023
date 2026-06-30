@@ -1,0 +1,17 @@
+---
+// The button is purely presentational. All behavior (cycle light → dark →
+// auto, persist to localStorage, re-resolve on OS changes) lives in the
+// inline <head> script in MainLayout so it runs before first paint and is
+// wired through event delegation that survives view transitions.
+---
+
+<button
+  class="theme-toggle"
+  type="button"
+  aria-label="Switch color theme: light, dark, or auto"
+  title="Theme: light · dark · auto"
+>
+  <span class="glyph glyph-light" aria-hidden="true">☀</span>
+  <span class="glyph glyph-dark" aria-hidden="true">☾</span>
+  <span class="glyph glyph-auto" aria-hidden="true">◐</span>
+</button>

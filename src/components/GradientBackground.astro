@@ -59,13 +59,16 @@
   import { getSeasonalColors } from "../utils/seasonalGradient";
 
   function applySeasonalColors() {
-    const { startColor, endColor } = getSeasonalColors();
+    const isDark = document.documentElement.dataset.theme === "dark";
+    const { startColor, endColor } = getSeasonalColors(isDark);
     document.documentElement.style.setProperty("--startColor", startColor);
     document.documentElement.style.setProperty("--endColor", endColor);
   }
 
   // Apply immediately on initial load, then re-apply on every client-side
-  // navigation so the gradient persists when ClientRouter swaps the body.
+  // navigation (gradient persists across body swaps) and whenever the theme
+  // changes so the palette darkens/lightens with light/dark mode.
   applySeasonalColors();
   document.addEventListener("astro:page-load", applySeasonalColors);
+  window.addEventListener("themechange", applySeasonalColors);
 </script>
