@@ -1,15 +1,13 @@
 ---
-import VariantBase from "../../layouts/VariantBase.astro";
-import SidebarNav from "../../components/SidebarNav.astro";
-import { profile } from "../../data/profile";
-import { skillGroups, topSkills } from "../../data/skills";
+import MainLayout from "../layouts/MainLayout.astro";
+import SidebarNav from "../components/SidebarNav.astro";
+import { profile } from "../data/profile";
+import { skillGroups, topSkills } from "../data/skills";
 ---
 
-<VariantBase
+<MainLayout
   title={`Skills — ${profile.name}`}
   description={`Skills and tools — ${profile.name}, ${profile.title}.`}
-  variant="sidebar"
-  page="skills"
 >
   <SidebarNav page="skills" />
 
@@ -39,7 +37,7 @@ import { skillGroups, topSkills } from "../../data/skills";
       </section>
     </div>
   </main>
-</VariantBase>
+</MainLayout>
 
 <style>
   .sb-content {

@@ -1,22 +1,15 @@
 ---
-import VariantBase from "../../layouts/VariantBase.astro";
-import SidebarNav from "../../components/SidebarNav.astro";
-import CompanyName from "../../components/CompanyName.astro";
-import CompanyText from "../../components/CompanyText.astro";
-import { profile } from "../../data/profile";
-import {
-  experience,
-  earlier,
-  leadership,
-  education,
-} from "../../data/experience";
+import MainLayout from "../layouts/MainLayout.astro";
+import SidebarNav from "../components/SidebarNav.astro";
+import CompanyName from "../components/CompanyName.astro";
+import CompanyText from "../components/CompanyText.astro";
+import { profile } from "../data/profile";
+import { experience, earlier, leadership, education } from "../data/experience";
 ---
 
-<VariantBase
+<MainLayout
   title={`Work — ${profile.name}`}
   description={`Experience and roles — ${profile.name}, ${profile.title}.`}
-  variant="sidebar"
-  page="work"
 >
   <SidebarNav page="work" />
 
@@ -93,7 +86,7 @@ import {
       </section>
     </div>
   </main>
-</VariantBase>
+</MainLayout>
 
 <style>
   .sb-content {

@@ -9,9 +9,9 @@ interface Props {
 const { page = "" } = Astro.props;
 
 const navLinks = [
-  { href: "/sidebar", label: "About", key: "" },
-  { href: "/sidebar/work", label: "Work", key: "work" },
-  { href: "/sidebar/skills", label: "Skills", key: "skills" },
+  { href: "/", label: "About", key: "" },
+  { href: "/work", label: "Work", key: "work" },
+  { href: "/skills", label: "Skills", key: "skills" },
 ] as const;
 
 const externalLinks = [
@@ -29,7 +29,7 @@ const externalLinks = [
 -->
 <aside class="sb-nav" aria-label="Site navigation">
   <div class="sb-inner">
-    <a class="sb-identity" href="/sidebar">
+    <a class="sb-identity" href="/">
       <span class="sb-name">{profile.name}</span>
       <span class="sb-tagline">{profile.tagline}</span>
     </a>

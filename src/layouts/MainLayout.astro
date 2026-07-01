@@ -1,17 +1,11 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
-import { fetchWeatherData } from "../utils/weatherUtils";
 import { profile } from "../data/profile";
-import type { WeatherData } from "../types";
 
-import Navigation from "../components/Navigation.astro";
-import InfoContainer from "../components/InfoContainer.astro";
 import GradientBackground from "../components/GradientBackground.astro";
 import ThemeScript from "../components/ThemeScript.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
-import EasterEggs from "../components/EasterEggs.astro";
-import LiveClock from "../components/LiveClock.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Analytics from "@vercel/analytics/astro";
 
@@ -27,15 +21,6 @@ const pageDescription = description ?? profile.hook;
 const siteUrl = "https://mzb.dev";
 const ogImage = `${siteUrl}/og.png`;
 const canonical = new URL(Astro.url.pathname, siteUrl).href;
-
-const pathname = Astro.url.pathname;
-
-// Only the weather fetch stays on the server — it needs the API key.
-// Time, day-of-year, sun angle, and greeting all update client-side in
-// the visitor's own timezone (see src/components/LiveClock.astro).
-const weatherData: WeatherData | null = import.meta.env.WEATHER_API_KEY
-  ? await fetchWeatherData(import.meta.env.WEATHER_API_KEY)
-  : null;
 ---
 
 <!doctype html>
@@ -44,8 +29,7 @@ const weatherData: WeatherData | null = import.meta.env.WEATHER_API_KEY
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    {/* Resolve theme before first paint so there is no flash of the wrong
-        theme, and keep it applied across view transitions. */}
+    {/* Resolve theme before first paint so there is no flash. */}
     <ThemeScript />
 
     <meta name="description" content={pageDescription} />
@@ -54,8 +38,16 @@ const weatherData: WeatherData | null = import.meta.env.WEATHER_API_KEY
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.png" type="image/png" />
 
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e8f0fa" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f1218" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#e8f0fa"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#0f1218"
+    />
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />
@@ -76,14 +68,6 @@ const weatherData: WeatherData | null = import.meta.env.WEATHER_API_KEY
   <body>
     <GradientBackground />
     <ThemeToggle />
-    <div class="layout-container">
-      <Navigation pathname={pathname} />
-      <main class="content">
-        <slot />
-      </main>
-    </div>
-    <InfoContainer weatherData={weatherData} />
-    <EasterEggs />
-    <LiveClock />
+    <slot />
   </body>
 </html>

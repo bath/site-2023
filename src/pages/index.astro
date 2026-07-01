@@ -1,151 +1,243 @@
 ---
-import VariantBase from "../layouts/VariantBase.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import SidebarNav from "../components/SidebarNav.astro";
+import CompanyText from "../components/CompanyText.astro";
 import { profile } from "../data/profile";
-
-const directions = [
-  {
-    key: "editorial",
-    name: "Editorial Prose",
-    desc: "Single centered column, large serif display, generous whitespace. Reads like a beautifully typeset essay.",
-  },
-  {
-    key: "sidebar",
-    name: "Refined Sidebar",
-    desc: "A polished evolution of the current fixed-sidebar layout — sharper type scale, spacing, and motion.",
-  },
-  {
-    key: "hero",
-    name: "Warm Gradient Hero",
-    desc: "The day-of-year gradient and live time/day become a hero band, with a clean single-column body below.",
-  },
-  {
-    key: "casestudy",
-    name: "Case-Study Portfolio",
-    desc: "Work and projects are the spine — an evidence-led timeline leading with Payment Plans and the AI-tooling fleet work.",
-  },
-];
 ---
 
-<VariantBase
-  title={`${profile.name} — choose a design`}
-  description="Preview the four candidate designs for the site revamp."
-  showSwitcher={false}
->
-  <main class="hub">
-    <header class="hub-head">
-      <p class="hub-eyebrow">Site revamp · preview</p>
-      <h1>Four directions</h1>
-      <p class="hub-sub">
-        Same content — backend engineering + AI tooling — in four layouts and
-        looks. Open each, toggle light/dark (top-right), and pick the one you
-        like. Use the bar at the bottom of any preview to hop between them.
-      </p>
-    </header>
+<MainLayout title={`${profile.name} — ${profile.title} · SF`} description={profile.hook}>
+  <SidebarNav page="" />
 
-    <ul class="hub-grid">
-      {
-        directions.map((d, i) => (
-          <li>
-            <a class="card" href={`/${d.key}`}>
-              <span class="card-index">{String(i + 1).padStart(2, "0")}</span>
-              <span class="card-name">{d.name}</span>
-              <span class="card-desc">{d.desc}</span>
-              <span class="card-go">View →</span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+  <main class="sb-content">
+    <div class="sb-page">
+      <p class="sb-greeting">
+        <span class="sb-wave" aria-hidden="true">👋🏻</span>
+        Hi — I'm {profile.name}.
+      </p>
+
+      <h1 class="sb-hook">{profile.hook}</h1>
+
+      <ul class="sb-highlights" aria-label="Highlights">
+        {profile.highlights.map((h) => <li>{h}</li>)}
+      </ul>
+
+      <section class="sb-pillars" aria-label="What I do">
+        {
+          profile.pillars.map((p) => (
+            <article class="sb-pillar">
+              <h2 class="sb-pillar-label">{p.label}</h2>
+              <p class="sb-pillar-blurb">{p.blurb}</p>
+            </article>
+          ))
+        }
+      </section>
+
+      <div class="sb-summary">
+        {
+          profile.summary.map((paragraph) => (
+            <p>
+              <CompanyText text={paragraph} />
+            </p>
+          ))
+        }
+      </div>
+
+      <p class="sb-looking">{profile.lookingFor}</p>
+
+      <p class="sb-contact">
+        Reach me at <a href={`mailto:${profile.email}`}>{profile.email}</a> · <a
+          href={profile.resumeHref}>Résumé</a
+        > · <a href={profile.linkedin}>LinkedIn</a> · <a href={profile.github}
+          >GitHub</a
+        >
+      </p>
+
+      <p class="sb-colophon">
+        Built with <a
+          href="https://astro.build"
+          target="_blank"
+          rel="noopener noreferrer">Astro</a
+        > — <a href={profile.sourceUrl}>this site is open source</a>.
+      </p>
+    </div>
   </main>
-</VariantBase>
+</MainLayout>
 
 <style>
-  .hub {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: clamp(3rem, 8vh, 6rem) 1.5rem 3rem;
+  /* Content sits to the right of the 300px fixed rail on desktop, full-width
+     on mobile (rail collapses to a top bar — see SidebarNav). */
+  .sb-content {
+    margin-left: 300px;
+    padding: 4.5rem 4rem 4rem;
+    min-height: 100vh;
+    line-height: 1.6;
   }
 
-  .hub-eyebrow {
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-size: 0.78rem;
-    color: var(--accent-strong);
-    margin-bottom: 0.6rem;
+  .sb-page {
+    max-width: 60ch;
+    animation: sbFadeIn 0.45s ease-out;
   }
 
-  .hub h1 {
-    font-size: clamp(2.2rem, 6vw, 3.4rem);
-    line-height: 1.05;
-    margin-bottom: 0.7rem;
-  }
-
-  .hub-sub {
-    color: var(--text-muted);
-    max-width: 56ch;
-    line-height: 1.55;
+  .sb-greeting {
     font-size: 1.05rem;
+    color: var(--text-muted);
+    margin: 0 0 0.9rem;
   }
 
-  .hub-grid {
+  .sb-wave {
+    display: inline-block;
+    margin-right: 0.2rem;
+  }
+
+  .sb-hook {
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin: 0 0 1.5rem;
+    text-wrap: balance;
+  }
+
+  .sb-highlights {
     list-style: none;
-    margin: 2.6rem 0 0;
     padding: 0;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    margin: 0 0 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
-  .card {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    height: 100%;
-    padding: 1.4rem 1.5rem;
-    border-radius: 14px;
+  .sb-highlights li {
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.35em 0.85em;
+    border-radius: 999px;
+    background: var(--accent-tint);
+    border: 1px solid var(--accent-tint-border);
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sb-pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .sb-pillar {
+    padding: 1.1rem 1.2rem;
     border: 1px solid var(--surface-border);
     background: var(--surface);
+    border-radius: 12px;
+  }
+
+  .sb-pillar-label {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.45rem;
     color: var(--text);
-    transition:
-      transform 0.2s ease,
-      border-color 0.2s ease,
-      background 0.2s ease;
   }
 
-  .card:hover {
-    transform: translateY(-3px);
-    border-color: var(--accent-tint-border);
-    background: var(--accent-tint);
-  }
-
-  .card-index {
-    font-variant-numeric: tabular-nums;
-    font-size: 0.8rem;
-    color: var(--text-faint);
-    letter-spacing: 0.1em;
-  }
-
-  .card-name {
-    font-size: 1.25rem;
-    font-weight: 600;
-  }
-
-  .card-desc {
+  .sb-pillar-blurb {
+    font-size: 0.92rem;
+    line-height: 1.55;
     color: var(--text-muted);
-    line-height: 1.5;
-    font-size: 0.95rem;
-    flex: 1;
+    margin: 0;
   }
 
-  .card-go {
-    margin-top: 0.4rem;
-    font-weight: 600;
+  .sb-summary p {
+    font-size: 1.05rem;
+    margin: 0 0 1.2rem;
+  }
+
+  /* company links inside the summary keep text color with a subtle underline */
+  .sb-summary :global(a.company-link) {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--text-faint);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: text-decoration-color 0.2s ease;
+  }
+
+  .sb-summary :global(a.company-link:hover) {
+    text-decoration-color: var(--accent);
+  }
+
+  .sb-looking {
+    margin: 2rem 0 0;
+    padding: 0.9em 1.1em;
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 8px 8px 0;
+    font-size: 1.02rem;
+    color: var(--text-muted);
+  }
+
+  .sb-contact {
+    margin: 2rem 0 0;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.98rem;
+    color: var(--text-muted);
+  }
+
+  .sb-contact a,
+  .sb-colophon a {
     color: var(--link);
-    font-size: 0.95rem;
+    font-weight: 500;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
   }
 
-  @media (max-width: 640px) {
-    .hub-grid {
+  .sb-contact a:hover,
+  .sb-colophon a:hover {
+    border-bottom-color: currentColor;
+  }
+
+  .sb-colophon {
+    margin: 0.7rem 0 0;
+    font-size: 0.85rem;
+    color: var(--text-faint);
+  }
+
+  .sb-colophon a {
+    color: var(--text-subtle);
+    font-weight: 400;
+  }
+
+  @keyframes sbFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sb-page {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 820px) {
+    .sb-content {
+      margin-left: 0;
+      padding: 1.75rem 1.25rem 2.5rem;
+      min-height: 0;
+    }
+
+    .sb-hook {
+      font-size: 1.55rem;
+    }
+
+    .sb-pillars {
       grid-template-columns: 1fr;
     }
   }
