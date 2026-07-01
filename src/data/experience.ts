@@ -19,7 +19,7 @@ export const experience: Role[] = [
     company: "PayIt",
     title: "Software Engineer II",
     dates: "Oct 2024 — Present",
-    context: "Payments platform, reliability, and applied-AI tooling.",
+    context: "Payments platform and applied-AI tooling.",
     bullets: [
       "Led Payment Plans from zero to production as primary engineer — a recurring-payments platform across four backend services (Java, Kafka, MongoDB) with idempotent consumers and full refund / cancellation policy logic. Shipped 4 weeks early; $15M+ processed to date, ~$400K projected ARR.",
       "Diagnosed and killed a production out-of-memory failure during a 6× traffic spike (~350 → 2,195 req/min) by batching GraphQL DataLoaders — cutting MongoDB round-trips from 2N to 2 per request.",

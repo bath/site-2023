@@ -1,0 +1,287 @@
+---
+import { profile } from "../data/profile";
+
+interface Props {
+  // Which in-variant page is current, for aria-current + active styling.
+  page?: "" | "work" | "skills";
+}
+
+const { page = "" } = Astro.props;
+
+const navLinks = [
+  { href: "/", label: "About", key: "" },
+  { href: "/work", label: "Work", key: "work" },
+  { href: "/skills", label: "Skills", key: "skills" },
+] as const;
+
+const externalLinks = [
+  { href: profile.resumeHref, label: "Résumé" },
+  { href: profile.linkedin, label: "LinkedIn" },
+  { href: profile.github, label: "GitHub" },
+  { href: `mailto:${profile.email}`, label: "Email" },
+] as const;
+---
+
+<!--
+  Self-contained refined sidebar. Builds its own scoped layout + mobile collapse
+  (sidebar → top bar) rather than reusing global.css's .fixed-nav, so the
+  "refined" type/spacing is fully under this variant's control.
+-->
+<aside class="sb-nav" aria-label="Site navigation">
+  <div class="sb-inner">
+    <a class="sb-identity" href="/">
+      <span class="sb-name">{profile.name}</span>
+      <span class="sb-tagline">{profile.tagline}</span>
+    </a>
+
+    <nav class="sb-primary" aria-label="Primary">
+      {
+        navLinks.map((l) => (
+          <a
+            href={l.href}
+            class:list={["sb-link", { active: l.key === page }]}
+            aria-current={l.key === page ? "page" : undefined}
+          >
+            <span class="sb-link-label">{l.label}</span>
+          </a>
+        ))
+      }
+    </nav>
+
+    <nav class="sb-external" aria-label="Elsewhere">
+      {
+        externalLinks.map((l) => (
+          <a class="sb-ext-link" href={l.href}>
+            {l.label}
+            <span class="sb-arrow" aria-hidden="true">↗</span>
+          </a>
+        ))
+      }
+    </nav>
+
+    <p class="sb-locale">{profile.locationShort}</p>
+  </div>
+</aside>
+
+<style>
+  /* ----------------------------------------------------------------------
+     Desktop — fixed rail on the left. The matching content offset lives in
+     each page's :global(.sb-content) rule.
+  ---------------------------------------------------------------------- */
+  .sb-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100vh;
+    border-right: 1px solid var(--border);
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    z-index: 10;
+  }
+
+  .sb-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* leave the top-right toggle untouched; pad enough to clear it visually */
+    padding: 2.75rem 2rem 2rem;
+    gap: 2.5rem;
+  }
+
+  .sb-identity {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    color: var(--text);
+  }
+
+  .sb-name {
+    font-size: 1.45rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .sb-tagline {
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--text-subtle);
+    text-wrap: balance;
+  }
+
+  .sb-primary {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .sb-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0;
+    font-size: 1.05rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--text-muted);
+    width: fit-content;
+    transition:
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  /* sliding accent tick to the left of the label */
+  .sb-link-label {
+    position: relative;
+  }
+
+  .sb-link-label::before {
+    content: "";
+    position: absolute;
+    left: -0.85rem;
+    top: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: translateY(-50%);
+    transition: width 0.2s ease;
+  }
+
+  .sb-link:hover {
+    color: var(--text);
+    transform: translateX(2px);
+  }
+
+  .sb-link.active {
+    color: var(--active);
+  }
+
+  .sb-link.active .sb-link-label::before,
+  .sb-link:hover .sb-link-label::before {
+    width: 0.5rem;
+  }
+
+  .sb-external {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .sb-ext-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+    color: var(--text-subtle);
+    width: fit-content;
+    transition: color 0.2s ease;
+  }
+
+  .sb-ext-link:hover {
+    color: var(--link);
+  }
+
+  .sb-arrow {
+    font-size: 0.75em;
+    opacity: 0.7;
+    transition: transform 0.2s ease;
+  }
+
+  .sb-ext-link:hover .sb-arrow {
+    transform: translate(1px, -1px);
+    opacity: 1;
+  }
+
+  .sb-locale {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin: 0;
+  }
+
+  /* ----------------------------------------------------------------------
+     Mobile (≤820px) — collapse to a normal-flow top bar, content goes full
+     width. Identity + nav row; external links + locale tuck into a wrap row.
+  ---------------------------------------------------------------------- */
+  @media (max-width: 820px) {
+    .sb-nav {
+      position: static;
+      width: 100%;
+      height: auto;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      background: transparent;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    .sb-inner {
+      height: auto;
+      padding: 1.5rem 1.25rem 1.25rem;
+      gap: 1.1rem;
+    }
+
+    .sb-name {
+      font-size: 1.3rem;
+    }
+
+    /* keep name clear of the fixed top-right toggle */
+    .sb-identity {
+      padding-right: 3rem;
+    }
+
+    .sb-primary {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0.3rem 1.4rem;
+    }
+
+    .sb-link {
+      padding: 0.1rem 0;
+    }
+
+    .sb-link:hover {
+      transform: none;
+    }
+
+    .sb-link-label::before {
+      display: none;
+    }
+
+    .sb-link.active .sb-link-label::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -0.2rem;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .sb-external {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.2rem;
+      margin-top: 0;
+      padding-top: 1rem;
+    }
+
+    .sb-locale {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sb-link,
+    .sb-link-label::before,
+    .sb-arrow {
+      transition: none;
+    }
+  }
+</style>
