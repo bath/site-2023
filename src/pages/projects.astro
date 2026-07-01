@@ -1,0 +1,238 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import SidebarNav from "../components/SidebarNav.astro";
+import { profile } from "../data/profile";
+import { projects, workProjects } from "../data/projects";
+---
+
+<MainLayout
+  title={`Projects — ${profile.name}`}
+  description={`Things ${profile.name} has built — tools, agents, and side projects.`}
+>
+  <SidebarNav page="projects" />
+
+  <main class="sb-content">
+    <div class="sb-page">
+      <h1 class="sb-h1">Projects</h1>
+
+      <ul class="sb-timeline">
+        {
+          projects.map((p) => (
+            <li class="sb-role">
+              <header class="sb-role-head">
+                <div class="sb-role-title">
+                  {p.repoUrl ? (
+                    <a class="sb-company sb-repo" href={p.repoUrl}>
+                      {p.name} <span class="sb-arrow" aria-hidden="true">↗</span>
+                    </a>
+                  ) : (
+                    <span class="sb-company">{p.name}</span>
+                  )}
+                  {p.private && <span class="sb-badge">private</span>}
+                </div>
+                <span class="sb-dates">{p.tech.join(" · ")}</span>
+              </header>
+              <p class="sb-context">{p.tagline}</p>
+              <p class="sb-desc">{p.description}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <section class="sb-section">
+        <h2 class="sb-h2">Built at PayIt</h2>
+        <p class="sb-note">Internal tooling — private repos, shown for context.</p>
+        <ul class="sb-timeline">
+          {
+            workProjects.map((p) => (
+              <li class="sb-role">
+                <header class="sb-role-head">
+                  <div class="sb-role-title">
+                    <span class="sb-company">{p.name}</span>
+                    {p.private && <span class="sb-badge">private</span>}
+                  </div>
+                  <span class="sb-dates">{p.tech.join(" · ")}</span>
+                </header>
+                <p class="sb-context">{p.tagline}</p>
+                <p class="sb-desc">{p.description}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </div>
+  </main>
+</MainLayout>
+
+<style>
+  .sb-content {
+    margin-left: 300px;
+    padding: 4.5rem 4rem 4rem;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  .sb-page {
+    max-width: 72ch;
+    animation: sbFadeIn 0.45s ease-out;
+  }
+
+  .sb-h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 0 0 2.2rem;
+  }
+
+  .sb-h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.25rem;
+  }
+
+  .sb-note {
+    margin: 0 0 1.1rem;
+    font-style: italic;
+    color: var(--text-subtle);
+    font-size: 0.88rem;
+  }
+
+  /* ---- timeline ---- */
+  .sb-timeline {
+    list-style: none;
+    padding: 0 0 0 1.5rem;
+    margin: 0;
+    border-left: 2px solid var(--border);
+  }
+
+  .sb-role {
+    position: relative;
+    margin-bottom: 2.5rem;
+  }
+
+  .sb-role:last-child {
+    margin-bottom: 0;
+  }
+
+  .sb-role::before {
+    content: "";
+    position: absolute;
+    left: -1.96rem;
+    top: 0.5em;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg-fallback);
+    box-shadow: 0 0 0 1px var(--accent-tint-border);
+  }
+
+  .sb-role-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.75rem;
+  }
+
+  .sb-role-title {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+
+  .sb-company {
+    font-weight: 600;
+    font-size: 1.08rem;
+    color: var(--text);
+  }
+
+  a.sb-repo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: color 0.2s ease;
+  }
+
+  a.sb-repo:hover {
+    color: var(--link);
+  }
+
+  .sb-arrow {
+    font-size: 0.72em;
+    opacity: 0.7;
+    transition: transform 0.2s ease;
+  }
+
+  a.sb-repo:hover .sb-arrow {
+    transform: translate(1px, -1px);
+    opacity: 1;
+  }
+
+  .sb-badge {
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    padding: 0.1em 0.6em;
+    position: relative;
+    top: -0.12em;
+    white-space: nowrap;
+  }
+
+  .sb-dates {
+    font-size: 0.85rem;
+    color: var(--text-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sb-context {
+    margin: 0.35rem 0 0.5rem;
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+
+  .sb-desc {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  /* ---- sections ---- */
+  .sb-section {
+    margin-top: 2.6rem;
+  }
+
+  @keyframes sbFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sb-page {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 820px) {
+    .sb-content {
+      margin-left: 0;
+      padding: 1.75rem 1.25rem 2.5rem;
+      min-height: 0;
+    }
+
+    .sb-h1 {
+      font-size: 1.7rem;
+    }
+  }
+</style>

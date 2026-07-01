@@ -3,7 +3,7 @@ import { profile } from "../data/profile";
 
 interface Props {
   // Which in-variant page is current, for aria-current + active styling.
-  page?: "" | "work" | "skills";
+  page?: "" | "work" | "projects" | "skills";
 }
 
 const { page = "" } = Astro.props;
@@ -11,6 +11,7 @@ const { page = "" } = Astro.props;
 const navLinks = [
   { href: "/", label: "About", key: "" },
   { href: "/work", label: "Work", key: "work" },
+  { href: "/projects", label: "Projects", key: "projects" },
   { href: "/skills", label: "Skills", key: "skills" },
 ] as const;
 
