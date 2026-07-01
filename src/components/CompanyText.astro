@@ -1,0 +1,26 @@
+---
+// Renders free text with any known company name turned into a link to its
+// official page. Unknown names (e.g. defunct qTrade.io) stay plain text.
+import { linkifyCompanies } from "../data/companies";
+
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+const segments = linkifyCompanies(text);
+---
+
+{
+  segments.map((seg) =>
+    seg.href ? (
+      <a
+        class="company-link"
+        href={seg.href}
+        target="_blank"
+        rel="noopener noreferrer">{seg.text}</a>
+    ) : (
+      <Fragment>{seg.text}</Fragment>
+    ),
+  )
+}

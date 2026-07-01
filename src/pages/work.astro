@@ -1,152 +1,274 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
-import { experience, leadership, education } from "../data/experience";
+import SidebarNav from "../components/SidebarNav.astro";
+import CompanyName from "../components/CompanyName.astro";
+import CompanyText from "../components/CompanyText.astro";
+import { profile } from "../data/profile";
+import { experience, earlier, leadership, education } from "../data/experience";
 ---
 
-<MainLayout>
-  <div class="page-content work">
-    <h1>Work</h1>
+<MainLayout
+  title={`Work — ${profile.name}`}
+  description={`Experience and roles — ${profile.name}, ${profile.title}.`}
+>
+  <SidebarNav page="work" />
 
-    <ol class="timeline">
-      {
-        experience.map((role) => (
-          <li class="role">
-            <header class="role-header">
-              <div class="role-title">
-                <span class="company">{role.company}</span>
-                <span class="title"> · {role.title}</span>
-              </div>
-              <span class="dates">{role.dates}</span>
-            </header>
-            {role.context && <p class="context">{role.context}</p>}
-            <ul class="bullets">
-              {role.bullets.map((b) => (
-                <li>{b}</li>
-              ))}
-            </ul>
-          </li>
-        ))
-      }
-    </ol>
+  <main class="sb-content">
+    <div class="sb-page">
+      <h1 class="sb-h1">Work</h1>
 
-    <section class="extra">
-      <h2>Leadership</h2>
-      <ul class="bullets">
-        {leadership.map((b) => <li>{b}</li>)}
-      </ul>
-    </section>
-
-    <section class="extra">
-      <h2>Education</h2>
-      <ul class="education">
+      <ol class="sb-timeline">
         {
-          education.map((e) => (
-            <li>
-              <span class="company">{e.school}</span>
-              <span> · {e.degree}</span>
-              <span class="dates"> · {e.dates}</span>
+          experience.map((role) => (
+            <li class="sb-role">
+              <header class="sb-role-head">
+                <div class="sb-role-title">
+                  <CompanyName name={role.company} class="sb-company" />
+                  <span class="sb-title"> · {role.title}</span>
+                </div>
+                <span class="sb-dates">{role.dates}</span>
+              </header>
+              {role.context && <p class="sb-context">{role.context}</p>}
+              <ul class="sb-bullets">
+                {role.bullets.map((b) => (
+                  <li>{b}</li>
+                ))}
+              </ul>
             </li>
           ))
         }
-      </ul>
-    </section>
-  </div>
+      </ol>
+
+      <section class="sb-section">
+        <h2 class="sb-h2">Earlier</h2>
+        <ul class="sb-earlier">
+          {
+            earlier.map((e) => (
+              <li>
+                <div class="sb-earlier-head">
+                  <CompanyName name={e.company} class="sb-company" />
+                  <span class="sb-title"> · {e.title}</span>
+                  <span class="sb-dates"> · {e.dates}</span>
+                </div>
+                <p class="sb-earlier-note">{e.note}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="sb-section">
+        <h2 class="sb-h2">Leadership</h2>
+        <ul class="sb-bullets sb-bullets-flush">
+          {
+            leadership.map((b) => (
+              <li>
+                <CompanyText text={b} />
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="sb-section">
+        <h2 class="sb-h2">Education</h2>
+        <ul class="sb-education">
+          {
+            education.map((e) => (
+              <li>
+                <CompanyName name={e.school} class="sb-company" />
+                <span class="sb-title"> · {e.degree}</span>
+                <span class="sb-dates"> · {e.dates}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </div>
+  </main>
 </MainLayout>
 
 <style>
-  .work {
+  .sb-content {
+    margin-left: 300px;
+    padding: 4.5rem 4rem 4rem;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  .sb-page {
     max-width: 72ch;
+    animation: sbFadeIn 0.45s ease-out;
   }
 
-  h1 {
-    font-size: 2em;
-    margin-bottom: 1.4em;
-    font-weight: 500;
+  .sb-h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 0 0 2.2rem;
   }
 
-  h2 {
-    font-size: 1.3em;
-    margin-bottom: 0.8em;
-    margin-top: 2em;
-    font-weight: 500;
+  .sb-h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 1rem;
   }
 
-  .timeline {
+  /* ---- timeline ---- */
+  .sb-timeline {
     list-style: none;
-    padding: 0;
+    padding: 0 0 0 1.5rem;
     margin: 0;
-    border-left: 2px solid rgba(35, 31, 32, 0.15);
-    padding-left: 1.5rem;
+    border-left: 2px solid var(--border);
   }
 
-  .role {
+  .sb-role {
     position: relative;
-    margin-bottom: 2.5em;
+    margin-bottom: 2.5rem;
   }
 
-  .role::before {
+  .sb-role:last-child {
+    margin-bottom: 0;
+  }
+
+  .sb-role::before {
     content: "";
     position: absolute;
-    left: -1.9rem;
-    top: 0.45em;
-    width: 10px;
-    height: 10px;
+    left: -1.96rem;
+    top: 0.5em;
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
-    background: rgb(255, 123, 77);
-    box-shadow: 0 0 10px rgba(255, 90, 60, 0.5);
+    background: var(--accent);
+    border: 2px solid var(--bg-fallback);
+    box-shadow: 0 0 0 1px var(--accent-tint-border);
   }
 
-  .role-header {
+  .sb-role-head {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     flex-wrap: wrap;
-    gap: 0.5em;
+    gap: 0.3rem 0.75rem;
   }
 
-  .company {
+  .sb-company {
     font-weight: 600;
-    font-size: 1.1em;
+    font-size: 1.08rem;
   }
 
-  .title {
-    color: rgba(35, 31, 32, 0.85);
+  .sb-title {
+    color: var(--text-muted);
   }
 
-  .dates {
-    font-size: 0.9em;
-    color: rgba(35, 31, 32, 0.6);
+  .sb-dates {
+    font-size: 0.85rem;
+    color: var(--text-subtle);
     font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
 
-  .context {
-    margin-top: 0.4em;
-    margin-bottom: 0.8em;
+  .sb-context {
+    margin: 0.35rem 0 0.7rem;
     font-style: italic;
-    color: rgba(35, 31, 32, 0.75);
-    font-size: 0.95em;
+    color: var(--text-muted);
+    font-size: 0.92rem;
   }
 
-  .bullets {
-    margin-top: 0.5em;
-    padding-left: 1.2em;
+  .sb-bullets {
+    margin: 0.5rem 0 0;
+    padding-left: 1.15rem;
   }
 
-  .bullets li {
-    margin-bottom: 0.4em;
+  .sb-bullets-flush {
+    margin-top: 0;
+  }
+
+  .sb-bullets li {
+    margin-bottom: 0.45rem;
     line-height: 1.55;
   }
 
-  .extra {
-    margin-top: 2em;
+  .sb-bullets li::marker {
+    color: var(--text-faint);
   }
 
-  .education {
+  /* ---- sections ---- */
+  .sb-section {
+    margin-top: 2.6rem;
+  }
+
+  .sb-earlier {
     list-style: none;
     padding: 0;
+    margin: 0;
   }
 
-  .education li {
-    margin-bottom: 0.4em;
+  .sb-earlier li {
+    margin-bottom: 1rem;
+  }
+
+  .sb-earlier li:last-child {
+    margin-bottom: 0;
+  }
+
+  .sb-earlier-note {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin: 0.15rem 0 0;
+  }
+
+  .sb-education {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sb-education li {
+    margin-bottom: 0.4rem;
+  }
+
+  /* company links keep text color with a subtle underline (CompanyName/Text) */
+  .sb-page :global(a.company-link) {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--text-faint);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: text-decoration-color 0.2s ease;
+  }
+
+  .sb-page :global(a.company-link:hover) {
+    text-decoration-color: var(--accent);
+  }
+
+  @keyframes sbFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sb-page {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 820px) {
+    .sb-content {
+      margin-left: 0;
+      padding: 1.75rem 1.25rem 2.5rem;
+      min-height: 0;
+    }
+
+    .sb-h1 {
+      font-size: 1.7rem;
+    }
   }
 </style>

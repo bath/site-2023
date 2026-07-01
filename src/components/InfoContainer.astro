@@ -19,9 +19,7 @@ const { weatherData } = Astro.props;
     </div>
   </div>
   {
-    weatherData === null ? (
-      <div class="weather-info weather-author">Kansas City weather unavailable</div>
-    ) : (
+    weatherData !== null && (
       <div class="weather-info weather-author">
         Kansas City · {weatherData.temperature}°F · {weatherData.description}
       </div>
@@ -39,12 +37,12 @@ const { weatherData } = Astro.props;
     gap: 5px;
     z-index: 1000;
     font-size: 14px;
-    color: rgba(35, 31, 32, 0.6);
+    color: var(--text-subtle);
   }
 
   .location {
     font-size: 14px;
-    color: rgba(35, 31, 32, 0.6);
+    color: var(--text-subtle);
     padding: 5px 10px;
   }
 
@@ -69,5 +67,24 @@ const { weatherData } = Astro.props;
   .weather-author {
     font-size: 12px;
     opacity: 0.85;
+  }
+
+  /* On mobile the fixed widget would overlap content — drop it into normal
+     flow as a small footer strip below the page. */
+  @media (max-width: 820px) {
+    .info-container {
+      position: static;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.2rem 1rem;
+      margin: 0.25rem 1.25rem 2rem;
+    }
+
+    .location,
+    .day-counter,
+    .weather-info {
+      padding: 0;
+    }
   }
 </style>

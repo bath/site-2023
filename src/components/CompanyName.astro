@@ -1,0 +1,26 @@
+---
+// A company/org name: links to its official page when known, otherwise plain.
+import { companyLinks } from "../data/companies";
+
+interface Props {
+  name: string;
+  class?: string;
+}
+
+const { name, class: className } = Astro.props;
+const href = companyLinks[name];
+---
+
+{
+  href ? (
+    <a
+      class="company-link"
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer">
+      <span class={className}>{name}</span>
+    </a>
+  ) : (
+    <span class={className}>{name}</span>
+  )
+}

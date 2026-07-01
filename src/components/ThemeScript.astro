@@ -1,0 +1,76 @@
+---
+// Renders the inline theme resolver. Must live in <head> and run before the
+// body paints. Resolves light/dark/auto from localStorage (+ OS preference),
+// cycles the theme on any `.theme-toggle` click (event delegation survives
+// view transitions), and re-applies the theme across client-side navigation.
+---
+
+<script is:inline>
+  (function () {
+    var KEY = "theme";
+    var ORDER = ["auto", "light", "dark"];
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+
+    function readChoice() {
+      var c;
+      try {
+        c = localStorage.getItem(KEY);
+      } catch (e) {}
+      return c === "light" || c === "dark" || c === "auto" ? c : "auto";
+    }
+
+    function apply(root) {
+      var choice = readChoice();
+      var dark = choice === "dark" || (choice === "auto" && mq.matches);
+      root.dataset.theme = dark ? "dark" : "light";
+      root.dataset.themeChoice = choice;
+    }
+
+    // Optional ?theme=light|dark|auto override (handy for sharing a themed
+    // link or QA); it just seeds the stored preference, then behaves normally.
+    try {
+      var param = new URLSearchParams(location.search).get("theme");
+      if (param === "light" || param === "dark" || param === "auto") {
+        localStorage.setItem(KEY, param);
+      }
+    } catch (e) {}
+
+    // Always re-resolve (this inline script may re-run on view-transition
+    // navigations).
+    apply(document.documentElement);
+
+    // Register listeners exactly once — document/window persist across view
+    // transitions, so re-running this script must not stack duplicates.
+    if (!window.__themeWired) {
+      window.__themeWired = true;
+
+      document.addEventListener("click", function (e) {
+        var btn =
+          e.target && e.target.closest && e.target.closest(".theme-toggle");
+        if (!btn) return;
+        var next = ORDER[(ORDER.indexOf(readChoice()) + 1) % ORDER.length];
+        try {
+          localStorage.setItem(KEY, next);
+        } catch (e) {}
+        apply(document.documentElement);
+        window.dispatchEvent(new CustomEvent("themechange"));
+      });
+
+      mq.addEventListener("change", function () {
+        if (readChoice() === "auto") {
+          apply(document.documentElement);
+          window.dispatchEvent(new CustomEvent("themechange"));
+        }
+      });
+
+      // Paint the resolved theme onto the incoming page before it swaps in
+      // (no navigation flash), then re-assert afterward.
+      document.addEventListener("astro:before-swap", function (e) {
+        apply(e.newDocument.documentElement);
+      });
+      document.addEventListener("astro:after-swap", function () {
+        apply(document.documentElement);
+      });
+    }
+  })();
+</script>
