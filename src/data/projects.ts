@@ -9,6 +9,14 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    name: "voice-pr",
+    tagline: "Speak PR review into committed changes.",
+    description:
+      "Chrome extension plus local Node bridge for PR authors: open GitHub's Files changed tab, record while scrolling the diff, and each spoken note is anchored to the visible file and line. Local Whisper transcription keeps code audio private, then the batch is handed to an agent/orchestrator that lands reviewable commits and leaves an intent trail on the PR.",
+    tech: ["JavaScript", "Chrome extension", "Node", "Whisper", "Claude agents"],
+    repoUrl: "https://github.com/bath-tub/voice-pr",
+  },
+  {
     name: "recompile",
     tagline: "Your career, compiled to fit.",
     description:
@@ -34,10 +42,10 @@ export const projects: Project[] = [
   },
   {
     name: "linkedin-job-collector",
-    tagline: "Finds & collects jobs from LinkedIn posts.",
+    tagline: "A job-search agent you can run from `jobs`.",
     description:
-      "Scrolls a LinkedIn content search, captures posts from the page's server-driven-UI payloads, dedupes them into SQLite, and emits a Claude-filtered digest of genuine remote-SWE hiring posts — then emails you when new ones match.",
-    tech: ["Python", "Playwright", "SQLite", "Claude"],
+      "Binary-style Python CLI/TUI for running targeted LinkedIn post searches: pick a query and a Claude or Cursor harness, scrape with Playwright, dedupe into SQLite, and get lean emails with an outreach hook plus applicant-prep facts for each real remote-SWE lead. Ships from GitHub Releases on every main commit, with `jobs update` for self-updates and `jobs doctor` for local pipeline checks.",
+    tech: ["Python", "Playwright", "SQLite", "Cursor", "Claude", "GitHub Releases"],
     repoUrl: "https://github.com/bath/linkedin-job-collector",
   },
 ];
