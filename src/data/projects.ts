@@ -42,10 +42,10 @@ export const projects: Project[] = [
   },
   {
     name: "linkedin-job-collector",
-    tagline: "Finds & collects jobs from LinkedIn posts.",
+    tagline: "A job-search agent you can run from `jobs`.",
     description:
-      "Scrolls a LinkedIn content search, captures posts from the page's server-driven-UI payloads, dedupes them into SQLite, and emits a Claude-filtered digest of genuine remote-SWE hiring posts — then emails you when new ones match.",
-    tech: ["Python", "Playwright", "SQLite", "Claude"],
+      "Binary-style Python CLI/TUI for running targeted LinkedIn post searches: pick a query and a Claude or Cursor harness, scrape with Playwright, dedupe into SQLite, and get lean emails with an outreach hook plus applicant-prep facts for each real remote-SWE lead. Ships from GitHub Releases on every main commit, with `jobs update` for self-updates and `jobs doctor` for local pipeline checks.",
+    tech: ["Python", "Playwright", "SQLite", "Cursor", "Claude", "GitHub Releases"],
     repoUrl: "https://github.com/bath/linkedin-job-collector",
   },
 ];
