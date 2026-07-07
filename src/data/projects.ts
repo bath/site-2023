@@ -9,6 +9,14 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    name: "voice-pr",
+    tagline: "Speak PR review into committed changes.",
+    description:
+      "Chrome extension plus local Node bridge for PR authors: open GitHub's Files changed tab, record while scrolling the diff, and each spoken note is anchored to the visible file and line. Local Whisper transcription keeps code audio private, then the batch is handed to an agent/orchestrator that lands reviewable commits and leaves an intent trail on the PR.",
+    tech: ["JavaScript", "Chrome extension", "Node", "Whisper", "Claude agents"],
+    repoUrl: "https://github.com/bath-tub/voice-pr",
+  },
+  {
     name: "recompile",
     tagline: "Your career, compiled to fit.",
     description:
