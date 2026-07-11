@@ -1,9 +1,8 @@
 export const profile = {
   name: "Miller Bath",
   title: "Backend Engineer",
-  location: "San Francisco, CA",
-  // Honest "where I am now → where I'm headed" — reinforces the relocation story.
-  locationShort: "KC → SF",
+  location: "Kansas City, MO",
+  locationShort: "Kansas City",
   email: "millerzbath@gmail.com",
   linkedin: "https://www.linkedin.com/in/millerbath",
   github: "https://github.com/bath",
@@ -45,5 +44,5 @@ export const profile = {
   ],
 
   lookingFor:
-    "Open to backend, product, or AI-product roles at SF seed–Series A startups. Relocating to San Francisco in 2026.",
+    "Kansas City–based. Open to backend, product, or AI-product roles at early-stage startups — around KC or remote.",
 };
