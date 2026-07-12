@@ -1,11 +1,13 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import SidebarNav from "../components/SidebarNav.astro";
-import CompanyText from "../components/CompanyText.astro";
 import { profile } from "../data/profile";
 ---
 
-<MainLayout title={`${profile.name} — ${profile.title}`} description={profile.hook}>
+<MainLayout
+  title={`${profile.name} — ${profile.title}`}
+  description={profile.hook}
+>
   <SidebarNav page="" />
 
   <main class="sb-content">
@@ -17,39 +19,45 @@ import { profile } from "../data/profile";
 
       <h1 class="sb-hook">{profile.hook}</h1>
 
-      <ul class="sb-highlights" aria-label="Highlights">
-        {profile.highlights.map((h) => <li>{h}</li>)}
-      </ul>
-
-      <section class="sb-pillars" aria-label="What I do">
-        {
-          profile.pillars.map((p) => (
-            <article class="sb-pillar">
-              <h2 class="sb-pillar-label">{p.label}</h2>
-              <p class="sb-pillar-blurb">{p.blurb}</p>
-            </article>
-          ))
-        }
-      </section>
-
       <div class="sb-summary">
-        {
-          profile.summary.map((paragraph) => (
-            <p>
-              <CompanyText text={paragraph} />
-            </p>
-          ))
-        }
+        <p>
+          Last year at <a href="https://payitgov.com">PayIt</a>, I joined the
+          Payments Platform team to build and launch <a
+            href="/images/payment-plans.png">Payment Plans</a
+          >, a recurring-payments product projected to bring more than $400K in
+          annual revenue online. Using <a href="https://cursor.com">Cursor</a>
+          and <a href="https://www.anthropic.com/claude-code">Claude Code</a>, I
+          delivered it four weeks ahead of schedule and added a sidecar
+          lifecycle monitor that caught dozens of bugs before launch. Built with
+          <a href="https://www.java.com">Java</a>, <a
+            href="https://kafka.apache.org">Kafka</a
+          >, and <a href="https://www.mongodb.com">MongoDB</a>, the system has
+          processed more than $15M, with plans to expand to more than nine
+          clients.
+        </p>
+
+        <p>
+          After a successful launch with <a href="https://www.hctax.net"
+            >Harris County</a
+          >, I joined a newly formed AI product and tooling team. Working
+          closely with a product manager, I added RAG prompt management to <a
+            href="https://payitgov.com/resource/ai-search-solution-is-changing-government-service-delivery/"
+            >Smart Guide</a
+          >, enabling prompt versioning, A/B testing, and canary rollouts. I was
+          then selected by our VP of Engineering to join an AI skunkworks team,
+          where I built internal agents and a knowledge base to rethink parts of
+          the software development lifecycle.
+        </p>
       </div>
 
-      <p class="sb-looking">{profile.lookingFor}</p>
-
       <p class="sb-contact">
-        Reach me at <a href={`mailto:${profile.email}`}>{profile.email}</a> · <a
-          href={profile.resumeHref}>Résumé</a
-        > · <a href={profile.linkedin}>LinkedIn</a> · <a href={profile.github}
+        Reach out on <a href={profile.x}>X</a>, <a href={profile.linkedin}
+          >LinkedIn</a
+        >, or <a href={`mailto:${profile.email}`}>email</a>. You can also view
+        my
+        <a href={profile.resumeHref}>résumé</a> or <a href={profile.github}
           >GitHub</a
-        >
+        >.
       </p>
 
       <p class="sb-colophon">
@@ -99,62 +107,12 @@ import { profile } from "../data/profile";
     text-wrap: balance;
   }
 
-  .sb-highlights {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 2.5rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .sb-highlights li {
-    font-size: 0.85rem;
-    font-weight: 500;
-    padding: 0.35em 0.85em;
-    border-radius: 999px;
-    background: var(--accent-tint);
-    border: 1px solid var(--accent-tint-border);
-    color: var(--text);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .sb-pillars {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 2.5rem;
-  }
-
-  .sb-pillar {
-    padding: 1.1rem 1.2rem;
-    border: 1px solid var(--surface-border);
-    background: var(--surface);
-    border-radius: 12px;
-  }
-
-  .sb-pillar-label {
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    margin: 0 0 0.45rem;
-    color: var(--text);
-  }
-
-  .sb-pillar-blurb {
-    font-size: 0.92rem;
-    line-height: 1.55;
-    color: var(--text-muted);
-    margin: 0;
-  }
-
   .sb-summary p {
     font-size: 1.05rem;
     margin: 0 0 1.2rem;
   }
 
-  /* company links inside the summary keep text color with a subtle underline */
-  .sb-summary :global(a.company-link) {
+  .sb-summary a {
     color: inherit;
     text-decoration: underline;
     text-decoration-color: var(--text-faint);
@@ -163,18 +121,8 @@ import { profile } from "../data/profile";
     transition: text-decoration-color 0.2s ease;
   }
 
-  .sb-summary :global(a.company-link:hover) {
+  .sb-summary a:hover {
     text-decoration-color: var(--accent);
-  }
-
-  .sb-looking {
-    margin: 2rem 0 0;
-    padding: 0.9em 1.1em;
-    border-left: 3px solid var(--accent);
-    background: var(--surface);
-    border-radius: 0 8px 8px 0;
-    font-size: 1.02rem;
-    color: var(--text-muted);
   }
 
   .sb-contact {
@@ -235,10 +183,6 @@ import { profile } from "../data/profile";
 
     .sb-hook {
       font-size: 1.55rem;
-    }
-
-    .sb-pillars {
-      grid-template-columns: 1fr;
     }
   }
 </style>
