@@ -18,6 +18,7 @@ const navLinks = [
 const externalLinks = [
   { href: profile.resumeHref, label: "Résumé" },
   { href: profile.linkedin, label: "LinkedIn" },
+  { href: profile.x, label: "X" },
   { href: profile.github, label: "GitHub" },
   { href: `mailto:${profile.email}`, label: "Email" },
 ] as const;
@@ -54,7 +55,9 @@ const externalLinks = [
         externalLinks.map((l) => (
           <a class="sb-ext-link" href={l.href}>
             {l.label}
-            <span class="sb-arrow" aria-hidden="true">↗</span>
+            <span class="sb-arrow" aria-hidden="true">
+              ↗
+            </span>
           </a>
         ))
       }
