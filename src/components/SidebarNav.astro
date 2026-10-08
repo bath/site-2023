@@ -16,7 +16,7 @@ const navLinks = [
 ] as const;
 
 const externalLinks = [
-  { href: profile.resumeHref, label: "Résumé" },
+  { href: profile.resumeHref, label: "Résumé archive" },
   { href: profile.linkedin, label: "LinkedIn" },
   { href: profile.x, label: "X" },
   { href: profile.github, label: "GitHub" },
@@ -78,6 +78,8 @@ const externalLinks = [
     left: 0;
     width: 300px;
     height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
     border-right: 1px solid var(--border);
     background: var(--glass);
     -webkit-backdrop-filter: blur(10px);
@@ -88,7 +90,7 @@ const externalLinks = [
   .sb-inner {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    min-height: 100%;
     /* leave the top-right toggle untouched; pad enough to clear it visually */
     padding: 2.75rem 2rem 2rem;
     gap: 2.5rem;
@@ -125,18 +127,18 @@ const externalLinks = [
     position: relative;
     display: inline-flex;
     align-items: center;
+    min-width: 44px;
+    min-height: 44px;
     padding: 0.3rem 0;
     font-size: 1.05rem;
     font-weight: 500;
     letter-spacing: -0.01em;
     color: var(--text-muted);
     width: fit-content;
-    transition:
-      color 0.2s ease,
-      transform 0.2s ease;
+    transition: color 150ms ease;
   }
 
-  /* sliding accent tick to the left of the label */
+  /* The accent changes opacity; the link and its hit area stay still. */
   .sb-link-label {
     position: relative;
   }
@@ -146,16 +148,12 @@ const externalLinks = [
     position: absolute;
     left: -0.85rem;
     top: 50%;
-    width: 0;
+    width: 0.5rem;
     height: 2px;
     background: var(--accent);
     transform: translateY(-50%);
-    transition: width 0.2s ease;
-  }
-
-  .sb-link:hover {
-    color: var(--text);
-    transform: translateX(2px);
+    opacity: 0;
+    transition: opacity 150ms ease;
   }
 
   .sb-link.active {
@@ -163,8 +161,12 @@ const externalLinks = [
   }
 
   .sb-link.active .sb-link-label::before,
-  .sb-link:hover .sb-link-label::before {
-    width: 0.5rem;
+  .sb-link:focus-visible .sb-link-label::before {
+    opacity: 1;
+  }
+
+  .sb-link:focus-visible {
+    color: var(--text);
   }
 
   .sb-external {
@@ -180,25 +182,48 @@ const externalLinks = [
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
+    min-width: 44px;
+    min-height: 44px;
     font-size: 0.85rem;
     color: var(--text-subtle);
     width: fit-content;
-    transition: color 0.2s ease;
+    transition: color 150ms ease;
   }
 
-  .sb-ext-link:hover {
+  .sb-ext-link:focus-visible {
     color: var(--link);
   }
 
   .sb-arrow {
     font-size: 0.75em;
     opacity: 0.7;
-    transition: transform 0.2s ease;
+    transition: opacity 150ms ease;
   }
 
-  .sb-ext-link:hover .sb-arrow {
-    transform: translate(1px, -1px);
+  .sb-ext-link:focus-visible .sb-arrow {
     opacity: 1;
+  }
+
+  .sb-link:focus-visible,
+  .sb-link:focus-visible .sb-link-label::before,
+  .sb-ext-link:focus-visible,
+  .sb-ext-link:focus-visible .sb-arrow {
+    transition: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-link:hover {
+      color: var(--text);
+    }
+
+    .sb-link:hover .sb-link-label::before,
+    .sb-ext-link:hover .sb-arrow {
+      opacity: 1;
+    }
+
+    .sb-ext-link:hover {
+      color: var(--link);
+    }
   }
 
   .sb-locale {
@@ -218,6 +243,7 @@ const externalLinks = [
       position: static;
       width: 100%;
       height: auto;
+      overflow-y: visible;
       border-right: none;
       border-bottom: 1px solid var(--border);
       background: transparent;
@@ -226,7 +252,7 @@ const externalLinks = [
     }
 
     .sb-inner {
-      height: auto;
+      min-height: 0;
       padding: 1.5rem 1.25rem 1.25rem;
       gap: 1.1rem;
     }
@@ -248,10 +274,6 @@ const externalLinks = [
 
     .sb-link {
       padding: 0.1rem 0;
-    }
-
-    .sb-link:hover {
-      transform: none;
     }
 
     .sb-link-label::before {
@@ -283,6 +305,7 @@ const externalLinks = [
 
   @media (prefers-reduced-motion: reduce) {
     .sb-link,
+    .sb-ext-link,
     .sb-link-label::before,
     .sb-arrow {
       transition: none;

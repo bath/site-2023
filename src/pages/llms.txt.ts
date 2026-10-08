@@ -13,6 +13,10 @@ Contact Miller about a role by email: ${profile.email}.
 
 ${profile.thinking.join("\n\n")}
 
+## What Kanapy is building
+
+${profile.productDetails.map((detail) => `### ${detail.title}\n\n${detail.body}`).join("\n\n")}
+
 ## Pages
 
 - [About](https://www.mzb.dev/): Current work, thinking, and hiring at Kanapy.

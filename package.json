@@ -7,7 +7,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "node --test"
   },
   "dependencies": {
     "@fontsource/titillium-web": "^5.2.8",

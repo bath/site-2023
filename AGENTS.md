@@ -13,7 +13,7 @@ This is Miller Bath's personal Astro site, deployed on Vercel from `main`.
 ## Development
 
 Use Node >=22.12, `npm ci`, `npm run dev`, and `npm run build`.
-Run `npx prettier --check` on changed source files. There is no test suite configured.
+Run `npx prettier --check` on changed source files. `npm test` runs the theme regression checks.
 Use a branch and a dedicated worktree under `.worktrees/`. Keep commits signed and open a PR.
 
 ## Interface

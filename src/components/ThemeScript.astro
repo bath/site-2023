@@ -19,11 +19,24 @@
       return c === "light" || c === "dark" || c === "auto" ? c : "auto";
     }
 
+    // Keep the control usable when the browser does not allow storage.
+    if (!window.__themeChoice) window.__themeChoice = readChoice();
+
     function apply(root) {
-      var choice = readChoice();
+      var choice = window.__themeChoice;
       var dark = choice === "dark" || (choice === "auto" && mq.matches);
       root.dataset.theme = dark ? "dark" : "light";
       root.dataset.themeChoice = choice;
+      var next = ORDER[(ORDER.indexOf(choice) + 1) % ORDER.length];
+      var current =
+        choice === "auto" ? "auto (" + (dark ? "dark" : "light") + ")" : choice;
+      var label = "Color theme: " + current + ". Switch to " + next + " theme";
+      root.ownerDocument
+        .querySelectorAll(".theme-toggle")
+        .forEach(function (btn) {
+          btn.setAttribute("aria-label", label);
+          btn.setAttribute("title", label);
+        });
     }
 
     // Optional ?theme=light|dark|auto override (handy for sharing a themed
@@ -31,6 +44,7 @@
     try {
       var param = new URLSearchParams(location.search).get("theme");
       if (param === "light" || param === "dark" || param === "auto") {
+        window.__themeChoice = param;
         localStorage.setItem(KEY, param);
       }
     } catch (e) {}
@@ -48,7 +62,9 @@
         var btn =
           e.target && e.target.closest && e.target.closest(".theme-toggle");
         if (!btn) return;
-        var next = ORDER[(ORDER.indexOf(readChoice()) + 1) % ORDER.length];
+        var next =
+          ORDER[(ORDER.indexOf(window.__themeChoice) + 1) % ORDER.length];
+        window.__themeChoice = next;
         try {
           localStorage.setItem(KEY, next);
         } catch (e) {}
@@ -57,10 +73,23 @@
       });
 
       mq.addEventListener("change", function () {
-        if (readChoice() === "auto") {
+        if (window.__themeChoice === "auto") {
           apply(document.documentElement);
           window.dispatchEvent(new CustomEvent("themechange"));
         }
+      });
+
+      window.addEventListener("storage", function (e) {
+        if (e.key !== KEY && e.key !== null) return;
+        window.__themeChoice = readChoice();
+        apply(document.documentElement);
+        window.dispatchEvent(new CustomEvent("themechange"));
+      });
+      document.addEventListener("DOMContentLoaded", function () {
+        apply(document.documentElement);
+      });
+      document.addEventListener("astro:page-load", function () {
+        apply(document.documentElement);
       });
 
       // Paint the resolved theme onto the incoming page before it swaps in
