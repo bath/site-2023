@@ -30,7 +30,6 @@
       100% 100%,
       0% 0%;
     animation: ambient-drift 22s ease-in-out infinite alternate;
-    will-change: background-position;
   }
 
   @keyframes ambient-drift {
@@ -56,19 +55,25 @@
 </style>
 
 <script>
+  import { isTransitionBeforeSwapEvent } from "astro:transitions/client";
   import { getSeasonalColors } from "../utils/seasonalGradient";
 
-  function applySeasonalColors() {
-    const isDark = document.documentElement.dataset.theme === "dark";
+  function applySeasonalColors(root = document.documentElement) {
+    const isDark = root.dataset.theme === "dark";
     const { startColor, endColor } = getSeasonalColors(isDark);
-    document.documentElement.style.setProperty("--startColor", startColor);
-    document.documentElement.style.setProperty("--endColor", endColor);
+    root.style.setProperty("--startColor", startColor);
+    root.style.setProperty("--endColor", endColor);
   }
 
   // Apply immediately on initial load, then re-apply on every client-side
   // navigation (gradient persists across body swaps) and whenever the theme
   // changes so the palette darkens/lightens with light/dark mode.
   applySeasonalColors();
-  document.addEventListener("astro:page-load", applySeasonalColors);
-  window.addEventListener("themechange", applySeasonalColors);
+  document.addEventListener("astro:before-swap", (event) => {
+    if (isTransitionBeforeSwapEvent(event)) {
+      applySeasonalColors(event.newDocument.documentElement);
+    }
+  });
+  document.addEventListener("astro:page-load", () => applySeasonalColors());
+  window.addEventListener("themechange", () => applySeasonalColors());
 </script>

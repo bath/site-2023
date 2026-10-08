@@ -3,6 +3,7 @@
 // domain is defunct (DNS no longer resolves), so it stays plain text rather
 // than linking a dead/parked page. Cerner now redirects to Oracle Health.
 export const companyLinks: Record<string, string> = {
+  Kanapy: "https://kanapy.com",
   PayIt: "https://payitgov.com",
   VIZIO: "https://www.vizio.com",
   Cerner: "https://www.cerner.com",

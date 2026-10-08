@@ -11,7 +11,7 @@ import { projects, workProjects } from "../data/projects";
 >
   <SidebarNav page="projects" />
 
-  <main class="sb-content">
+  <main class="sb-content" id="main-content" tabindex="-1">
     <div class="sb-page">
       <h1 class="sb-h1">Projects</h1>
 
@@ -23,7 +23,10 @@ import { projects, workProjects } from "../data/projects";
                 <div class="sb-role-title">
                   {p.repoUrl ? (
                     <a class="sb-company sb-repo" href={p.repoUrl}>
-                      {p.name} <span class="sb-arrow" aria-hidden="true">↗</span>
+                      {p.name}{" "}
+                      <span class="sb-arrow" aria-hidden="true">
+                        ↗
+                      </span>
                     </a>
                   ) : (
                     <span class="sb-company">{p.name}</span>
@@ -39,9 +42,12 @@ import { projects, workProjects } from "../data/projects";
         }
       </ul>
 
-      <section class="sb-section">
-        <h2 class="sb-h2">Built at PayIt</h2>
-        <p class="sb-note">Internal tooling — private repos, shown for context.</p>
+      <details class="sb-section sb-archive">
+        <summary>Archive: built at PayIt</summary>
+        <p class="sb-note">
+          Previous work. These internal tools are archived here as career
+          history.
+        </p>
         <ul class="sb-timeline">
           {
             workProjects.map((p) => (
@@ -59,7 +65,7 @@ import { projects, workProjects } from "../data/projects";
             ))
           }
         </ul>
-      </section>
+      </details>
     </div>
   </main>
 </MainLayout>
@@ -74,7 +80,6 @@ import { projects, workProjects } from "../data/projects";
 
   .sb-page {
     max-width: 72ch;
-    animation: sbFadeIn 0.45s ease-out;
   }
 
   .sb-h1 {
@@ -96,6 +101,16 @@ import { projects, workProjects } from "../data/projects";
     font-style: italic;
     color: var(--text-subtle);
     font-size: 0.88rem;
+  }
+
+  .sb-archive summary {
+    cursor: pointer;
+    padding: 0.75rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  .sb-archive[open] summary {
+    margin-bottom: 0.75rem;
   }
 
   /* ---- timeline ---- */
@@ -152,22 +167,40 @@ import { projects, workProjects } from "../data/projects";
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
-    transition: color 0.2s ease;
+    min-height: 44px;
+    text-decoration: underline;
+    text-decoration-color: var(--text-faint);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color 150ms ease;
   }
 
-  a.sb-repo:hover {
+  a.sb-repo:focus-visible {
     color: var(--link);
+    text-decoration-color: currentColor;
+    transition: none;
   }
 
   .sb-arrow {
     font-size: 0.72em;
     opacity: 0.7;
-    transition: transform 0.2s ease;
+    transition: opacity 150ms ease;
   }
 
-  a.sb-repo:hover .sb-arrow {
-    transform: translate(1px, -1px);
+  a.sb-repo:focus-visible .sb-arrow {
     opacity: 1;
+    transition: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    a.sb-repo:hover {
+      color: var(--link);
+      text-decoration-color: currentColor;
+    }
+
+    a.sb-repo:hover .sb-arrow {
+      opacity: 1;
+    }
   }
 
   .sb-badge {
@@ -207,20 +240,10 @@ import { projects, workProjects } from "../data/projects";
     margin-top: 2.6rem;
   }
 
-  @keyframes sbFadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .sb-page {
-      animation: none;
+    a.sb-repo,
+    .sb-arrow {
+      transition: none;
     }
   }
 

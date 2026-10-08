@@ -14,11 +14,16 @@ export interface EarlierRole {
   note: string;
 }
 
+export const currentWork = {
+  company: "Kanapy",
+  focus: "Bringing AI to America's tradespeople.",
+};
+
 export const experience: Role[] = [
   {
     company: "PayIt",
     title: "Software Engineer II",
-    dates: "Oct 2024 — Present",
+    dates: "From Oct 2024 · Previous role",
     context: "Payments platform and applied-AI tooling.",
     bullets: [
       "Led Payment Plans from zero to production as primary engineer — a recurring-payments platform across four backend services (Java, Kafka, MongoDB) with idempotent consumers and full refund / cancellation policy logic. Shipped 4 weeks early; $15M+ processed to date, ~$400K projected ARR.",

@@ -27,8 +27,8 @@
 
   --text: rgb(35, 31, 32);
   --text-muted: rgba(35, 31, 32, 0.82);
-  --text-subtle: rgba(35, 31, 32, 0.6);
-  --text-faint: rgba(35, 31, 32, 0.42);
+  --text-subtle: rgba(35, 31, 32, 0.78);
+  --text-faint: rgba(35, 31, 32, 0.72);
 
   --border: rgba(35, 31, 32, 0.15);
   --border-strong: rgba(35, 31, 32, 0.25);
@@ -40,6 +40,7 @@
   --accent-tint: rgba(255, 123, 77, 0.12);
   --accent-tint-border: rgba(255, 123, 77, 0.35);
 
+  --focus-ring: rgb(18, 81, 126);
   --link: rgb(18, 81, 126);
   --active: rgb(36, 110, 83);
 
@@ -60,8 +61,8 @@
 
   --text: rgb(233, 230, 226);
   --text-muted: rgba(233, 230, 226, 0.8);
-  --text-subtle: rgba(233, 230, 226, 0.58);
-  --text-faint: rgba(233, 230, 226, 0.4);
+  --text-subtle: rgba(233, 230, 226, 0.72);
+  --text-faint: rgba(233, 230, 226, 0.66);
 
   --border: rgba(233, 230, 226, 0.16);
   --border-strong: rgba(233, 230, 226, 0.3);
@@ -73,6 +74,7 @@
   --accent-tint: rgba(255, 142, 98, 0.16);
   --accent-tint-border: rgba(255, 142, 98, 0.42);
 
+  --focus-ring: rgb(127, 187, 230);
   --link: rgb(127, 187, 230);
   --active: rgb(110, 200, 160);
 
@@ -95,7 +97,7 @@ html {
 
 body {
   color: var(--text);
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
 }
 
 img {
@@ -148,14 +150,13 @@ a {
 }
 
 .nav-links .nav-link {
-  transition:
-    color 0.25s ease,
-    transform 0.25s ease;
+  transition: color 0.15s ease;
 }
 
-.nav-links .nav-link:hover {
-  color: var(--accent);
-  transform: translateX(4px);
+@media (hover: hover) and (pointer: fine) {
+  .nav-links .nav-link:hover {
+    color: var(--link);
+  }
 }
 
 .nav-links .nav-link.active {
@@ -176,21 +177,11 @@ a {
   font-weight: 500;
 }
 
-.page-content a[href^="http"]::after,
-.page-content a[href^="mailto"]::after {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 1px;
-  bottom: 0;
-  left: 0;
-  background-color: currentColor;
-  transition: width 0.3s ease;
-}
-
-.page-content a[href^="http"]:hover::after,
-.page-content a[href^="mailto"]:hover::after {
-  width: 100%;
+.page-content a[href^="http"],
+.page-content a[href^="mailto"] {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
 /* Inline company/org references — subtle underline that keeps the text color,
@@ -215,7 +206,7 @@ a {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
   border-radius: 2px;
 }
@@ -246,8 +237,8 @@ a {
   top: 1rem;
   right: 1rem;
   z-index: 1100;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -266,10 +257,16 @@ a {
     transform 0.2s ease;
 }
 
-.theme-toggle:hover {
-  border-color: var(--accent-tint-border);
+@media (hover: hover) and (pointer: fine) {
+  .theme-toggle:hover {
+    border-color: var(--accent-tint-border);
+    background: var(--accent-tint);
+  }
+}
+
+.theme-toggle:active {
   background: var(--accent-tint);
-  transform: translateY(-1px);
+  transform: scale(0.97);
 }
 
 .theme-toggle .glyph {
@@ -338,4 +335,41 @@ a {
     top: 0.85rem;
     right: 0.85rem;
   }
+}
+
+/* Reduced motion also covers scroll and interactive movement. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .nav-links .nav-link:hover,
+  .theme-toggle:active {
+    transform: none;
+  }
+}
+
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1200;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 0.5rem;
+  background: var(--overlay);
+  color: var(--text);
+  font-weight: 600;
+  transform: translateY(calc(-100% - 2rem));
+}
+
+.skip-link:focus {
+  transform: translateY(0);
 }
