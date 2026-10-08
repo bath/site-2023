@@ -10,7 +10,7 @@ import { profile } from "../data/profile";
 >
   <SidebarNav page="" />
 
-  <main class="sb-content">
+  <main class="sb-content" id="main-content" tabindex="-1">
     <div class="sb-page">
       <p class="sb-greeting">
         <span class="sb-wave" aria-hidden="true">👋🏻</span>
@@ -21,44 +21,34 @@ import { profile } from "../data/profile";
 
       <div class="sb-summary">
         <p>
-          Last year at <a href="https://payitgov.com">PayIt</a>, I joined the
-          Payments Platform team to build and launch <a
-            href="/images/payment-plans.png">Payment Plans</a
-          >, a recurring-payments product projected to bring more than $400K in
-          annual revenue online. Using <a href="https://cursor.com">Cursor</a>
-          and <a href="https://www.anthropic.com/claude-code">Claude Code</a>, I
-          delivered it four weeks ahead of schedule and added a sidecar
-          lifecycle monitor that caught dozens of bugs before launch. Built with
-          <a href="https://www.java.com">Java</a>, <a
-            href="https://kafka.apache.org">Kafka</a
-          >, and <a href="https://www.mongodb.com">MongoDB</a>, the system has
-          processed more than $15M, with plans to expand to more than nine
-          clients.
+          I'm the first engineering hire at <a href={profile.companyUrl}
+            >Kanapy</a
+          >, bringing AI to the people who build and repair the places we live.
         </p>
-
-        <p>
-          After a successful launch with <a
-            href="https://payitgov.com/news/harris-county-tax-office-unveils-new-online-payment-system-as-2025-property-tax-bills-roll-in/"
-            >Harris County</a
-          >, I joined a newly formed AI product and tooling team. Working
-          closely with a product manager, I added RAG prompt management to <a
-            href="https://payitgov.com/resource/ai-search-solution-is-changing-government-service-delivery/"
-            >Smart Guide</a
-          >, enabling prompt versioning, A/B testing, and canary rollouts. I was
-          then selected by our VP of Engineering to join an AI skunkworks team,
-          where I built internal agents and a knowledge base to rethink parts of
-          the software development lifecycle.
-        </p>
+        {profile.thinking.map((paragraph) => <p>{paragraph}</p>)}
       </div>
+
+      <section class="sb-hiring" aria-labelledby="hiring-heading" id="hiring">
+        <h2 id="hiring-heading">Build with us</h2>
+        <p>
+          {profile.hiring} If this is the work you want to do, I'd like to hear from
+          you.
+        </p>
+        <a href={profile.hiringHref}
+          >Email me about Kanapy <span aria-hidden="true">↗</span></a
+        >
+      </section>
+
+      <p class="sb-previous">
+        Previously at PayIt. <a href="/work#previous">See previous work</a>.
+      </p>
 
       <p class="sb-contact">
         Reach out on <a href={profile.x}>X</a>, <a href={profile.linkedin}
           >LinkedIn</a
         >, or <a href={`mailto:${profile.email}`}>email</a>. You can also view
         my
-        <a href={profile.resumeHref}>résumé</a> or <a href={profile.github}
-          >GitHub</a
-        >.
+        <a href={profile.github}>GitHub</a>.
       </p>
 
       <p class="sb-colophon">
@@ -68,6 +58,7 @@ import { profile } from "../data/profile";
           rel="noopener noreferrer">Astro</a
         > — <a href={profile.sourceUrl}>this site is open source</a>.
       </p>
+      <p class="sb-colophon"><a href="/llms.txt">Read this site as text</a></p>
     </div>
   </main>
 </MainLayout>
@@ -84,7 +75,7 @@ import { profile } from "../data/profile";
 
   .sb-page {
     max-width: 60ch;
-    animation: sbFadeIn 0.45s ease-out;
+    animation: sbFadeIn 0.18s ease-out;
   }
 
   .sb-greeting {
@@ -126,6 +117,42 @@ import { profile } from "../data/profile";
     text-decoration-color: var(--accent);
   }
 
+  .sb-hiring {
+    margin-top: 2rem;
+    padding: 1.25rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 0.625rem;
+    background: var(--surface);
+  }
+
+  .sb-hiring h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  .sb-hiring p {
+    margin: 0 0 0.75rem;
+  }
+  .sb-hiring a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    font-weight: 600;
+  }
+  .sb-hiring a,
+  .sb-previous a {
+    color: var(--link);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .sb-previous {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+  }
+
   .sb-contact {
     margin: 2rem 0 0;
     padding-top: 1.2rem;
@@ -161,11 +188,9 @@ import { profile } from "../data/profile";
   @keyframes sbFadeIn {
     from {
       opacity: 0;
-      transform: translateY(8px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
     }
   }
 

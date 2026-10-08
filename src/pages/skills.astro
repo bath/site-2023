@@ -11,7 +11,7 @@ import { skillGroups, topSkills } from "../data/skills";
 >
   <SidebarNav page="skills" />
 
-  <main class="sb-content">
+  <main class="sb-content" id="main-content" tabindex="-1">
     <div class="sb-page">
       <h1 class="sb-h1">Skills</h1>
 
@@ -49,7 +49,7 @@ import { skillGroups, topSkills } from "../data/skills";
 
   .sb-page {
     max-width: 70ch;
-    animation: sbFadeIn 0.45s ease-out;
+    animation: sbFadeIn 0.18s ease-out;
   }
 
   .sb-h1 {
@@ -138,11 +138,9 @@ import { skillGroups, topSkills } from "../data/skills";
   @keyframes sbFadeIn {
     from {
       opacity: 0;
-      transform: translateY(8px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
     }
   }
 

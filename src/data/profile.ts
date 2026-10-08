@@ -1,6 +1,6 @@
 export const profile = {
   name: "Miller Bath",
-  title: "Backend Engineer",
+  title: "First engineering hire at Kanapy",
   location: "Kansas City, MO",
   locationShort: "Kansas City",
   email: "millerzbath@gmail.com",
@@ -8,7 +8,15 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/millerbath",
   github: "https://github.com/bath",
   resumeHref: "/Miller_Bath_Resume.pdf",
+  companyUrl: "https://kanapy.com",
+  hiring: "We're hiring product managers, designers, and engineers at Kanapy.",
+  hiringHref: "mailto:millerzbath@gmail.com?subject=Working%20at%20Kanapy",
+  thinking: [
+    "I want AI to give people time back in the work they already do. For someone running a trade business, that means less time on paperwork and more time on the job.",
+    "I'm thinking about what happens between doing the work and getting paid. The photos, notes, and follow-ups that pile up after a long day. Good software should help carry that load.",
+    "My test is simple: does this make someone's day easier? That's the kind of AI I want to build.",
+  ],
   sourceUrl: "https://github.com/bath/site-2023",
-  tagline: "Backend engineer working across payments and applied AI",
-  hook: "I build payment systems and AI products.",
+  tagline: "First engineering hire at Kanapy",
+  hook: "AI for America's tradespeople.",
 };
