@@ -2,12 +2,10 @@
 
 My personal site — [mzb.dev](https://mzb.dev). Built with [Astro](https://astro.build).
 
-A small, fast, dependency-light site with a few intentional touches:
+One page: what I do now, what is next, Hark, a few small tools, and what came before.
 
-- **Seasonal gradient** that shifts through the year (winter blues → spring → summer golds → fall ambers), computed from the day of year.
-- **Live sun** that tracks the visitor's local time of day and casts a moving shadow on my name.
-- **Light / dark / auto** theming — resolved before first paint (no flash), persisted, and `auto` follows the OS. Append `?theme=dark` to any URL to share a themed link.
-- A couple of easter eggs for the curious. ↑↑↓↓←→←→BA.
+- The background gradient changes with the season. It is computed from the day of the year.
+- Light, dark and auto themes. The theme is set before first paint. `?theme=dark` shares a themed link.
 
 ## Develop
 
@@ -15,7 +13,6 @@ A small, fast, dependency-light site with a few intentional touches:
 npm install
 npm run dev      # local dev server
 npm run build    # static build → ./dist
-npm run preview  # preview the build
 ```
 
 Node ≥ 22.12 (see `.nvmrc`).
@@ -24,19 +21,21 @@ Node ≥ 22.12 (see `.nvmrc`).
 
 ```
 src/
-  components/   nav, gradient, theme toggle/script, live clock, easter eggs
-  data/         profile, experience, skills  (content lives here)
-  layouts/      MainLayout — shared <head>, theming, OG meta
-  pages/        index (about), work, skills, simulate (year-in-60s)
-  styles/       global.css — theme tokens + responsive layout
-public/          favicon, résumé PDF, OG image
+  data/profile.ts     links and the small-tools list
+  pages/index.astro   the page and its copy
+  layouts/            MainLayout: <head>, theme, share tags
+  components/         gradient, theme script, theme toggle
+  styles/global.css   theme tokens
+public/               favicon, share image, résumé PDF
 ```
 
-Content is data-driven: edit `src/data/*.ts` to update copy, work history, and skills.
+`/work`, `/projects` and `/skills` redirect to `/`. Vercel deploys `main`.
 
-Deployed on Vercel. The résumé is served as a static file from `public/Miller_Bath_Resume.pdf`.
+`public/og.png` is the share image. `og.html` is its source: open it at 1200 × 630 and take a screenshot.
 
 ## Résumé PDF
+
+The page does not link the PDF: it is from August 2026 and shows PayIt as the current job. The file stays so old links work.
 
 `public/Miller_Bath_Resume.pdf` is a build artifact, not a source — don't edit it by hand.
 
